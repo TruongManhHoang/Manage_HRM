@@ -7,5 +7,20 @@ class RouterName {
   static const customSidebar = '/customSidebar';
   static const employeePage = '/employee-page';
 
-  static const sidebarMenuItem = [dashboard, departmentPage, employeePage];
+  static const sidebarMenuItemsShort = [
+    dashboard,
+    departmentPage,
+    employeePage
+  ];
+  static const register = '/register';
+  static const forgotPassword = '/forgot-password';
+  static const logout = '/logout';
+
+  static const sidebarMenuItemsFull = [
+    schoolPage,
+    dashboard,
+    commentManager,
+    departmentPage,
+    logout,
+  ];
 }
