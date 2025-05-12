@@ -4,11 +4,15 @@ class RouterName {
   static const commentManager = '/comment-manager-page';
   static const login = '/login';
   static const departmentPage = '/departmentPage';
+  static const register = '/register';
+  static const forgotPassword = '/forgot-password';
+  static const logout = '/logout';
 
   static const sidebarMenuItem = [
     schoolPage,
     dashboard,
     commentManager,
-    departmentPage
+    departmentPage,
+    logout,
   ];
 }
