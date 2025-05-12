@@ -1,6 +1,5 @@
+import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
 import 'package:admin_hrm/pages/dash_board/hello.dart';
-
-import 'package:admin_hrm/constants/sizes.dart';
 
 import 'package:flutter/material.dart';
 
@@ -17,37 +16,9 @@ class DashBoardDesktopPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Row(
-                children: [
-                  Text(
-                    'Tổng quan',
-                    style: TextStyle(fontSize: 20, color: Colors.black),
-                  ),
-                  Spacer(),
-                  Icon(
-                    Icons.dashboard,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Tổng quan',
-                    style: TextStyle(fontSize: 13, color: Colors.black),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Icon(
-                    Icons.navigate_next,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Thống kê',
-                    style: TextStyle(fontSize: 13, color: Colors.black),
-                  ),
-                ],
+              const TBreadcrumsWithHeading(
+                heading: 'Dashboard',
+                breadcrumbItems: [],
               ),
               Row(
                 children: [

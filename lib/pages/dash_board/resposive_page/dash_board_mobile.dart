@@ -38,7 +38,6 @@ class DashBoardMobilePage extends StatelessWidget {
                   title: 'Total Profit', subtitle: '\$365.6', stats: 25),
 
               const Gap(TSizes.spaceBtwSections),
-
             ],
           ),
         ),

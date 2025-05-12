@@ -1,12 +1,4 @@
-import 'package:admin_hrm/constants/sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-
-import '../../../common/widgets/containers/rounded_container.dart';
-import '../table/data_table.dart';
-import '../widgets/dash_board_card.dart';
-import '../widgets/order_status_graph.dart';
-import '../widgets/weekly_sales.dart';
 
 class EmployeePageMobile extends StatelessWidget {
   const EmployeePageMobile({super.key});
@@ -25,20 +17,8 @@ class EmployeePageMobile extends StatelessWidget {
               const Row(
                 children: [
                   Text(
-                    'Quản lý phòng ban',
+                    'Nhân Viên',
                     style: TextStyle(fontSize: 25, color: Colors.black),
-                  ),
-                  //
-                  Spacer(),
-                  Icon(
-                    Icons.apartment,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Quản lý phòng ban',
-                    style: TextStyle(fontSize: 13, color: Colors.black),
                   ),
                 ],
               ),
@@ -53,44 +33,62 @@ class EmployeePageMobile extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Thao tác chức năng',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
+                        TextButton(
+                            onPressed: () {},
+                            child: Text('Thêm Nhân Viên',
+                                style: Theme.of(context).textTheme.bodyMedium)),
+                        TextButton(
+                            onPressed: () {},
+                            child: Text('Xuất danh sách nhân viên',
+                                style: Theme.of(context).textTheme.bodyMedium)),
+                        TextButton(
+                            onPressed: () {},
+                            child: Text('Hiện nhân viên đã ngừng hoạt động',
+                                style: Theme.of(context).textTheme.bodyMedium)),
+                        TextButton(
+                            onPressed: () {},
+                            child: Text('Nhân viên thôi việc',
+                                style: Theme.of(context).textTheme.bodyMedium)),
                       ],
                     ),
-                    SizedBox(
-                      height: 15,
+                    DataTable(
+                      columns: const [
+                        DataColumn(label: Text('STT')),
+                        DataColumn(label: Text('Mã Phòng')),
+                        DataColumn(label: Text('Tên Phòng')),
+                        DataColumn(label: Text('Vị trí')),
+                        DataColumn(label: Text('Ngày Tạo')),
+                        DataColumn(label: Text('Người tạo')),
+                        DataColumn(label: Text('Sửa')),
+                        DataColumn(label: Text('Xóa')),
+                        DataColumn(label: Text('Xóa')),
+                      ],
+                      // rows: []
+                      rows: const [
+                        DataRow(cells: [
+                          DataCell(Text('1')),
+                          DataCell(Text('001')),
+                          DataCell(Text('Phòng A')),
+                          DataCell(Text('Phòng A')),
+                          DataCell(Text('01/01/2024')),
+                          DataCell(Text('Admin')),
+                          DataCell(Text('Sửa')),
+                          DataCell(Text('Xóa')),
+                          DataCell(Text('Xóa')),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text('2')),
+                          DataCell(Text('002')),
+                          DataCell(Text('Phòng B')),
+                          DataCell(Text('Phòng A')),
+                          DataCell(Text('02/01/2024')),
+                          DataCell(Text('Admin')),
+                          DataCell(Text('Sửa')),
+                          DataCell(Text('Xóa')),
+                          DataCell(Text('Xóa')),
+                        ]),
+                      ],
                     ),
-                    InkWell(
-                      onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => NewDepartmentPage()));
-                      },
-                      child: Container(
-                        width: 120,
-                        height: 90,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(0)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.add),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text('Thêm phòng ban')
-                          ],
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),

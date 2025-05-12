@@ -1,13 +1,15 @@
+import 'package:admin_hrm/common/widgets/layouts/sidebars/bloc/sidebar_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SiderBar extends StatefulWidget {
+class CustomSidebar extends StatefulWidget {
   final String title;
   final IconData icon;
   final List<String> items;
   final List<Widget> pages;
   final BuildContext context;
 
-  const SiderBar({
+  const CustomSidebar({
     Key? key,
     required this.title,
     required this.icon,
@@ -20,28 +22,35 @@ class SiderBar extends StatefulWidget {
   _NavigatorBarState createState() => _NavigatorBarState();
 }
 
-class _NavigatorBarState extends State<SiderBar> {
+class _NavigatorBarState extends State<CustomSidebar> {
   int? selectedIndex;
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: Row(
-        children: [
-          Icon(widget.icon, size: 20, color: Colors.grey),
-          SizedBox(width: 10),
-          Text(
-            widget.title,
-            style: TextStyle(fontSize: 15, color: Colors.grey),
-          ),
-        ],
-      ),
-      children: widget.items.asMap().entries.map((entry) {
-        int index = entry.key;
-        String item = entry.value;
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => SideBarBloc()),
+        // Add more providers here
+      ],
+      child: ExpansionTile(
+        title: Row(
+          children: [
+            Icon(widget.icon, size: 20, color: Colors.grey),
+            SizedBox(width: 10),
+            Text(
+              widget.title,
+              style: TextStyle(fontSize: 15, color: Colors.grey),
+            ),
+          ],
+        ),
+        children: widget.items.asMap().entries.map((entry) {
+          int index = entry.key;
+          String item = entry.value;
 
-        return _buildRowWithDivider(item, index, context, widget.pages[index]);
-      }).toList(),
+          return _buildRowWithDivider(
+              item, index, context, widget.pages[index]);
+        }).toList(),
+      ),
     );
   }
 

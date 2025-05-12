@@ -1,5 +1,7 @@
+import 'package:admin_hrm/common/widgets/layouts/sidebars/custom_sidebar.dart';
 import 'package:admin_hrm/pages/comment_manager/comment_manager_page.dart';
 import 'package:admin_hrm/pages/department/department_page.dart';
+import 'package:admin_hrm/pages/employee/employee_page.dart';
 import 'package:admin_hrm/pages/login/login_page.dart';
 import 'package:admin_hrm/pages/school_page/school_page.dart';
 
@@ -57,10 +59,14 @@ class AppRouter {
           path: RouterName.departmentPage,
           name: RouterName.departmentPage,
           builder: (context, state) {
-            return BlocProvider(
-              create: (context) => DashboardBloc(),
-              child: const DepartmentPage(),
-            );
+            return const DepartmentPage();
+          },
+        ),
+        GoRoute(
+          path: RouterName.employeePage,
+          name: RouterName.employeePage,
+          builder: (context, state) {
+            return const EmployeePage();
           },
         ),
       ],

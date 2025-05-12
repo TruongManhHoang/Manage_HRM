@@ -39,17 +39,6 @@ class Sidebar extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SiderBar(
-                      icon: Icons.dashboard,
-                      title: 'Tổng quan',
-                      items: [
-                        "Thống kê",
-                        "Danh sách nhân viên",
-                        "Danh sách tài khoản"
-                      ],
-                      pages: [DashBoardPage(), Hello(), Hello()],
-                      context: context,
-                    ),
                     Text(
                       'Menu',
                       style: Theme.of(context)
@@ -58,23 +47,19 @@ class Sidebar extends StatelessWidget {
                           .apply(letterSpacingDelta: 1.2),
                     ),
 
-                    //Menu items
+                    // Menu items
                     const MenuItem(
                         icon: Iconsax.music_dashboard,
                         title: 'DashBoard',
                         router: RouterName.dashboard),
                     const MenuItem(
-                        icon: Iconsax.home,
-                        title: 'SchoolPage',
-                        router: RouterName.schoolPage),
-                    const MenuItem(
-                        icon: Iconsax.message,
-                        title: 'Comment',
-                        router: RouterName.commentManager),
-                    const MenuItem(
                         icon: Iconsax.home1,
                         title: 'Department',
                         router: RouterName.departmentPage),
+                    const MenuItem(
+                        icon: Iconsax.home1,
+                        title: 'Employee',
+                        router: RouterName.employeePage),
                   ],
                 ),
               )

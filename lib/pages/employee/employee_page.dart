@@ -17,13 +17,6 @@ class EmployeePage extends StatefulWidget {
 
 class _EmployeePageState extends State<EmployeePage> {
   @override
-  void initState() {
-    super.initState();
-    context.read<DashboardBloc>().add(const CalculateWeeklySalesEvent());
-    context.read<DashboardBloc>().add(const CalculateOrderStatusEvent());
-  }
-
-  @override
   Widget build(BuildContext context) {
     return const SiteTemplate(
       desktop: EmployeePageDesktop(),

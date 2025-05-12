@@ -18,14 +18,6 @@ class DepartmentPage extends StatefulWidget {
 
 class _DepartmentPageState extends State<DepartmentPage> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    context.read<DashboardBloc>().add(const CalculateWeeklySalesEvent());
-    context.read<DashboardBloc>().add(const CalculateOrderStatusEvent());
-  }
-
-  @override
   Widget build(BuildContext context) {
     return const SiteTemplate(
       desktop: DepartmentPageDesktop(),
