@@ -14,8 +14,6 @@ class AddEmployee extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController usernameController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
     TextEditingController fullNameController = TextEditingController();
     TextEditingController genderController = TextEditingController();
     TextEditingController positionController = TextEditingController();
@@ -73,23 +71,9 @@ class AddEmployee extends StatelessWidget {
                                         children: [
                                           TTextFormField(
                                             textAlign: true,
-                                            text: 'Tài khoản',
-                                            hint: 'Nhập tên tài khoản',
-                                            controller: usernameController,
-                                          ),
-                                          const Gap(TSizes.spaceBtwItems),
-                                          TTextFormField(
-                                            textAlign: true,
-                                            text: 'Mật khẩu',
-                                            hint: 'Nhập mật khẩu',
-                                            controller: passwordController,
-                                          ),
-                                          const Gap(TSizes.spaceBtwItems),
-                                          TTextFormField(
-                                            textAlign: true,
-                                            text: 'Mật khẩu nhập lại',
-                                            hint: 'Nhập mật khẩu nhập lại',
-                                            controller: passwordController,
+                                            text: 'Họ tên',
+                                            hint: 'Nhập họ tên',
+                                            controller: fullNameController,
                                           ),
                                           const Gap(TSizes.spaceBtwItems),
                                           TDropDownMenu(
@@ -99,13 +83,6 @@ class AddEmployee extends StatelessWidget {
                                               ],
                                               controller: genderController,
                                               text: 'Giới tính'),
-                                          const Gap(TSizes.spaceBtwItems),
-                                          TTextFormField(
-                                            textAlign: true,
-                                            text: 'Họ tên',
-                                            hint: 'Nhập họ tên',
-                                            controller: fullNameController,
-                                          ),
                                           const Gap(TSizes.spaceBtwItems),
                                           GestureDetector(
                                             onTap: () async {
