@@ -17,4 +17,20 @@ class RouterName {
     employeePage,
     contractPage
   ];
+  static const sidebarMenuItemsShort = [
+    dashboard,
+    departmentPage,
+    employeePage
+  ];
+  static const register = '/register';
+  static const forgotPassword = '/forgot-password';
+  static const logout = '/logout';
+
+  static const sidebarMenuItemsFull = [
+    schoolPage,
+    dashboard,
+    commentManager,
+    departmentPage,
+    logout,
+  ];
 }
