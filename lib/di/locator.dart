@@ -6,11 +6,11 @@ GetIt getIt = GetIt.instance;
 
 class ServiceLocator {
   Future<void> servicesLocator() async {
-    final storage = GlobalStorageImpl();
-    await storage.init();
+    // final storage = GlobalStorageImpl();
+    // await storage.init();
 
-    // 🟢 Đăng ký GlobalStorage
-    getIt.registerSingleton<GlobalStorage>(storage);
+    // // 🟢 Đăng ký GlobalStorage
+    // getIt.registerSingleton<GlobalStorage>(storage);
 
     // 🟢 Đăng ký DataSource
 
