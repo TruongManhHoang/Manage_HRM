@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import '../../../common/widgets/data_table/paginated_data_table.dart';
 import '../../../constants/sizes.dart';
 
-class DashboardOrderTable extends StatelessWidget {
-  const DashboardOrderTable({super.key});
+class DataTableAccount extends StatelessWidget {
+  const DataTableAccount({super.key});
 
   @override
   Widget build(BuildContext context) {

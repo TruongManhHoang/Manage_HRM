@@ -10,17 +10,25 @@ class RouterName {
   static const addDepartment = '/add-department';
   static const contractPage = '/contract-page';
   static const addContract = '/add-contract';
+  static const addAccount = '/add-account';
+  static const addPosition = '/add-position';
+  static const accountPage = '/account-page';
+  static const positionPage = '/position-page';
 
   static const sidebarMenuItem = [
     dashboard,
     departmentPage,
     employeePage,
-    contractPage
+    contractPage,
+    accountPage,
+    positionPage
   ];
   static const sidebarMenuItemsShort = [
     dashboard,
     departmentPage,
-    employeePage
+    employeePage,
+    accountPage,
+    positionPage
   ];
   static const register = '/register';
   static const forgotPassword = '/forgot-password';
