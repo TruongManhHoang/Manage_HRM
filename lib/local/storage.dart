@@ -1,30 +1,20 @@
+import 'package:admin_hrm/data/model/user_model.dart';
 import 'package:hive/hive.dart';
 
 class StorageLocal {
   static const String _userBox = 'userBox';
-  static const String _tokenKey = 'token';
-  static const String _emailKey = 'email';
-  static const String _displayNameKey = 'displayName';
+  static const String _userDataKey = 'userData';
 
-  static Future<void> saveUser({
-    required String token,
-    required String email,
-    required String displayName,
-  }) async {
+  static Future<void> saveUser(AppUser user) async {
     final box = await Hive.openBox(_userBox);
-    await box.put(_tokenKey, token);
-    await box.put(_emailKey, email);
-    await box.put(_displayNameKey, displayName);
+    await box.put(_userDataKey, user.toMap());
   }
 
-  static Future<Map<String, dynamic>?> getUser() async {
+  static Future<AppUser?> getUser() async {
     final box = await Hive.openBox(_userBox);
-    if (box.containsKey(_tokenKey)) {
-      return {
-        'token': box.get(_tokenKey),
-        'email': box.get(_emailKey),
-        'displayName': box.get(_displayNameKey),
-      };
+    final data = box.get(_userDataKey);
+    if (data != null && data is Map<String, dynamic>) {
+      return AppUser.fromMap(data, uid: data['uid'], token: data['token']);
     }
     return null;
   }

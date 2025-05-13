@@ -5,7 +5,7 @@ class AuthService {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
 
-  Future<void> signUp({
+  Future<UserCredential> signUp({
     required String email,
     required String password,
     required String displayName,
@@ -15,9 +15,15 @@ class AuthService {
       password: password,
     );
 
-    final uid = userCredential.user!.uid;
+    final user = userCredential.user!;
+    final uid = user.uid;
 
     try {
+      // 🔄 Cập nhật profile trong FirebaseAuth
+      await user.updateDisplayName(displayName);
+      await user.reload(); // Cập nhật lại local user info
+
+      // 🔥 Lưu vào Firestore
       await _firestore.collection('users').doc(uid).set({
         'email': email,
         'displayName': displayName,
@@ -28,6 +34,11 @@ class AuthService {
       print("🔥 Firestore set error: $e");
       rethrow;
     }
+
+    return FirebaseAuth.instance.currentUser == null
+        ? userCredential
+        : await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
   }
 
   Future<UserCredential> signIn(String email, String password) async {

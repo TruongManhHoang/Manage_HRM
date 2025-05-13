@@ -33,16 +33,14 @@ class _HeaderState extends State<Header> {
     final user = await StorageLocal.getUser();
     if (user != null) {
       setState(() {
-        displayName = user['displayName'] ?? '---';
-        email = user['email'] ?? '---';
+        displayName = user.displayName;
+        email = user.email;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('displayName: $displayName');
-    debugPrint('email: $email');
     return Container(
       decoration: const BoxDecoration(
           color: Colors.white,
@@ -111,8 +109,4 @@ class _HeaderState extends State<Header> {
       ),
     );
   }
-
-  @override
-  Size get preferredSize =>
-      Size.fromHeight(TDeviceUtils.getAppBarHeight() + 15);
 }
