@@ -5,7 +5,7 @@ class DepartmentService {
   final _firestore = FirebaseFirestore.instance;
 
   Future<void> addDepartment(DepartmentModel departmentModel) async {
-    final docRef = _firestore.collection('departments').doc(); // tự sinh id
+    final docRef = _firestore.collection('departments').doc();
     final departmentWithId = departmentModel.copyWith(
       id: docRef.id,
       createdAt: DateTime.now(),
