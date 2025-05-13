@@ -7,9 +7,9 @@ import '../../../constants/colors.dart';
 import '../../../constants/sizes.dart';
 import '../../../utils/helpers/helper_functions.dart';
 
-class DashboardOrderRows extends DataTableSource {
+class TableSourceDepartment extends DataTableSource {
   final BuildContext context;
-  DashboardOrderRows(this.context);
+  TableSourceDepartment(this.context);
   @override
   DataRow? getRow(int index) {
     final order = DashBoardOrderData.orders[index];

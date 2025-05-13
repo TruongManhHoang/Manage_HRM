@@ -1,12 +1,15 @@
 import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
-import 'package:admin_hrm/pages/department/table/data_table_department.dart';
+import 'package:admin_hrm/pages/contract/table/data_table_contract.dart';
+import 'package:admin_hrm/pages/employee/table/data_table_employee.dart';
+import 'package:admin_hrm/pages/position/table/data_table_positon.dart';
 import 'package:admin_hrm/router/routers_name.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class DepartmentPageMobile extends StatelessWidget {
-  const DepartmentPageMobile({super.key});
+class PositionPageTablet extends StatelessWidget {
+  const PositionPageTablet({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,13 +22,14 @@ class DepartmentPageMobile extends StatelessWidget {
           child: Column(
             children: [
               const TBreadcrumsWithHeading(
-                heading: 'Phòng Ban',
+                heading: 'Chức vụ',
                 breadcrumbItems: [],
+                rouderName: RouterName.positionPage,
               ),
               const Row(
                 children: [
                   Text(
-                    'Phòng ban',
+                    'Chức vụ',
                     style: TextStyle(fontSize: 25, color: Colors.black),
                   ),
                 ],
@@ -46,23 +50,10 @@ class DepartmentPageMobile extends StatelessWidget {
                               backgroundColor: Colors.blue,
                             ),
                             onPressed: () {
-                              context.push(RouterName.addDepartment);
+                              context.push(RouterName.addPosition);
                             },
                             child: Text(
-                              'Thêm Phòng Ban',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(color: Colors.white),
-                            )),
-                        const Gap(10),
-                        TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                            ),
-                            onPressed: () {},
-                            child: Text(
-                              'Xuất danh sách phòng ban',
+                              'Thêm chức vụ',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -70,7 +61,7 @@ class DepartmentPageMobile extends StatelessWidget {
                             )),
                       ],
                     ),
-                    const DataTableDepartment()
+                    const DataTablePositon()
                   ],
                 ),
               ),
