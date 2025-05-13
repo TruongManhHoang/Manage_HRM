@@ -1,8 +1,5 @@
 import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
-import 'package:admin_hrm/pages/contract/table/data_table_contract.dart';
-import 'package:admin_hrm/pages/employee/table/data_table_employee.dart';
-
-import 'package:admin_hrm/pages/employee/widgets/add_employee.dart';
+import 'package:admin_hrm/pages/personnel_management/table/data_table_personnel.dart';
 import 'package:admin_hrm/router/routers_name.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -13,6 +10,7 @@ class EmployeePageDesktop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         body: SingleChildScrollView(
       child: Container(
@@ -98,6 +96,7 @@ class EmployeePageDesktop extends StatelessWidget {
                                     .copyWith(color: Colors.white))),
                       ],
                     ),
+                    const Gap(20),
                     const DataTableEmployee()
                   ],
                 ),

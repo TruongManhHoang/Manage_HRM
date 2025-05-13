@@ -9,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../data/model/personnel_management.dart';
+import '../../../service/personnel_service.dart';
+
 class AddEmployee extends StatelessWidget {
   const AddEmployee({super.key});
 
@@ -28,6 +31,8 @@ class AddEmployee extends StatelessWidget {
     final List<String> positions = ['Nhân viên', 'Quản lý', 'Trưởng phòng'];
     final List<String> departments = ['Phòng nhân sự', 'Phòng kế toán'];
     final List<String> educationLevels = ['Cao đẳng', 'Đại học', 'Sau đại học'];
+
+    PersonnelService personnelService = PersonnelService();
 
     return Scaffold(
       body: Row(
@@ -163,14 +168,42 @@ class AddEmployee extends StatelessWidget {
                                                               2,
                                                       vertical: 16)),
                                               onPressed: () {
-                                                // Handle form submission
-                                                if (GlobalKey<FormState>()
-                                                    .currentState!
-                                                    .validate()) {
-                                                  // Process data
-                                                  context
-                                                      .go(RouterName.dashboard);
-                                                }
+                                                personnelService.addPersonnel(
+                                                    PersonnelManagement(
+                                                      name: fullNameController
+                                                          .text,
+                                                      dateOfBirth:
+                                                          birthDateController
+                                                              .text,
+                                                      gender:
+                                                          genderController.text,
+                                                      position:
+                                                          positionController
+                                                              .text,
+                                                      department:
+                                                          departmentController
+                                                              .text,
+                                                      address: addressController
+                                                          .text,
+                                                      phone:
+                                                          phoneController.text,
+                                                      email:
+                                                          emailController.text,
+                                                      experience:
+                                                          experienceController
+                                                              .text,
+                                                      date:
+                                                          "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                                    ),
+                                                    context);
+                                                // // Handle form submission
+                                                // if (GlobalKey<FormState>()
+                                                //     .currentState!
+                                                //     .validate()) {
+                                                //   // Process data
+                                                //   context
+                                                //       .go(RouterName.dashboard);
+                                                // }
                                               },
                                               child: Text(
                                                 'Thêm nhân viên',

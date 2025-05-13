@@ -1,5 +1,5 @@
 import 'package:admin_hrm/pages/dash_board/table/table_source.dart';
-import 'package:admin_hrm/pages/employee/table/table_employee.dart';
+import 'package:admin_hrm/pages/personnel_management/table/table_personnel.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
@@ -16,12 +16,14 @@ class DataTableEmployee extends StatelessWidget {
         tableHeight: 500,
         dataRowHeight: TSizes.xl * 1.2,
         columns: const [
-          DataColumn2(label: Text('Order Id')),
-          DataColumn2(label: Text(' Date')),
-          DataColumn2(label: Text('Items')),
-          DataColumn2(label: Text('Status')),
-          DataColumn2(label: Text('Total')),
-          DataColumn2(label: Text('Action')),
+          DataColumn2(label: Text('Mã nhân viên')),
+          DataColumn2(label: Text('Họ tên')),
+          DataColumn2(label: Text('Giới tính')),
+          DataColumn2(label: Text('Số điện thoại')),
+          DataColumn2(label: Text('Chức vụ')),
+          DataColumn2(label: Text('Ngày bắt đầu')),
+          DataColumn2(label: Text('Trạng thái')),
+          DataColumn2(label: Text('Chức năng khác')),
         ],
         source: TableEmployeeRows(context));
   }

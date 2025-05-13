@@ -6,6 +6,7 @@ import '../../../common/widgets/containers/rounded_container.dart';
 import '../../../constants/colors.dart';
 import '../../../constants/sizes.dart';
 import '../../../utils/helpers/helper_functions.dart';
+import '../widgets/other_functions.dart';
 
 class TableEmployeeRows extends DataTableSource {
   final BuildContext context;
@@ -13,7 +14,7 @@ class TableEmployeeRows extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     final order = DashBoardOrderData.orders[index];
-    return DataRow2(cells: [
+    return DataRow2(specificRowHeight: 100, cells: [
       DataCell(Text(
         order.id,
         style: Theme.of(context)
@@ -21,8 +22,25 @@ class TableEmployeeRows extends DataTableSource {
             .bodyLarge!
             .copyWith(color: TColors.primary),
       )),
+      DataCell(Text("Trần Văn Nam",
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(color: TColors.textPrimary))),
+      DataCell(Text(
+        "Nam",
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(color: TColors.primary),
+      )),
+      DataCell(Text("0123456789",
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(color: TColors.textPrimary))),
+      const DataCell(Text('Nhân viên')),
       DataCell(Text(order.formattedOrderDate)),
-      const DataCell(Text('5 item')),
       DataCell(TRoundedContainer(
         radius: TSizes.cardRadiusSm,
         padding: const EdgeInsets.symmetric(
@@ -35,22 +53,13 @@ class TableEmployeeRows extends DataTableSource {
               color: THelperFunctions.getOrderStatusColor(order.status)),
         ),
       )),
-      DataCell(Text('\$ ${order.totalAmount.toStringAsFixed(2)}')),
-      DataCell(Row(
-        children: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.edit),
-            color: TColors.primary,
-          ),
-          const SizedBox(width: TSizes.xs),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.delete),
-            color: Colors.red,
-          ),
-        ],
-      ))
+      DataCell(
+        OtherFunctions(
+          collaborate: () {},
+          delete: () {},
+          edit: () {},
+        ),
+      ),
     ]);
   }
 
