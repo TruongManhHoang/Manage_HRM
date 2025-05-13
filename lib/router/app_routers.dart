@@ -1,3 +1,6 @@
+
+import 'package:admin_hrm/data/repository/user_repository.dart';
+
 import 'package:admin_hrm/pages/account/account_page.dart';
 import 'package:admin_hrm/pages/account/add_account.dart';
 import 'package:admin_hrm/pages/contract/contract_page.dart';
@@ -34,8 +37,9 @@ class AppRouter {
         ShellRoute(
             builder: (context, state, child) {
               final authService = AuthService();
+              final userRepository = UserRepository();
               return BlocProvider(
-                create: (context) => AuthBloc(authService),
+                create: (context) => AuthBloc(authService, userRepository),
                 child: Scaffold(
                   body: child,
                 ),
