@@ -7,9 +7,9 @@ import '../../../constants/colors.dart';
 import '../../../constants/sizes.dart';
 import '../../../utils/helpers/helper_functions.dart';
 
-class DashboardOrderRows extends DataTableSource {
+class TableContractRows extends DataTableSource {
   final BuildContext context;
-  DashboardOrderRows(this.context);
+  TableContractRows(this.context);
   @override
   DataRow? getRow(int index) {
     final order = DashBoardOrderData.orders[index];
@@ -36,6 +36,21 @@ class DashboardOrderRows extends DataTableSource {
         ),
       )),
       DataCell(Text('\$ ${order.totalAmount.toStringAsFixed(2)}')),
+      DataCell(Row(
+        children: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.edit),
+            color: TColors.primary,
+          ),
+          const SizedBox(width: TSizes.xs),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.delete),
+            color: Colors.red,
+          ),
+        ],
+      ))
     ]);
   }
 
@@ -45,7 +60,7 @@ class DashboardOrderRows extends DataTableSource {
 
   @override
   // TODO: implement rowCount
-  int get rowCount => DashBoardOrderData.orders.length;
+  int get rowCount => DashBoardOrderData.orders.length + 1;
 
   @override
   // TODO: implement selectedRowCount

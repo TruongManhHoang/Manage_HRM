@@ -6,7 +6,17 @@ class RouterName {
   static const departmentPage = '/departmentPage';
   static const customSidebar = '/customSidebar';
   static const employeePage = '/employee-page';
+  static const addEmployee = '/add-employee';
+  static const addDepartment = '/add-department';
+  static const contractPage = '/contract-page';
+  static const addContract = '/add-contract';
 
+  static const sidebarMenuItem = [
+    dashboard,
+    departmentPage,
+    employeePage,
+    contractPage
+  ];
   static const sidebarMenuItemsShort = [
     dashboard,
     departmentPage,

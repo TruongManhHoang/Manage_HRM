@@ -1,14 +1,13 @@
-import 'package:admin_hrm/common/widgets/layouts/sidebars/custom_sidebar.dart';
-import 'package:admin_hrm/pages/comment_manager/comment_manager_page.dart';
+import 'package:admin_hrm/pages/contract/contract_page.dart';
+import 'package:admin_hrm/pages/contract/widgets/add_contract.dart';
 import 'package:admin_hrm/pages/department/department_page.dart';
 import 'package:admin_hrm/pages/employee/employee_page.dart';
+import 'package:admin_hrm/pages/employee/widgets/add_employee.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/pages/auth/forget_password/forget_password.dart';
 import 'package:admin_hrm/pages/auth/login/login_page.dart';
 import 'package:admin_hrm/pages/auth/register/register_page.dart';
-import 'package:admin_hrm/pages/comment_manager/comment_manager_page.dart';
 import 'package:admin_hrm/pages/department/department_page.dart';
-import 'package:admin_hrm/pages/school_page/school_page.dart';
 
 import 'package:admin_hrm/router/router_observer.dart';
 import 'package:admin_hrm/service/auth_service.dart';
@@ -62,20 +61,6 @@ class AppRouter {
               )
             ]),
         GoRoute(
-          path: RouterName.schoolPage,
-          name: RouterName.schoolPage,
-          builder: (context, state) {
-            return const SchoolPage();
-          },
-        ),
-        GoRoute(
-          path: RouterName.commentManager,
-          name: RouterName.commentManager,
-          builder: (context, state) {
-            return const CommentManagerPage();
-          },
-        ),
-        GoRoute(
           path: RouterName.dashboard,
           name: RouterName.dashboard,
           builder: (context, state) {
@@ -97,6 +82,27 @@ class AppRouter {
           name: RouterName.employeePage,
           builder: (context, state) {
             return const EmployeePage();
+          },
+        ),
+        GoRoute(
+          path: RouterName.addEmployee,
+          name: RouterName.addEmployee,
+          builder: (context, state) {
+            return const AddEmployee();
+          },
+        ),
+        GoRoute(
+          path: RouterName.contractPage,
+          name: RouterName.contractPage,
+          builder: (context, state) {
+            return const ContractPage();
+          },
+        ),
+        GoRoute(
+          path: RouterName.addContract,
+          name: RouterName.addContract,
+          builder: (context, state) {
+            return const AddContract();
           },
         ),
       ],
