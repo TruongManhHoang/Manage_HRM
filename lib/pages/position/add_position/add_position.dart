@@ -9,16 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class AddAccount extends StatelessWidget {
-  const AddAccount({super.key});
+class AddPosition extends StatelessWidget {
+  const AddPosition({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController usernameController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    TextEditingController passwordReController = TextEditingController();
-
-    TextEditingController employeeIdController = TextEditingController();
+    TextEditingController namePositionController = TextEditingController();
+    TextEditingController startDateController = TextEditingController();
+    TextEditingController endDateController = TextEditingController();
+    TextEditingController employeeController = TextEditingController();
 
     final List<String> contractType = [
       'Chính thức',
@@ -29,13 +28,11 @@ class AddAccount extends StatelessWidget {
       '002',
       '003',
     ];
-    // final List<String> departments = ['Phòng nhân sự', 'Phòng kế toán'];
-    // final List<String> educationLevels = ['Cao đẳng', 'Đại học', 'Sau đại học'];
 
     return Scaffold(
       body: Row(
         children: [
-          Expanded(
+          const Expanded(
             child: Sidebar(),
           ),
           Expanded(
@@ -52,9 +49,9 @@ class AddAccount extends StatelessWidget {
                       child: Column(
                         children: [
                           const TBreadcrumsWithHeading(
-                            heading: 'Tài khoản',
+                            heading: 'Chức vụ',
                             breadcrumbItems: [
-                              RouterName.addAccount,
+                              RouterName.addPosition,
                             ],
                           ),
                           Container(
@@ -75,27 +72,20 @@ class AddAccount extends StatelessWidget {
                                           TDropDownMenu(
                                               menus: employee,
                                               text: 'Mã Nhân viên:',
-                                              controller: employeeIdController),
+                                              controller: employeeController),
                                           const Gap(TSizes.spaceBtwItems),
                                           TTextFormField(
                                             textAlign: true,
-                                            text: 'Tài khoản',
-                                            hint: 'Nhập tên tài khoản',
-                                            controller: usernameController,
+                                            hint: 'Nhập tên chức vụ',
+                                            text: 'Tên chức vụ:',
+                                            controller: namePositionController,
                                           ),
                                           const Gap(TSizes.spaceBtwItems),
                                           TTextFormField(
                                             textAlign: true,
-                                            text: 'Mật khẩu',
-                                            hint: 'Nhập mật khẩu',
-                                            controller: passwordController,
-                                          ),
-                                          const Gap(TSizes.spaceBtwItems),
-                                          TTextFormField(
-                                            textAlign: true,
-                                            text: 'Mật khẩu nhập lại',
-                                            hint: 'Nhập mật khẩu nhập lại',
-                                            controller: passwordReController,
+                                            hint: 'Nhập hệ số chức vụ',
+                                            text: 'Hệ số chức vụ:',
+                                            controller: namePositionController,
                                           ),
                                           const Gap(TSizes.spaceBtwSections),
                                           TextButton(
@@ -117,7 +107,7 @@ class AddAccount extends StatelessWidget {
                                                 }
                                               },
                                               child: Text(
-                                                'Thêm tài khoản',
+                                                'Thêm hợp đồng',
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyMedium!

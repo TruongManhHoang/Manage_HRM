@@ -53,7 +53,7 @@ class Sidebar extends StatelessWidget {
                         title: 'DashBoard',
                         router: RouterName.dashboard),
                     const MenuItem(
-                        icon: Iconsax.home3,
+                        icon: Iconsax.building_3,
                         title: 'Department',
                         router: RouterName.departmentPage),
                     const MenuItem(
@@ -64,27 +64,34 @@ class Sidebar extends StatelessWidget {
                         icon: Iconsax.home_1,
                         title: 'Contract',
                         router: RouterName.contractPage),
+                    const MenuItem(
+                        icon: Iconsax.home_12,
+                        title: 'Positions',
+                        router: RouterName.positionPage),
 
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Icon(Iconsax.logout_1),
-                        const Gap(TSizes.sm),
-                        TextButton(
-                          onPressed: () {
-                            context.read<AuthBloc>().add(LogoutRequested());
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(Iconsax.logout_1),
+                          const Gap(TSizes.sm),
+                          GestureDetector(
+                            onTap: () {
+                              context.read<AuthBloc>().add(LogoutRequested());
 
-                            context.go(RouterName.login);
-                          },
-                          child: const Text(
-                            'Đăng xuất',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 16,
+                              context.go(RouterName.login);
+                            },
+                            child: const Text(
+                              'Đăng xuất',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     )
                   ],
                 ),

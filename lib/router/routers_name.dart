@@ -14,6 +14,7 @@ class RouterName {
   static const addPosition = '/add-position';
   static const accountPage = '/account-page';
   static const positionPage = '/position-page';
+  static const editDepartment = '/edit-department';
 
   static const sidebarMenuItem = [
     dashboard,
