@@ -1,12 +1,14 @@
-import 'package:admin_hrm/pages/dash_board/hello.dart';
+import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
 
-import 'package:admin_hrm/constants/sizes.dart';
+import 'package:admin_hrm/pages/department/table/data_table_department.dart';
+import 'package:admin_hrm/router/routers_name.dart';
 
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class DepartmentPageDesktop extends StatelessWidget {
   const DepartmentPageDesktop({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,23 +20,15 @@ class DepartmentPageDesktop extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
+              const TBreadcrumsWithHeading(
+                heading: 'Phòng Ban',
+                breadcrumbItems: [],
+              ),
               const Row(
                 children: [
                   Text(
-                    'Quản lý phòng ban',
+                    'Phòng ban',
                     style: TextStyle(fontSize: 25, color: Colors.black),
-                  ),
-                  //
-                  Spacer(),
-                  Icon(
-                    Icons.apartment,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Quản lý phòng ban',
-                    style: TextStyle(fontSize: 13, color: Colors.black),
                   ),
                 ],
               ),
@@ -49,83 +43,36 @@ class DepartmentPageDesktop extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Thao tác chức năng',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                            ),
+                            onPressed: () {
+                              context.push(RouterName.addDepartment);
+                            },
+                            child: Text(
+                              'Thêm Phòng Ban',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(color: Colors.white),
+                            )),
+                        const Gap(10),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                            ),
+                            onPressed: () {},
+                            child: Text(
+                              'Xuất danh sách phòng ban',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(color: Colors.white),
+                            )),
                       ],
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        showDialog(
-                          barrierColor: Colors.transparent,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              backgroundColor: Colors.white,
-                              title: Text('Thêm phòng ban'),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  TextField(
-                                    decoration: InputDecoration(
-                                      labelText: 'Tên phòng ban',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  TextField(
-                                    decoration: InputDecoration(
-                                      labelText: 'Mô tả',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('Hủy'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    // Xử lý logic lưu dữ liệu ở đây
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('Lưu'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      child: Container(
-                        width: 120,
-                        height: 90,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(0)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.add),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text('Thêm phòng ban')
-                          ],
-                        ),
-                      ),
-                    )
+                    const DataTableDepartment()
                   ],
                 ),
               ),

@@ -12,55 +12,57 @@ class EmployeePageTablet extends StatelessWidget {
       child: Container(
         height: MediaQuery.of(context).size.height,
         color: Colors.grey[200],
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const TBreadcrumsWithHeading(
-              heading: 'Nhân viên',
-              breadcrumbItems: [],
-            ),
-            const Row(
-              children: [
-                Text(
-                  'Nhân Viên',
-                  style: TextStyle(fontSize: 25, color: Colors.black),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              color: Colors.white,
-              child: Column(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              const TBreadcrumsWithHeading(
+                heading: 'Nhân viên',
+                breadcrumbItems: [],
+              ),
+              const Row(
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () {},
-                          child: Text('Thêm Nhân Viên',
-                              style: Theme.of(context).textTheme.bodyMedium)),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text('Xuất danh sách nhân viên',
-                              style: Theme.of(context).textTheme.bodyMedium)),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text('Hiện nhân viên đã ngừng hoạt động',
-                              style: Theme.of(context).textTheme.bodyMedium)),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text('Nhân viên thôi việc',
-                              style: Theme.of(context).textTheme.bodyMedium)),
-                    ],
+                  Text(
+                    'Nhân Viên',
+                    style: TextStyle(fontSize: 25, color: Colors.black),
                   ),
-                  const DataTableEmployee()
                 ],
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        TextButton(
+                            onPressed: () {},
+                            child: Text('Thêm Nhân Viên',
+                                style: Theme.of(context).textTheme.bodyMedium)),
+                        TextButton(
+                            onPressed: () {},
+                            child: Text('Xuất danh sách nhân viên',
+                                style: Theme.of(context).textTheme.bodyMedium)),
+                        TextButton(
+                            onPressed: () {},
+                            child: Text('Hiện nhân viên đã ngừng hoạt động',
+                                style: Theme.of(context).textTheme.bodyMedium)),
+                        TextButton(
+                            onPressed: () {},
+                            child: Text('Nhân viên thôi việc',
+                                style: Theme.of(context).textTheme.bodyMedium)),
+                      ],
+                    ),
+                    const DataTableEmployee()
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     ));
