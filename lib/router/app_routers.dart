@@ -15,7 +15,7 @@ import 'package:admin_hrm/pages/auth/forget_password/forget_password.dart';
 import 'package:admin_hrm/pages/auth/login/login_page.dart';
 import 'package:admin_hrm/pages/auth/register/register_page.dart';
 import 'package:admin_hrm/pages/position/position_page.dart';
-import 'package:admin_hrm/pages/position/widgets/add_position.dart';
+import 'package:admin_hrm/pages/position/add_position/add_position.dart';
 
 import 'package:admin_hrm/router/router_observer.dart';
 import 'package:flutter/material.dart';

@@ -32,7 +32,7 @@ class AddPosition extends StatelessWidget {
     return Scaffold(
       body: Row(
         children: [
-          Expanded(
+          const Expanded(
             child: Sidebar(),
           ),
           Expanded(
@@ -49,7 +49,7 @@ class AddPosition extends StatelessWidget {
                       child: Column(
                         children: [
                           const TBreadcrumsWithHeading(
-                            heading: 'Hợp đồng',
+                            heading: 'Chức vụ',
                             breadcrumbItems: [
                               RouterName.addPosition,
                             ],
