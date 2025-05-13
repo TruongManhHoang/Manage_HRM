@@ -1,7 +1,6 @@
 import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
 import 'package:admin_hrm/pages/contract/table/data_table_contract.dart';
 import 'package:admin_hrm/pages/employee/table/data_table_employee.dart';
-
 import 'package:admin_hrm/pages/employee/widgets/add_employee.dart';
 import 'package:admin_hrm/pages/login/resposive_page/login_view.dart';
 import 'package:admin_hrm/router/routers_name.dart';
@@ -9,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class EmployeePageDesktop extends StatelessWidget {
-  const EmployeePageDesktop({super.key});
+class ContractPageDesktop extends StatelessWidget {
+  const ContractPageDesktop({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +23,14 @@ class EmployeePageDesktop extends StatelessWidget {
           child: Column(
             children: [
               const TBreadcrumsWithHeading(
-                heading: 'Nhân viên',
+                heading: 'Hợp đồng',
                 breadcrumbItems: [],
+                rouderName: RouterName.contractPage,
               ),
               const Row(
                 children: [
                   Text(
-                    'Nhân Viên',
+                    'Hợp đồng',
                     style: TextStyle(fontSize: 25, color: Colors.black),
                   ),
                 ],
@@ -51,10 +51,10 @@ class EmployeePageDesktop extends StatelessWidget {
                               backgroundColor: Colors.blue,
                             ),
                             onPressed: () {
-                              context.push(RouterName.addEmployee);
+                              context.push(RouterName.addContract);
                             },
                             child: Text(
-                              'Thêm Nhân Viên',
+                              'Thêm hợp đồng',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -67,7 +67,7 @@ class EmployeePageDesktop extends StatelessWidget {
                             ),
                             onPressed: () {},
                             child: Text(
-                              'Xuất danh sách nhân viên',
+                              'Xuất danh sách hợp đồng',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -80,26 +80,15 @@ class EmployeePageDesktop extends StatelessWidget {
                             ),
                             onPressed: () {},
                             child: Text(
-                              'Hiện nhân viên đã ngừng hoạt động',
+                              'Hiện hợp đồng đã ngừng hoạt động',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
                                   .copyWith(color: Colors.white),
                             )),
-                        const Gap(10),
-                        TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                            ),
-                            onPressed: () {},
-                            child: Text('Nhân viên thôi việc',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(color: Colors.white))),
                       ],
                     ),
-                    const DataTableEmployee()
+                    const DataTableContract()
                   ],
                 ),
               ),

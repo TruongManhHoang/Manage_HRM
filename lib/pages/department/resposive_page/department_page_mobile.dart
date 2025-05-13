@@ -1,12 +1,4 @@
-import 'package:admin_hrm/constants/sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-
-import '../../../common/widgets/containers/rounded_container.dart';
-import '../table/data_table.dart';
-import '../widgets/dash_board_card.dart';
-import '../widgets/order_status_graph.dart';
-import '../widgets/weekly_sales.dart';
 
 class DepartmentPageMobile extends StatelessWidget {
   const DepartmentPageMobile({super.key});

@@ -11,18 +11,12 @@ import 'di/locator.dart';
 
 /// Entry point of Flutter App
 ServiceLocator dependencyInjector = ServiceLocator();
-Future<void> main() async {
-  // Ensure that widgets are initialized
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
-  // Remove # sign from url
-
-  dependencyInjector.servicesLocator();
   await Hive.openBox(GlobalStorageKey.globalStorage);
   setPathUrlStrategy();
-  // Initialize Firebase & Authentication Repository
-  dependencyInjector.servicesLocator();
 
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
@@ -30,6 +24,7 @@ Future<void> main() async {
         : HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
 
-  // Main App Starts here...
+  dependencyInjector.servicesLocator();
+
   runApp(const App());
 }

@@ -17,7 +17,7 @@ class DashBoardDesktopPage extends StatelessWidget {
           child: Column(
             children: [
               const TBreadcrumsWithHeading(
-                heading: 'Dashboard',
+                heading: 'Tổng quan',
                 breadcrumbItems: [],
               ),
               Row(
