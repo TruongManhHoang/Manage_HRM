@@ -171,6 +171,7 @@ class AddDepartmentPage extends StatelessWidget {
                                               email: emailController.text,
                                               phoneNumber: phoneController.text,
                                             );
+
                                             context.read<DepartmentBloc>().add(
                                                 CreateDepartment(
                                                     departmentModel));

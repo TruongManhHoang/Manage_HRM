@@ -74,4 +74,32 @@ class DepartmentModel {
       phoneNumber: map['phoneNumber'],
     );
   }
+
+  DepartmentModel copyWith({
+    String? id,
+    String? name,
+    String? description,
+    String? managerName,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? status,
+    int? employeeCount,
+    String? code,
+    String? email,
+    String? phoneNumber,
+  }) {
+    return DepartmentModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      managerName: managerName ?? this.managerName,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      status: status ?? this.status,
+      employeeCount: employeeCount ?? this.employeeCount,
+      code: code ?? this.code,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+    );
+  }
 }
