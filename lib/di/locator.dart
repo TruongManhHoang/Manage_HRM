@@ -1,5 +1,8 @@
 import 'package:admin_hrm/common/widgets/layouts/sidebars/bloc/sidebar_bloc.dart';
+import 'package:admin_hrm/data/repository/user_repository.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
+import 'package:admin_hrm/local/storage.dart';
+import 'package:admin_hrm/service/auth_service.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt getIt = GetIt.instance;
@@ -7,6 +10,7 @@ GetIt getIt = GetIt.instance;
 class ServiceLocator {
   Future<void> servicesLocator() async {
     // final storage = GlobalStorageImpl();
+    final storage = StorageLocal();
     // await storage.init();
 
     // // 🟢 Đăng ký GlobalStorage
@@ -21,5 +25,7 @@ class ServiceLocator {
     // 🟢 Đăng ký Bloc
 
     getIt.registerSingleton<SideBarBloc>(SideBarBloc());
+    getIt.registerSingleton<UserRepository>(UserRepository());
+    getIt.registerSingleton<AuthService>(AuthService());
   }
 }

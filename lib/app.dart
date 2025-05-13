@@ -1,4 +1,8 @@
+import 'package:admin_hrm/data/repository/user_repository.dart';
+import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/router/app_routers.dart';
+import 'package:admin_hrm/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'common/widgets/layouts/sidebars/bloc/sidebar_bloc.dart';
@@ -15,6 +19,11 @@ class App extends StatelessWidget {
           BlocProvider<SideBarBloc>(
             create: (context) => SideBarBloc(),
           ),
+          BlocProvider<AuthBloc>(
+              create: (_) => AuthBloc(
+                    getIt<AuthService>(),
+                    getIt<UserRepository>(),
+                  ))
         ],
         child: MaterialApp.router(
           title: 'Admin Dai Hoc',

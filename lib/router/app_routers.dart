@@ -1,4 +1,3 @@
-
 import 'package:admin_hrm/data/repository/user_repository.dart';
 
 import 'package:admin_hrm/pages/account/account_page.dart';
@@ -34,40 +33,27 @@ class AppRouter {
       initialLocation: RouterName.login,
       // initialLocation: RouterName.dashboard,
       routes: [
-        ShellRoute(
-            builder: (context, state, child) {
-              final authService = AuthService();
-              final userRepository = UserRepository();
-              return BlocProvider(
-                create: (context) => AuthBloc(authService, userRepository),
-                child: Scaffold(
-                  body: child,
-                ),
-              );
-            },
-            routes: [
-              GoRoute(
-                path: RouterName.login,
-                name: RouterName.login,
-                builder: (context, state) {
-                  return const LoginPage();
-                },
-              ),
-              GoRoute(
-                path: RouterName.forgotPassword,
-                name: RouterName.forgotPassword,
-                builder: (context, state) {
-                  return const ForgetPasswordPage();
-                },
-              ),
-              GoRoute(
-                path: RouterName.register,
-                name: RouterName.register,
-                builder: (context, state) {
-                  return const RegisterPage();
-                },
-              )
-            ]),
+        GoRoute(
+          path: RouterName.login,
+          name: RouterName.login,
+          builder: (context, state) {
+            return const LoginPage();
+          },
+        ),
+        GoRoute(
+          path: RouterName.forgotPassword,
+          name: RouterName.forgotPassword,
+          builder: (context, state) {
+            return const ForgetPasswordPage();
+          },
+        ),
+        GoRoute(
+          path: RouterName.register,
+          name: RouterName.register,
+          builder: (context, state) {
+            return const RegisterPage();
+          },
+        ),
         GoRoute(
           path: RouterName.dashboard,
           name: RouterName.dashboard,
