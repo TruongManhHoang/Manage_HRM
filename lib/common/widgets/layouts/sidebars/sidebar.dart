@@ -64,6 +64,10 @@ class Sidebar extends StatelessWidget {
                         icon: Iconsax.home_1,
                         title: 'Contract',
                         router: RouterName.contractPage),
+                    const MenuItem(
+                        icon: Iconsax.home_12,
+                        title: 'Positions',
+                        router: RouterName.positionPage),
 
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
