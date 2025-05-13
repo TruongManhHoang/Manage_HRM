@@ -3,9 +3,15 @@ import 'package:admin_hrm/pages/contract/widgets/add_contract.dart';
 import 'package:admin_hrm/pages/department/department_page.dart';
 import 'package:admin_hrm/pages/employee/employee_page.dart';
 import 'package:admin_hrm/pages/employee/widgets/add_employee.dart';
-import 'package:admin_hrm/pages/login/login_page.dart';
+import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
+import 'package:admin_hrm/pages/auth/forget_password/forget_password.dart';
+import 'package:admin_hrm/pages/auth/login/login_page.dart';
+import 'package:admin_hrm/pages/auth/register/register_page.dart';
+import 'package:admin_hrm/pages/department/department_page.dart';
 
 import 'package:admin_hrm/router/router_observer.dart';
+import 'package:admin_hrm/service/auth_service.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,6 +27,39 @@ class AppRouter {
       initialLocation: RouterName.login,
       // initialLocation: RouterName.dashboard,
       routes: [
+        ShellRoute(
+            builder: (context, state, child) {
+              final authService = AuthService();
+              return BlocProvider(
+                create: (context) => AuthBloc(authService),
+                child: Scaffold(
+                  body: child,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: RouterName.login,
+                name: RouterName.login,
+                builder: (context, state) {
+                  return const LoginPage();
+                },
+              ),
+              GoRoute(
+                path: RouterName.forgotPassword,
+                name: RouterName.forgotPassword,
+                builder: (context, state) {
+                  return const ForgetPasswordPage();
+                },
+              ),
+              GoRoute(
+                path: RouterName.register,
+                name: RouterName.register,
+                builder: (context, state) {
+                  return const RegisterPage();
+                },
+              )
+            ]),
         GoRoute(
           path: RouterName.dashboard,
           name: RouterName.dashboard,
@@ -28,16 +67,6 @@ class AppRouter {
             return BlocProvider(
               create: (context) => DashboardBloc(),
               child: const DashBoardPage(),
-            );
-          },
-        ),
-        GoRoute(
-          path: RouterName.login,
-          name: RouterName.login,
-          builder: (context, state) {
-            return BlocProvider(
-              create: (context) => DashboardBloc(),
-              child: const LoginPage(),
             );
           },
         ),
