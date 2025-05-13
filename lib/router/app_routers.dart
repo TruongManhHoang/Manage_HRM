@@ -1,3 +1,5 @@
+import 'package:admin_hrm/pages/account/account_page.dart';
+import 'package:admin_hrm/pages/account/add_account.dart';
 import 'package:admin_hrm/pages/contract/contract_page.dart';
 import 'package:admin_hrm/pages/contract/widgets/add_contract.dart';
 import 'package:admin_hrm/pages/department/department_page.dart';
@@ -7,7 +9,6 @@ import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/pages/auth/forget_password/forget_password.dart';
 import 'package:admin_hrm/pages/auth/login/login_page.dart';
 import 'package:admin_hrm/pages/auth/register/register_page.dart';
-import 'package:admin_hrm/pages/department/department_page.dart';
 
 import 'package:admin_hrm/router/router_observer.dart';
 import 'package:admin_hrm/service/auth_service.dart';
@@ -103,6 +104,20 @@ class AppRouter {
           name: RouterName.addContract,
           builder: (context, state) {
             return const AddContract();
+          },
+        ),
+        GoRoute(
+          path: RouterName.accountPage,
+          name: RouterName.accountPage,
+          builder: (context, state) {
+            return const AccountPage();
+          },
+        ),
+        GoRoute(
+          path: RouterName.addAccount,
+          name: RouterName.addAccount,
+          builder: (context, state) {
+            return const AddAccount();
           },
         ),
       ],
