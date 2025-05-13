@@ -1,22 +1,23 @@
-import 'package:admin_hrm/data/repository/user_repository.dart';
+import 'package:admin_hrm/data/model/department/department_model.dart';
+import 'package:admin_hrm/data/repository/department_repository.dart';
+import 'package:admin_hrm/di/locator.dart';
 
-import 'package:admin_hrm/pages/account/account_page.dart';
-import 'package:admin_hrm/pages/account/add_account.dart';
 import 'package:admin_hrm/pages/contract/contract_page.dart';
 import 'package:admin_hrm/pages/contract/widgets/add_contract.dart';
-import 'package:admin_hrm/pages/department/add_department_page.dart';
+import 'package:admin_hrm/pages/department/add_deparment/add_department_page.dart';
+import 'package:admin_hrm/pages/department/bloc/department_event.dart';
+import 'package:admin_hrm/pages/department/bloc/department_bloc.dart';
 import 'package:admin_hrm/pages/department/department_page.dart';
+import 'package:admin_hrm/pages/department/edit_deparment/edit_deparment.dart';
 import 'package:admin_hrm/pages/employee/employee_page.dart';
 import 'package:admin_hrm/pages/employee/widgets/add_employee.dart';
-import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/pages/auth/forget_password/forget_password.dart';
 import 'package:admin_hrm/pages/auth/login/login_page.dart';
 import 'package:admin_hrm/pages/auth/register/register_page.dart';
 import 'package:admin_hrm/pages/position/position_page.dart';
-import 'package:admin_hrm/pages/position/widgets/add_position.dart';
+import 'package:admin_hrm/pages/position/add_position/add_position.dart';
 
 import 'package:admin_hrm/router/router_observer.dart';
-import 'package:admin_hrm/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -65,12 +66,16 @@ class AppRouter {
           },
         ),
         GoRoute(
-          path: RouterName.departmentPage,
-          name: RouterName.departmentPage,
-          builder: (context, state) {
-            return const DepartmentPage();
-          },
-        ),
+            path: RouterName.departmentPage,
+            name: RouterName.departmentPage,
+            builder: (context, state) {
+              return BlocProvider(
+                create: (context) =>
+                    DepartmentBloc(repository: getIt<DepartmentRepository>())
+                      ..add(GetListDepartment()),
+                child: const DepartmentPage(),
+              );
+            }),
         GoRoute(
           path: RouterName.employeePage,
           name: RouterName.employeePage,
@@ -99,27 +104,35 @@ class AppRouter {
             return const AddContract();
           },
         ),
-        GoRoute(
-          path: RouterName.accountPage,
-          name: RouterName.accountPage,
-          builder: (context, state) {
-            return const AccountPage();
-          },
-        ),
-        GoRoute(
-          path: RouterName.addAccount,
-          name: RouterName.addAccount,
-          builder: (context, state) {
-            return const AddAccount();
-          },
-        ),
-        GoRoute(
-          path: RouterName.addDepartment,
-          name: RouterName.addDepartment,
-          builder: (context, state) {
-            return const AddDepartmentPage();
-          },
-        ),
+        ShellRoute(
+            builder: (context, state, child) {
+              return BlocProvider<DepartmentBloc>(
+                create: (context) =>
+                    DepartmentBloc(repository: getIt<DepartmentRepository>()),
+                child: Scaffold(
+                  body: child,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: RouterName.addDepartment,
+                name: RouterName.addDepartment,
+                builder: (context, state) {
+                  return const AddDepartmentPage();
+                },
+              ),
+              GoRoute(
+                path: RouterName.editDepartment,
+                name: RouterName.editDepartment,
+                builder: (context, state) {
+                  final department = state.extra as DepartmentModel;
+                  return EditDepartmentPage(
+                    department: department,
+                  );
+                },
+              )
+            ]),
         GoRoute(
           path: RouterName.positionPage,
           name: RouterName.positionPage,

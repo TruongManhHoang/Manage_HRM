@@ -1,61 +1,73 @@
-import 'package:admin_hrm/constants/enum.dart';
-import 'package:admin_hrm/data/model/order_model.dart';
-import 'package:admin_hrm/utils/helpers/helper_functions.dart';
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:admin_hrm/data/repository/department_repository.dart';
+import 'package:admin_hrm/pages/department/bloc/department_event.dart';
+import 'package:admin_hrm/pages/department/bloc/department_state.dart';
+import 'package:excel/excel.dart';
+import 'dart:html' as html;
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../data/model/order_data.dart';
+class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
+  final DepartmentRepository repository;
 
-part 'department_state.dart';
-part 'department_event.dart';
-
-class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
-  DashboardBloc() : super(const DashboardState()) {
-    on<CalculateWeeklySalesEvent>(_onCalculateWeeklySalesEvent);
-    on<CalculateOrderStatusEvent>(_onCalculateOrderStatusEvent);
+  DepartmentBloc({required this.repository}) : super(DepartmentInitial()) {
+    on<CreateDepartment>(_onCreateDepartment);
+    on<GetListDepartment>(_onGetListDepartment);
+    on<UpdateDepartment>(_onUpdateDepartment);
+    on<DeleteDepartment>(_onDeleteDepartment);
   }
 
-  void _onCalculateWeeklySalesEvent(
-      DashboardEvent event, Emitter<DashboardState> emit) {
-    final orders = DashBoardOrderData.orders;
-    List<double> weeklySales = List.filled(7, 0.0);
-
-    final now = DateTime.now();
-    final startOfWeek = THelperFunctions.getStartOfWeek(now);
-    final endOfWeek = startOfWeek.add(const Duration(days: 7));
-
-    for (var order in orders) {
-      if (order.orderDate
-              .isAfter(startOfWeek.subtract(const Duration(seconds: 1))) &&
-          order.orderDate.isBefore(endOfWeek)) {
-        int dayIndex =
-            (order.orderDate.weekday - 1) % 7; // 0 = Monday, 6 = Sunday
-        dayIndex = dayIndex < 0 ? dayIndex + 7 : dayIndex;
-        weeklySales[dayIndex] += order.totalAmount;
-      }
+  Future<void> _onCreateDepartment(
+    CreateDepartment event,
+    Emitter<DepartmentState> emit,
+  ) async {
+    emit(DepartmentLoading());
+    try {
+      await repository.createDepartment(event.department);
+      emit(DepartmentSuccess());
+      add(GetListDepartment());
+    } catch (e) {
+      emit(DepartmentFailure(e.toString()));
     }
-
-    emit(state.copyWith(weeklySales: weeklySales));
   }
 
-  void _onCalculateOrderStatusEvent(
-      DashboardEvent event, Emitter<DashboardState> emit) {
-    final orders = DashBoardOrderData.orders;
-    Map<OrderStatus, int> orderStatusData = {};
-    Map<OrderStatus, double> totalAmounts = {};
-
-    totalAmounts = {for (var status in OrderStatus.values) status: 0.0};
-    for (var order in orders) {
-      //Count Order
-      final status = order.status;
-      orderStatusData[status] = (orderStatusData[status] ?? 0) + 1;
-
-      // Calculate Total Amount for each status
-      totalAmounts[status] = (totalAmounts[status] ?? 0) + order.totalAmount;
+  Future<void> _onGetListDepartment(
+    GetListDepartment event,
+    Emitter<DepartmentState> emit,
+  ) async {
+    emit(DepartmentLoading());
+    try {
+      final departments = await repository.getDepartments();
+      debugPrint('getDepartments : ${departments.length}');
+      emit(DepartmentLoaded(departments));
+    } catch (e) {
+      emit(DepartmentFailure(e.toString()));
     }
+  }
 
-    emit(state.copyWith(
-        orderStatusData: orderStatusData, totalAmounts: totalAmounts));
+  Future<void> _onUpdateDepartment(
+    UpdateDepartment event,
+    Emitter<DepartmentState> emit,
+  ) async {
+    emit(DepartmentLoading());
+    try {
+      await repository.updateDepartment(event.department);
+      emit(DepartmentSuccess());
+    } catch (e) {
+      emit(DepartmentFailure(e.toString()));
+    }
+  }
+
+  Future<void> _onDeleteDepartment(
+    DeleteDepartment event,
+    Emitter<DepartmentState> emit,
+  ) async {
+    emit(DepartmentLoading());
+    try {
+      await repository.deleteDepartment(event.id);
+      emit(DepartmentSuccess());
+      add(GetListDepartment());
+    } catch (e) {
+      emit(DepartmentFailure(e.toString()));
+    }
   }
 }
