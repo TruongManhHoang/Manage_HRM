@@ -23,6 +23,7 @@ class ContractPageMobile extends StatelessWidget {
               const TBreadcrumsWithHeading(
                 heading: 'Hợp đồng',
                 breadcrumbItems: [],
+                rouderName: RouterName.contractPage,
               ),
               const Row(
                 children: [
@@ -48,36 +49,10 @@ class ContractPageMobile extends StatelessWidget {
                               backgroundColor: Colors.blue,
                             ),
                             onPressed: () {
-                              context.push(RouterName.addEmployee);
+                              context.push(RouterName.addContract);
                             },
                             child: Text(
                               'Thêm hợp đồng',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(color: Colors.white),
-                            )),
-                        const Gap(10),
-                        TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                            ),
-                            onPressed: () {},
-                            child: Text(
-                              'Xuất danh sách hợp đồng',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(color: Colors.white),
-                            )),
-                        const Gap(10),
-                        TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                            ),
-                            onPressed: () {},
-                            child: Text(
-                              'Hiện hợp đồng đã ngừng hoạt động',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!

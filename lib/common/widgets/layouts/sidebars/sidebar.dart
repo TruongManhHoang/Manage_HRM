@@ -73,6 +73,10 @@ class Sidebar extends StatelessWidget {
                         icon: Iconsax.home_23,
                         title: 'Account',
                         router: RouterName.accountPage),
+                    const MenuItem(
+                        icon: Iconsax.home_25,
+                        title: 'Positions',
+                        router: RouterName.positionPage),
 
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
