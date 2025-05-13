@@ -163,7 +163,6 @@ class AddDepartmentPage extends StatelessWidget {
                                                   descriptionController.text,
                                               managerName:
                                                   managerController.text,
-                                              createdAt: DateTime.now(),
                                               status: statusController.text,
                                               employeeCount: int.parse(
                                                   employeeCountController.text),
