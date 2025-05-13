@@ -58,13 +58,17 @@ class Sidebar extends StatelessWidget {
                         title: 'DashBoard',
                         router: RouterName.dashboard),
                     const MenuItem(
-                        icon: Iconsax.home1,
+                        icon: Iconsax.home3,
                         title: 'Department',
                         router: RouterName.departmentPage),
                     const MenuItem(
                         icon: Iconsax.home1,
                         title: 'Employee',
                         router: RouterName.employeePage),
+                    const MenuItem(
+                        icon: Iconsax.home_1,
+                        title: 'Contract',
+                        router: RouterName.contractPage),
 
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,

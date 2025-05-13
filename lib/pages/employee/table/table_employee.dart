@@ -1,17 +1,18 @@
-import 'package:admin_hrm/common/widgets/containers/rounded_container.dart';
-import 'package:admin_hrm/constants/colors.dart';
-import 'package:admin_hrm/constants/sizes.dart';
-import 'package:admin_hrm/utils/helpers/helper_functions.dart';
+import 'package:admin_hrm/pages/dash_board/data/model/order_data.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
-import '../../../data/model/order_model.dart';
 
-class SchoolOrderRows extends DataTableSource {
+import '../../../common/widgets/containers/rounded_container.dart';
+import '../../../constants/colors.dart';
+import '../../../constants/sizes.dart';
+import '../../../utils/helpers/helper_functions.dart';
+
+class TableEmployeeRows extends DataTableSource {
   final BuildContext context;
-  SchoolOrderRows(this.context);
+  TableEmployeeRows(this.context);
   @override
   DataRow? getRow(int index) {
-    final order = OrderData.orders[index];
+    final order = DashBoardOrderData.orders[index];
     return DataRow2(cells: [
       DataCell(Text(
         order.id,
@@ -35,6 +36,21 @@ class SchoolOrderRows extends DataTableSource {
         ),
       )),
       DataCell(Text('\$ ${order.totalAmount.toStringAsFixed(2)}')),
+      DataCell(Row(
+        children: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.edit),
+            color: TColors.primary,
+          ),
+          const SizedBox(width: TSizes.xs),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.delete),
+            color: Colors.red,
+          ),
+        ],
+      ))
     ]);
   }
 
@@ -44,7 +60,7 @@ class SchoolOrderRows extends DataTableSource {
 
   @override
   // TODO: implement rowCount
-  int get rowCount => OrderData.orders.length;
+  int get rowCount => DashBoardOrderData.orders.length + 1;
 
   @override
   // TODO: implement selectedRowCount

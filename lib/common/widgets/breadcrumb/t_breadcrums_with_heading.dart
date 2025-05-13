@@ -10,13 +10,16 @@ class TBreadcrumsWithHeading extends StatelessWidget {
       {super.key,
       required this.heading,
       required this.breadcrumbItems,
-      this.returnToPreviousPage = false});
+      this.returnToPreviousPage = false,
+      this.rouderName});
 
   final String heading;
 
   final List<String> breadcrumbItems;
 
   final bool returnToPreviousPage;
+
+  final String? rouderName;
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +33,12 @@ class TBreadcrumsWithHeading extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                context.push(RouterName.dashboard);
+                context.push(rouderName!);
               },
               child: Padding(
                 padding: const EdgeInsets.all(TSizes.xs),
                 child: Text(
-                  'Dashboard',
+                  heading,
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall!
@@ -46,7 +49,6 @@ class TBreadcrumsWithHeading extends StatelessWidget {
             for (int i = 0; i < breadcrumbItems.length; i++)
               Row(
                 children: [
-                  Text('/'),
                   InkWell(
                     onTap: i == breadcrumbItems.length - 1
                         ? null

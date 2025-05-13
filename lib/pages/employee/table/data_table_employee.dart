@@ -1,12 +1,13 @@
-import 'package:admin_hrm/pages/school_page/table/table_source.dart';
+import 'package:admin_hrm/pages/dash_board/table/table_source.dart';
+import 'package:admin_hrm/pages/employee/table/table_employee.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/widgets/data_table/paginated_data_table.dart';
 import '../../../constants/sizes.dart';
 
-class SchoolTable extends StatelessWidget {
-  const SchoolTable({super.key});
+class DataTableEmployee extends StatelessWidget {
+  const DataTableEmployee({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +21,8 @@ class SchoolTable extends StatelessWidget {
           DataColumn2(label: Text('Items')),
           DataColumn2(label: Text('Status')),
           DataColumn2(label: Text('Total')),
+          DataColumn2(label: Text('Action')),
         ],
-        source: SchoolOrderRows(context));
-    ;
+        source: TableEmployeeRows(context));
   }
 }
