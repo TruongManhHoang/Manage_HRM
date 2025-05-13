@@ -1,159 +1,191 @@
-import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+// import 'package:flutter/material.dart';
+// import 'package:hive_flutter/hive_flutter.dart';
 
-class GlobalStorageKey {
-  const GlobalStorageKey._();
+// class GlobalStorageKey {
+//   const GlobalStorageKey._();
 
-  static const globalStorage = 'globalStorage';
-  static const userId = 'user_id';
-  static const accessToken = 'access_token';
-  static const isLoggedIn = 'is_logged_in';
-  static const isDarkMode = 'isDarkMode';
-  static const languageCode = 'languageCode';
-  static const role = 'role';
-  static const userData = 'userData';
-  static const userLikeProduct = 'userLikeProduct';
-  static const shippingAddress = 'shippingAddress';
-  static const carts = 'carts';
-}
+//   static const globalStorage = 'globalStorage';
+//   static const userId = 'user_id';
+//   static const accessToken = 'access_token';
+//   static const isLoggedIn = 'is_logged_in';
+//   static const isDarkMode = 'isDarkMode';
+//   static const languageCode = 'languageCode';
+//   static const role = 'role';
+//   static const userData = 'userData';
+//   static const userLikeProduct = 'userLikeProduct';
+//   static const shippingAddress = 'shippingAddress';
+//   static const carts = 'carts';
 
-abstract class GlobalStorage {
-  Future<void> init();
+//   static const String _tokenKey = 'token';
+//   static const String _emailKey = 'email';
+//   static const String _displayNameKey = 'displayName';
 
-  // New authentication methods
-  String? get accessToken;
+//   static Future<void> saveUser({
+//     required String token,
+//     required String email,
+//     required String displayName,
+//   }) async {
+//     final box = await Hive.openBox(globalStorage);
+//     await box.put(_tokenKey, token);
+//     await box.put(_emailKey, email);
+//     await box.put(_displayNameKey, displayName);
+//   }
 
-  List<String> get userLikeProduct;
+//   static Future<Map<String, dynamic>?> getUser() async {
+//     final box = await Hive.openBox(globalStorage);
+//     if (box.containsKey(_tokenKey)) {
+//       return {
+//         'token': box.get(_tokenKey),
+//         'email': box.get(_emailKey),
+//         'displayName': box.get(_displayNameKey),
+//       };
+//     }
+//     return null;
+//   }
 
-  String? get userId;
+//   static Future<void> clearUser() async {
+//     final box = await Hive.openBox(globalStorage);
+//     await box.clear();
+//   }
+// }
 
-  String? get role;
+// abstract class GlobalStorage {
+//   Future<void> init();
 
-  bool get isLoggedIn;
+//   // New authentication methods
+//   String? get accessToken;
 
-  Locale get languageCode;
+//   List<String> get userLikeProduct;
 
-  set languageCode(Locale languageCode);
+//   String? get userId;
 
-  bool get darkMode;
+//   String? get role;
 
-  set darkMode(bool isDarkMode);
+//   bool get isLoggedIn;
 
-  Future<void> updateAuthenticationState({
-    required String? token,
-    required String? userId,
-    required String? role,
-    required List<String> userLikeProduct,
-  });
+//   Locale get languageCode;
 
-  Future<void> clearAuthenticationState();
+//   set languageCode(Locale languageCode);
 
-  Map<String, dynamic> get userData;
+//   bool get darkMode;
 
-  set userData(dynamic data);
-}
+//   set darkMode(bool isDarkMode);
 
-class GlobalStorageImpl implements GlobalStorage {
-  late Box _box;
+//   Future<void> updateAuthenticationState({
+//     required String? token,
+//     required String? userId,
+//     required String? role,
+//     required List<String> userLikeProduct,
+//   });
 
-  @override
-  Locale get languageCode {
-    String lang = _box.get(GlobalStorageKey.languageCode, defaultValue: 'en');
-    return Locale(lang);
-  }
+//   Future<void> clearAuthenticationState();
 
-  @override
-  set languageCode(Locale languageCode) {
-    _box.put(GlobalStorageKey.languageCode, languageCode.languageCode);
-  }
+//   Map<String, dynamic> get userData;
 
-  @override
-  Future<void> init() async {
-    _box = await Hive.openBox('globalStorage');
-  }
+//   set userData(dynamic data);
+// }
 
-  @override
-  String? get accessToken {
-    return _box.get(GlobalStorageKey.accessToken);
-  }
+// class GlobalStorageImpl implements GlobalStorage {
+//   late Box _box;
 
-  @override
-  String? get role {
-    return _box.get(GlobalStorageKey.role);
-  }
+//   @override
+//   Locale get languageCode {
+//     String lang = _box.get(GlobalStorageKey.languageCode, defaultValue: 'en');
+//     return Locale(lang);
+//   }
 
-  @override
-  String? get userId {
-    return _box.get(GlobalStorageKey.userId);
-  }
+//   @override
+//   set languageCode(Locale languageCode) {
+//     _box.put(GlobalStorageKey.languageCode, languageCode.languageCode);
+//   }
 
-  @override
-  bool get isLoggedIn {
-    return _box.get(GlobalStorageKey.isLoggedIn, defaultValue: false);
-  }
+//   @override
+//   Future<void> init() async {
+//     _box = await Hive.openBox('globalStorage');
+//   }
 
-  @override
-  bool get darkMode {
-    return _box.get(GlobalStorageKey.isDarkMode, defaultValue: false);
-  }
+//   @override
+//   String? get accessToken {
+//     return _box.get(GlobalStorageKey.accessToken);
+//   }
 
-  @override
-  set darkMode(bool isDarkMode) {
-    _box.put(GlobalStorageKey.isDarkMode, isDarkMode);
-  }
+//   @override
+//   String? get role {
+//     return _box.get(GlobalStorageKey.role);
+//   }
 
-  @override
-  Future<void> updateAuthenticationState({
-    required String? token,
-    required String? userId,
-    required String? role,
-    required List<dynamic> userLikeProduct,
-  }) async {
-    if (token == null || userId == null) {
-      await clearAuthenticationState();
-      return;
-    }
-    await Future.wait([
-      _box.put(GlobalStorageKey.accessToken, token),
-      _box.put(GlobalStorageKey.userId, userId),
-      _box.put(GlobalStorageKey.isLoggedIn, true),
-      _box.put(GlobalStorageKey.role, role),
-      _box.put(GlobalStorageKey.userLikeProduct, userLikeProduct),
-    ]);
-  }
+//   @override
+//   String? get userId {
+//     return _box.get(GlobalStorageKey.userId);
+//   }
 
-  @override
-  Future<void> clearAuthenticationState() async {
-    await Future.wait([
-      _box.delete(GlobalStorageKey.accessToken),
-      _box.delete(GlobalStorageKey.userId),
-      _box.delete(GlobalStorageKey.isLoggedIn),
-      _box.delete(GlobalStorageKey.role),
-      _box.delete(GlobalStorageKey.userData),
-      _box.delete(GlobalStorageKey.userLikeProduct),
-    ]);
+//   @override
+//   bool get isLoggedIn {
+//     return _box.get(GlobalStorageKey.isLoggedIn, defaultValue: false);
+//   }
 
-    debugPrint(
-        "Cleared authentication state: ${_box.get(GlobalStorageKey.isLoggedIn)} ${_box.get(GlobalStorageKey.accessToken)} ${_box.get(GlobalStorageKey.userId)} ${_box.get(GlobalStorageKey.role)}");
-  }
+//   @override
+//   bool get darkMode {
+//     return _box.get(GlobalStorageKey.isDarkMode, defaultValue: false);
+//   }
 
-  @override
-  Map<String, dynamic> get userData {
-    return _box.get(GlobalStorageKey.userData) ??
-        {
-          'accessToken': '',
-          'refreshToken': '',
-          'user': null,
-        };
-  }
+//   @override
+//   set darkMode(bool isDarkMode) {
+//     _box.put(GlobalStorageKey.isDarkMode, isDarkMode);
+//   }
 
-  @override
-  set userData(dynamic data) {
-    _box.put(GlobalStorageKey.userData, data);
-  }
+//   @override
+//   Future<void> updateAuthenticationState({
+//     required String? token,
+//     required String? userId,
+//     required String? role,
+//     required List<dynamic> userLikeProduct,
+//   }) async {
+//     if (token == null || userId == null) {
+//       await clearAuthenticationState();
+//       return;
+//     }
+//     await Future.wait([
+//       _box.put(GlobalStorageKey.accessToken, token),
+//       _box.put(GlobalStorageKey.userId, userId),
+//       _box.put(GlobalStorageKey.isLoggedIn, true),
+//       _box.put(GlobalStorageKey.role, role),
+//       _box.put(GlobalStorageKey.userLikeProduct, userLikeProduct),
+//     ]);
+//   }
 
-  @override
-  List<String> get userLikeProduct {
-    return _box.get(GlobalStorageKey.userLikeProduct, defaultValue: <String>[]);
-  }
-}
+//   @override
+//   Future<void> clearAuthenticationState() async {
+//     await Future.wait([
+//       _box.delete(GlobalStorageKey.accessToken),
+//       _box.delete(GlobalStorageKey.userId),
+//       _box.delete(GlobalStorageKey.isLoggedIn),
+//       _box.delete(GlobalStorageKey.role),
+//       _box.delete(GlobalStorageKey.userData),
+//       _box.delete(GlobalStorageKey.userLikeProduct),
+//     ]);
+
+//     debugPrint(
+//         "Cleared authentication state: ${_box.get(GlobalStorageKey.isLoggedIn)} ${_box.get(GlobalStorageKey.accessToken)} ${_box.get(GlobalStorageKey.userId)} ${_box.get(GlobalStorageKey.role)}");
+//   }
+
+//   @override
+//   Map<String, dynamic> get userData {
+//     return _box.get(GlobalStorageKey.userData) ??
+//         {
+//           'accessToken': '',
+//           'refreshToken': '',
+//           'user': null,
+//         };
+//   }
+
+//   @override
+//   set userData(dynamic data) {
+//     _box.put(GlobalStorageKey.userData, data);
+//   }
+
+//   @override
+//   List<String> get userLikeProduct {
+//     return _box.get(GlobalStorageKey.userLikeProduct, defaultValue: <String>[]);
+//   }
+// }

@@ -4,17 +4,12 @@ import 'package:admin_hrm/constants/colors.dart';
 import 'package:admin_hrm/constants/sizes.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_event.dart';
-import 'package:admin_hrm/pages/auth/login/resposive_page/login_view.dart';
-import 'package:admin_hrm/pages/dash_board/dash_board.dart';
-import 'package:admin_hrm/pages/dash_board/hello.dart';
 import 'package:admin_hrm/router/routers_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
-
-import 'custom_sidebar.dart';
 
 class Sidebar extends StatelessWidget {
   const Sidebar({super.key});
@@ -77,10 +72,7 @@ class Sidebar extends StatelessWidget {
                         const Gap(TSizes.sm),
                         TextButton(
                           onPressed: () {
-                            context
-                                .watch()
-                                .read<AuthBloc>()
-                                .add(LogoutRequested());
+                            context.read<AuthBloc>().add(LogoutRequested());
                             context.go(RouterName.login);
                           },
                           child: const Text(
