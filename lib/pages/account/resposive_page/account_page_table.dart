@@ -1,12 +1,14 @@
 import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
-import 'package:admin_hrm/pages/department/table/data_table_department.dart';
 import 'package:admin_hrm/router/routers_name.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class DepartmentPageMobile extends StatelessWidget {
-  const DepartmentPageMobile({super.key});
+import '../table/data_table_account.dart';
+
+class AccountPageTable extends StatelessWidget {
+  const AccountPageTable({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,14 +20,15 @@ class DepartmentPageMobile extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const TBreadcrumsWithHeading(
-                heading: 'Phòng Ban',
+              TBreadcrumsWithHeading(
+                heading: 'Tài khoản',
                 breadcrumbItems: [],
+                rouderName: RouterName.accountPage,
               ),
               const Row(
                 children: [
                   Text(
-                    'Phòng ban',
+                    'Tài khoản',
                     style: TextStyle(fontSize: 25, color: Colors.black),
                   ),
                 ],
@@ -46,10 +49,10 @@ class DepartmentPageMobile extends StatelessWidget {
                               backgroundColor: Colors.blue,
                             ),
                             onPressed: () {
-                              context.push(RouterName.addDepartment);
+                              context.push(RouterName.addAccount);
                             },
                             child: Text(
-                              'Thêm Phòng Ban',
+                              'Thêm tài khoản',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -62,7 +65,20 @@ class DepartmentPageMobile extends StatelessWidget {
                             ),
                             onPressed: () {},
                             child: Text(
-                              'Xuất danh sách phòng ban',
+                              'Xuất danh sách hợp đồng',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(color: Colors.white),
+                            )),
+                        const Gap(10),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                            ),
+                            onPressed: () {},
+                            child: Text(
+                              'Hiện hợp đồng đã ngừng hoạt động',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -70,7 +86,7 @@ class DepartmentPageMobile extends StatelessWidget {
                             )),
                       ],
                     ),
-                    const DataTableDepartment()
+                    const DataTableAccount()
                   ],
                 ),
               ),
