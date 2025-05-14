@@ -9,7 +9,7 @@ class PersonnelService {
   // This class is responsible for managing personnel data and operations.
   // It will contain methods to add, update, delete, and retrieve personnel information.
 
-  // Example method to add a new personnel
+  //  method to add a new personnel
   void addPersonnel(PersonnelManagement personnel, BuildContext context) async {
     PersonnelManagement newPersonnel = PersonnelManagement(
       id: personnel.id,
@@ -41,34 +41,47 @@ class PersonnelService {
         return;
       }
       await firebaseFirestore.collection("personnel").add(newPersonnel.toMap());
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text("Thêm thành viên thành công.",
-              style: TextStyle(color: Colors.white))));
-      Navigator.pop(context);
     } catch (e) {
       print("🔥 Error adding personnel: $e");
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text("Lỗi ! Thêm thành viên không thành công.",
-              style: TextStyle(color: Colors.white))));
-      Navigator.pop(context);
     }
   }
 
-  // Example method to update existing personnel
-  void updatePersonnel(int id, PersonnelManagement personnel) {
-    // Code to update personnel
+  //  method to update existing personnel
+  void updatePersonnel(String id, PersonnelManagement personnel) async {
+    try {
+      await firebaseFirestore
+          .collection('personnel')
+          .doc(id)
+          .update(personnel.toMap());
+      print('Update successfully!');
+    } catch (e) {
+      print('Fail to update!: $e');
+    }
   }
 
-  // Example method to delete personnel
-  void deletePersonnel(int id) {
-    // Code to delete personnel
+  //  method to delete personnel
+  void deletePersonnel(String id) async {
+    try {
+      await firebaseFirestore.collection('personnel').doc(id).delete();
+      print('Delete successfully!');
+    } catch (e) {
+      print('Fail to delete: $e');
+    }
   }
 
-  // Example method to retrieve all personnel
-  List<String> getAllPersonnel() {
-    // Code to retrieve all personnel
-    return [];
+  //  method to retrieve all personnel
+  Future<List<PersonnelManagement>> getAllPersonnel() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await firebaseFirestore.collection('personnel').get();
+      print('Get personnel successfully!');
+      return querySnapshot.docs
+          .map((doc) => PersonnelManagement.fromMap(
+              doc.id, doc.data() as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print('Fail to read: $e');
+      return [];
+    }
   }
 }
