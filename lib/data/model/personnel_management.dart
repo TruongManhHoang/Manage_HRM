@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class PersonnelManagement {
   String? id;
   String name;
@@ -12,6 +14,7 @@ class PersonnelManagement {
   String experience;
   String date;
   String? status;
+  DateTime? timeCreated = DateTime.now();
   PersonnelManagement({
     this.id = "",
     required this.name,
@@ -25,6 +28,7 @@ class PersonnelManagement {
     required this.experience,
     required this.date,
     this.status = "Đang làm việc",
+    this.timeCreated ,
   });
 
   Map<String, dynamic> toMap() {
@@ -41,10 +45,11 @@ class PersonnelManagement {
       'experience': experience,
       'date': date,
       'status': status,
+      'timeCreated': timeCreated,
     };
   }
 
-  factory PersonnelManagement.fromMap(Map<String, dynamic> map) {
+  factory PersonnelManagement.fromMap(String id, Map<String, dynamic> map) {
     return PersonnelManagement(
       id: map['id'] as String,
       name: map['name'] as String,
@@ -58,6 +63,7 @@ class PersonnelManagement {
       experience: map['experience'] as String,
       date: map['date'] as String,
       status: map['status'] as String,
+      timeCreated: map['timeCreated'] ?? DateTime.now(),
     );
   }
 }

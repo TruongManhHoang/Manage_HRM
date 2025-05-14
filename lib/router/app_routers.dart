@@ -22,6 +22,7 @@ import 'package:go_router/go_router.dart';
 import '../pages/dash_board/bloc/dash_board_bloc.dart';
 import '../pages/dash_board/dash_board.dart';
 
+import '../pages/personnel_management/bloc/personnel_bloc.dart';
 import 'routers_name.dart';
 
 class AppRouter {
@@ -85,14 +86,20 @@ class AppRouter {
           path: RouterName.employeePage,
           name: RouterName.employeePage,
           builder: (context, state) {
-            return const EmployeePage();
+            return BlocProvider(
+              create: (_) => PersonelCubit(),
+              child: const EmployeePage(),
+            );
           },
         ),
         GoRoute(
           path: RouterName.addEmployee,
           name: RouterName.addEmployee,
           builder: (context, state) {
-            return const AddEmployee();
+            return BlocProvider(
+              create: (_) => PersonelCubit(),
+              child: const AddEmployeeForm(),
+            );
           },
         ),
         GoRoute(
