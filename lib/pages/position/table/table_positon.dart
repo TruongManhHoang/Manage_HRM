@@ -1,6 +1,12 @@
+import 'package:admin_hrm/data/model/position/position_model.dart';
 import 'package:admin_hrm/pages/dash_board/data/model/order_data.dart';
+import 'package:admin_hrm/pages/position/add_position/add_position.dart';
+import 'package:admin_hrm/pages/position/bloc/position_bloc.dart';
+import 'package:admin_hrm/router/routers_name.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../common/widgets/containers/rounded_container.dart';
 import '../../../constants/colors.dart';
@@ -9,47 +15,70 @@ import '../../../utils/helpers/helper_functions.dart';
 
 class TablePositionRows extends DataTableSource {
   final BuildContext context;
-  TablePositionRows(this.context);
+  TablePositionRows({required this.context, required this.positions});
+  List<PositionModel> positions;
   @override
   DataRow? getRow(int index) {
-    final order = DashBoardOrderData.orders[index];
+    final position = positions[index];
     return DataRow2(cells: [
-      DataCell(Text(
-        order.id,
-        style: Theme.of(context)
-            .textTheme
-            .bodyLarge!
-            .copyWith(color: TColors.primary),
-      )),
-      DataCell(Text(order.formattedOrderDate)),
-      const DataCell(Text('5 item')),
-      DataCell(TRoundedContainer(
-        radius: TSizes.cardRadiusSm,
-        padding: const EdgeInsets.symmetric(
-            vertical: TSizes.xs, horizontal: TSizes.md),
-        backgroundColor:
-            THelperFunctions.getOrderStatusColor(order.status).withOpacity(0.1),
+      DataCell(Center(
         child: Text(
-          order.status.name.toString(),
-          style: TextStyle(
-              color: THelperFunctions.getOrderStatusColor(order.status)),
+          position.code!,
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(color: TColors.primary),
         ),
       )),
-      DataCell(Text('\$ ${order.totalAmount.toStringAsFixed(2)}')),
-      DataCell(Row(
-        children: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.edit),
-            color: TColors.primary,
+      DataCell(
+        Center(child: Text(position.positionType!)),
+      ),
+      DataCell(
+        Center(child: Text(position.name!)),
+      ),
+      DataCell(
+        Center(child: Text('${position.positionSalary} VND')),
+      ),
+      DataCell(
+        Center(child: Text('${position.description}')),
+      ),
+      DataCell(
+        Center(
+          child: Text(
+            THelperFunctions.getFormattedDate(position.createdAt!),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
-          const SizedBox(width: TSizes.xs),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.delete),
-            color: Colors.red,
+        ),
+      ),
+      DataCell(
+        Center(
+          child: Text(
+            THelperFunctions.getFormattedDate(position.updatedAt!),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
-        ],
+        ),
+      ),
+      DataCell(Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              onPressed: () {
+                context.go(RouterName.editPosition, extra: position);
+              },
+              icon: const Icon(Icons.edit),
+              color: TColors.primary,
+            ),
+            const SizedBox(width: TSizes.xs),
+            IconButton(
+              onPressed: () {
+                _confirmDelete(context, position);
+              },
+              icon: const Icon(Icons.delete),
+              color: Colors.red,
+            ),
+          ],
+        ),
       ))
     ]);
   }
@@ -60,9 +89,35 @@ class TablePositionRows extends DataTableSource {
 
   @override
   // TODO: implement rowCount
-  int get rowCount => DashBoardOrderData.orders.length + 1;
+  int get rowCount => positions.length;
 
   @override
   // TODO: implement selectedRowCount
   int get selectedRowCount => 0;
+
+  void _confirmDelete(BuildContext context, PositionModel positionModel) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Xác nhận xoá'),
+        content: Text(
+            'Bạn có chắc chắn muốn xoá phòng ban "${positionModel.name}" không?'),
+        actions: [
+          TextButton(
+            child: const Text('Huỷ'),
+            onPressed: () => Navigator.of(ctx).pop(),
+          ),
+          TextButton(
+            child: const Text('Xoá', style: TextStyle(color: Colors.red)),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              context
+                  .read<PositionBloc>()
+                  .add(DeletePosition(positionModel.id!));
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }

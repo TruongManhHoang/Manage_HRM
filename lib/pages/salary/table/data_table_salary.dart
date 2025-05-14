@@ -8,8 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widgets/data_table/paginated_data_table.dart';
 import '../../../constants/sizes.dart';
 
-class DataTableDepartment extends StatelessWidget {
-  const DataTableDepartment({super.key});
+class DataTableSalary extends StatelessWidget {
+  const DataTableSalary({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -155,13 +155,16 @@ class DataTableDepartment extends StatelessWidget {
               state.departments,
             ),
           );
-        } else
+        } else if (state is DepartmentFailure) {
           return Center(
             child: Text(
-              'Không có dữ liệu',
+              state.error,
               style: const TextStyle(color: Colors.red),
             ),
           );
+        } else {
+          return const Center(child: Text('No data available'));
+        }
       },
     );
   }

@@ -21,7 +21,7 @@ class DepartmentModelAdapter extends TypeAdapter<DepartmentModel> {
       name: fields[1] as String,
       description: fields[2] as String?,
       managerName: fields[3] as String?,
-      createdAt: fields[4] as DateTime,
+      createdAt: fields[4] as DateTime?,
       updatedAt: fields[5] as DateTime?,
       status: fields[6] as String,
       employeeCount: fields[7] as int,

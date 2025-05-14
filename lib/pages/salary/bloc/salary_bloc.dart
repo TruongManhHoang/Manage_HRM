@@ -4,10 +4,10 @@ import 'package:admin_hrm/pages/department/bloc/department_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
+class SalaryBloc extends Bloc<DepartmentEvent, DepartmentState> {
   final DepartmentRepository repository;
 
-  DepartmentBloc({required this.repository}) : super(DepartmentInitial()) {
+  SalaryBloc({required this.repository}) : super(DepartmentInitial()) {
     on<CreateDepartment>(_onCreateDepartment);
     on<GetListDepartment>(_onGetListDepartment);
     on<UpdateDepartment>(_onUpdateDepartment);
@@ -35,6 +35,7 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
     emit(DepartmentLoading());
     try {
       final departments = await repository.getDepartments();
+      debugPrint('getDepartments : ${departments.length}');
       emit(DepartmentLoaded(departments));
     } catch (e) {
       emit(DepartmentFailure(e.toString()));
@@ -49,7 +50,6 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
     try {
       await repository.updateDepartment(event.department);
       emit(DepartmentSuccess());
-      add(GetListDepartment());
     } catch (e) {
       emit(DepartmentFailure(e.toString()));
     }

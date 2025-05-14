@@ -1,5 +1,7 @@
 import 'package:admin_hrm/data/model/department/department_model.dart';
+import 'package:admin_hrm/data/model/position/position_model.dart';
 import 'package:admin_hrm/data/repository/department_repository.dart';
+import 'package:admin_hrm/data/repository/positiion_repository.dart';
 import 'package:admin_hrm/di/locator.dart';
 
 import 'package:admin_hrm/pages/contract/contract_page.dart';
@@ -14,8 +16,12 @@ import 'package:admin_hrm/pages/employee/widgets/add_employee.dart';
 import 'package:admin_hrm/pages/auth/forget_password/forget_password.dart';
 import 'package:admin_hrm/pages/auth/login/login_page.dart';
 import 'package:admin_hrm/pages/auth/register/register_page.dart';
+import 'package:admin_hrm/pages/position/bloc/position_bloc.dart';
+import 'package:admin_hrm/pages/position/edit_postion/edit_position.dart';
 import 'package:admin_hrm/pages/position/position_page.dart';
 import 'package:admin_hrm/pages/position/add_position/add_position.dart';
+import 'package:admin_hrm/pages/salary/add_deparment/add_salary_page.dart';
+import 'package:admin_hrm/pages/salary/salary_page.dart';
 
 import 'package:admin_hrm/router/router_observer.dart';
 import 'package:flutter/material.dart';
@@ -133,18 +139,55 @@ class AppRouter {
                 },
               )
             ]),
+        ShellRoute(
+            builder: (context, state, child) {
+              return BlocProvider<PositionBloc>(
+                create: (context) =>
+                    PositionBloc(repository: getIt<PositiionRepository>())
+                      ..add(GetListPosition()),
+                child: Scaffold(
+                  body: child,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: RouterName.positionPage,
+                name: RouterName.positionPage,
+                builder: (context, state) {
+                  return const PositionPage();
+                },
+              ),
+              GoRoute(
+                path: RouterName.addPosition,
+                name: RouterName.addPosition,
+                builder: (context, state) {
+                  return const AddPosition();
+                },
+              ),
+              GoRoute(
+                path: RouterName.editPosition,
+                name: RouterName.editPosition,
+                builder: (context, state) {
+                  final position = state.extra as PositionModel;
+                  return EditPosition(
+                    positionModel: position,
+                  );
+                },
+              ),
+            ]),
         GoRoute(
-          path: RouterName.positionPage,
-          name: RouterName.positionPage,
+          path: RouterName.salaryPage,
+          name: RouterName.salaryPage,
           builder: (context, state) {
-            return const PositionPage();
+            return const SalaryPage();
           },
         ),
         GoRoute(
-          path: RouterName.addPosition,
-          name: RouterName.addPosition,
+          path: RouterName.addSalary,
+          name: RouterName.addSalary,
           builder: (context, state) {
-            return const AddPosition();
+            return const AddSalaryPage();
           },
         ),
       ],
