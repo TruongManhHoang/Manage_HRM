@@ -68,6 +68,10 @@ class Sidebar extends StatelessWidget {
                         icon: Iconsax.home_12,
                         title: 'Positions',
                         router: RouterName.positionPage),
+                    const MenuItem(
+                        icon: Iconsax.home_13,
+                        title: 'Salary',
+                        router: RouterName.salaryPage),
 
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
