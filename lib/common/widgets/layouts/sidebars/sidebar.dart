@@ -4,17 +4,12 @@ import 'package:admin_hrm/constants/colors.dart';
 import 'package:admin_hrm/constants/sizes.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_event.dart';
-import 'package:admin_hrm/pages/auth/login/resposive_page/login_view.dart';
-import 'package:admin_hrm/pages/dash_board/dash_board.dart';
-import 'package:admin_hrm/pages/dash_board/hello.dart';
 import 'package:admin_hrm/router/routers_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
-
-import 'custom_sidebar.dart';
 
 class Sidebar extends StatelessWidget {
   const Sidebar({super.key});
@@ -58,7 +53,7 @@ class Sidebar extends StatelessWidget {
                         title: 'DashBoard',
                         router: RouterName.dashboard),
                     const MenuItem(
-                        icon: Iconsax.home3,
+                        icon: Iconsax.building_3,
                         title: 'Department',
                         router: RouterName.departmentPage),
                     const MenuItem(
@@ -70,36 +65,33 @@ class Sidebar extends StatelessWidget {
                         title: 'Contract',
                         router: RouterName.contractPage),
                     const MenuItem(
-                        icon: Iconsax.home_23,
-                        title: 'Account',
-                        router: RouterName.accountPage),
-                    const MenuItem(
-                        icon: Iconsax.home_25,
+                        icon: Iconsax.home_12,
                         title: 'Positions',
                         router: RouterName.positionPage),
 
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Icon(Iconsax.logout_1),
-                        const Gap(TSizes.sm),
-                        TextButton(
-                          onPressed: () {
-                            context
-                                .watch()
-                                .read<AuthBloc>()
-                                .add(LogoutRequested());
-                            context.go(RouterName.login);
-                          },
-                          child: const Text(
-                            'Đăng xuất',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 16,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(Iconsax.logout_1),
+                          const Gap(TSizes.sm),
+                          GestureDetector(
+                            onTap: () {
+                              context.read<AuthBloc>().add(LogoutRequested());
+
+                              context.go(RouterName.login);
+                            },
+                            child: const Text(
+                              'Đăng xuất',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     )
                   ],
                 ),
