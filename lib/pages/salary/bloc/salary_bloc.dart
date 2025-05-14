@@ -4,10 +4,10 @@ import 'package:admin_hrm/pages/department/bloc/department_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
+class SalaryBloc extends Bloc<DepartmentEvent, DepartmentState> {
   final DepartmentRepository repository;
 
-  DepartmentBloc({required this.repository}) : super(DepartmentInitial()) {
+  SalaryBloc({required this.repository}) : super(DepartmentInitial()) {
     on<CreateDepartment>(_onCreateDepartment);
     on<GetListDepartment>(_onGetListDepartment);
     on<UpdateDepartment>(_onUpdateDepartment);

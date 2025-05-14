@@ -16,6 +16,8 @@ import 'package:admin_hrm/pages/auth/login/login_page.dart';
 import 'package:admin_hrm/pages/auth/register/register_page.dart';
 import 'package:admin_hrm/pages/position/position_page.dart';
 import 'package:admin_hrm/pages/position/add_position/add_position.dart';
+import 'package:admin_hrm/pages/salary/add_deparment/add_salary_page.dart';
+import 'package:admin_hrm/pages/salary/salary_page.dart';
 
 import 'package:admin_hrm/router/router_observer.dart';
 import 'package:flutter/material.dart';
@@ -145,6 +147,20 @@ class AppRouter {
           name: RouterName.addPosition,
           builder: (context, state) {
             return const AddPosition();
+          },
+        ),
+        GoRoute(
+          path: RouterName.salaryPage,
+          name: RouterName.salaryPage,
+          builder: (context, state) {
+            return const SalaryPage();
+          },
+        ),
+        GoRoute(
+          path: RouterName.addSalary,
+          name: RouterName.addSalary,
+          builder: (context, state) {
+            return const AddSalaryPage();
           },
         ),
       ],
