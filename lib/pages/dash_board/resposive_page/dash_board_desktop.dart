@@ -306,7 +306,7 @@ Widget _buildDashboardCard(
                   Icon(
                     icon,
                     color: Colors.white,
-                    size: 100,
+                    size: 96,
                   ),
               ],
             ),

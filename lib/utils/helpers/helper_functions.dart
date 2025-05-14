@@ -1,3 +1,4 @@
+import 'package:admin_hrm/data/model/department/department_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -22,6 +23,18 @@ class THelperFunctions {
       return Colors.green;
     } else if (OrderStatus.cancelled == value) {
       return Colors.red;
+    } else {
+      return Colors.grey;
+    }
+  }
+
+  static Color getDepartmentStatusColor(String department) {
+    if (department == 'Hoạt động') {
+      return Colors.green;
+    } else if (department == 'Ngừng hoạt động') {
+      return Colors.red;
+    } else if (department == 'Đang chờ') {
+      return Colors.orange;
     } else {
       return Colors.grey;
     }

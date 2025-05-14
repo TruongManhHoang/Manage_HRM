@@ -13,6 +13,7 @@ class TTextFormField extends StatelessWidget {
       this.obscureText,
       this.enabled,
       this.textAlign = false,
+      this.maxLines = 1,
       this.text});
   final String hint;
   final String? text;
@@ -22,6 +23,7 @@ class TTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool? obscureText;
   final bool? enabled;
+  final int maxLines;
 
   final bool textAlign;
 
@@ -42,6 +44,7 @@ class TTextFormField extends StatelessWidget {
             initialValue: initialValue,
             obscureText: obscureText ?? false,
             enabled: enabled,
+            maxLines: maxLines,
             decoration: InputDecoration(
               hintText: hint,
               border: OutlineInputBorder(
