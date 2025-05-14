@@ -87,7 +87,7 @@ class AddPosition extends StatelessWidget {
                                             TTextFormField(
                                               textAlign: true,
                                               hint: 'Mã chức vụ',
-                                              text: 'Tên chức vụ:',
+                                              text: 'Tên chức vụ',
                                               controller:
                                                   codePositionController,
                                             ),
@@ -95,7 +95,7 @@ class AddPosition extends StatelessWidget {
                                             TTextFormField(
                                               textAlign: true,
                                               hint: 'Nhập tên chức vụ',
-                                              text: 'Tên chức vụ:',
+                                              text: 'Tên chức vụ',
                                               controller:
                                                   namePositionController,
                                             ),
@@ -113,7 +113,7 @@ class AddPosition extends StatelessWidget {
                                             TTextFormField(
                                               textAlign: true,
                                               hint: 'Nhập hệ số chức vụ',
-                                              text: 'Hệ số chức vụ:',
+                                              text: 'Hệ số chức vụ',
                                               controller:
                                                   coefficientPositionController,
                                             ),
@@ -121,7 +121,7 @@ class AddPosition extends StatelessWidget {
                                             TTextFormField(
                                               textAlign: true,
                                               hint: 'Nhập mô tả chức vụ',
-                                              text: 'Mô tả chức vụ:',
+                                              text: 'Mô tả chức vụ',
                                               controller:
                                                   descriptionPositionController,
                                             ),

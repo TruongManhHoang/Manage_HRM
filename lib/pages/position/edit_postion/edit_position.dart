@@ -95,7 +95,7 @@ class EditPosition extends StatelessWidget {
                                             TTextFormField(
                                               textAlign: true,
                                               hint: 'Mã chức vụ',
-                                              text: 'Tên chức vụ:',
+                                              text: 'Tên chức vụ',
                                               controller:
                                                   codePositionController,
                                             ),
@@ -103,7 +103,7 @@ class EditPosition extends StatelessWidget {
                                             TTextFormField(
                                               textAlign: true,
                                               hint: 'Nhập tên chức vụ',
-                                              text: 'Tên chức vụ:',
+                                              text: 'Tên chức vụ',
                                               controller:
                                                   namePositionController,
                                             ),
@@ -121,7 +121,7 @@ class EditPosition extends StatelessWidget {
                                             TTextFormField(
                                               textAlign: true,
                                               hint: 'Nhập hệ số chức vụ',
-                                              text: 'Hệ số chức vụ:',
+                                              text: 'Hệ số chức vụ',
                                               controller:
                                                   coefficientPositionController,
                                             ),
@@ -129,62 +129,101 @@ class EditPosition extends StatelessWidget {
                                             TTextFormField(
                                               textAlign: true,
                                               hint: 'Nhập mô tả chức vụ',
-                                              text: 'Mô tả chức vụ:',
+                                              text: 'Mô tả chức vụ',
                                               controller:
                                                   descriptionPositionController,
                                             ),
                                             const Gap(TSizes.spaceBtwItems),
-                                            TextButton(
-                                                style: TextButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.blue,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: TSizes
-                                                                .defaultSpace *
-                                                            2,
-                                                        vertical: 16)),
-                                                onPressed: () {
-                                                  // Handle form submission
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: TextButton(
+                                                      style: TextButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          padding: const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal: TSizes
+                                                                      .defaultSpace *
+                                                                  2,
+                                                              vertical: 16)),
+                                                      onPressed: () {
+                                                        context.go(RouterName
+                                                            .positionPage);
+                                                      },
+                                                      child: Text(
+                                                        'Huỷ',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyMedium!
+                                                            .copyWith(
+                                                                color: Colors
+                                                                    .white),
+                                                      )),
+                                                ),
+                                                Gap(TSizes.defaultSpace),
+                                                Expanded(
+                                                  child: TextButton(
+                                                      style: TextButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.blue,
+                                                          padding: const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal: TSizes
+                                                                      .defaultSpace *
+                                                                  2,
+                                                              vertical: 16)),
+                                                      onPressed: () {
+                                                        // Handle form submission
 
-                                                  if (_formKey.currentState!
-                                                      .validate()) {
-                                                    final position =
-                                                        PositionModel(
-                                                      id: positionModel.id,
-                                                      name:
-                                                          namePositionController
-                                                              .text,
-                                                      positionSalary: int.parse(
-                                                          coefficientPositionController
-                                                              .text),
-                                                      description:
-                                                          descriptionPositionController
-                                                              .text,
-                                                      positionType:
-                                                          positionTypeController
-                                                              .text,
-                                                      code:
-                                                          codePositionController
-                                                              .text,
-                                                      createdAt: positionModel
-                                                          .createdAt,
-                                                      updatedAt: DateTime.now(),
-                                                    );
-                                                    context
-                                                        .read<PositionBloc>()
-                                                        .add(UpdatePosition(
-                                                            position));
-                                                  }
-                                                },
-                                                child: Text(
-                                                  'Cập nhật chức vụ',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium!
-                                                      .copyWith(
-                                                          color: Colors.white),
-                                                )),
+                                                        if (_formKey
+                                                            .currentState!
+                                                            .validate()) {
+                                                          final position =
+                                                              PositionModel(
+                                                            id: positionModel
+                                                                .id,
+                                                            name:
+                                                                namePositionController
+                                                                    .text,
+                                                            positionSalary:
+                                                                int.parse(
+                                                                    coefficientPositionController
+                                                                        .text),
+                                                            description:
+                                                                descriptionPositionController
+                                                                    .text,
+                                                            positionType:
+                                                                positionTypeController
+                                                                    .text,
+                                                            code:
+                                                                codePositionController
+                                                                    .text,
+                                                            createdAt:
+                                                                positionModel
+                                                                    .createdAt,
+                                                            updatedAt:
+                                                                DateTime.now(),
+                                                          );
+                                                          context
+                                                              .read<
+                                                                  PositionBloc>()
+                                                              .add(UpdatePosition(
+                                                                  position));
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                        'Cập nhật chức vụ',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyMedium!
+                                                            .copyWith(
+                                                                color: Colors
+                                                                    .white),
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
                                           ],
                                         ))
                                   ],
