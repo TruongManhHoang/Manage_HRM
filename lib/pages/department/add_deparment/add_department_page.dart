@@ -163,7 +163,6 @@ class AddDepartmentPage extends StatelessWidget {
                                                   descriptionController.text,
                                               managerName:
                                                   managerController.text,
-                                              createdAt: DateTime.now(),
                                               status: statusController.text,
                                               employeeCount: int.parse(
                                                   employeeCountController.text),
@@ -171,6 +170,7 @@ class AddDepartmentPage extends StatelessWidget {
                                               email: emailController.text,
                                               phoneNumber: phoneController.text,
                                             );
+
                                             context.read<DepartmentBloc>().add(
                                                 CreateDepartment(
                                                     departmentModel));

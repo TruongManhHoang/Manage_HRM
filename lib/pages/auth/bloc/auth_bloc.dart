@@ -1,4 +1,5 @@
 import 'package:admin_hrm/data/repository/user_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../local/storage.dart';
 import '../../../service/auth_service.dart';
@@ -69,6 +70,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthInitial());
       } catch (e) {
         emit(AuthFailure(e.toString()));
+      }
+    });
+
+    on<AuthStarted>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        final currentUser = FirebaseAuth.instance.currentUser;
+
+        if (currentUser != null) {
+          final appUser = await userRepository.fetchUserProfile();
+
+          emit(AuthSuccess(appUser));
+        } else {
+          emit(AuthFailure("Chưa đăng nhập"));
+        }
+      } catch (e) {
+        emit(AuthFailure("Lỗi load user: ${e.toString()}"));
       }
     });
   }
