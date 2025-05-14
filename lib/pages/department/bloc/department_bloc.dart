@@ -35,7 +35,6 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
     emit(DepartmentLoading());
     try {
       final departments = await repository.getDepartments();
-      debugPrint('getDepartments : ${departments.length}');
       emit(DepartmentLoaded(departments));
     } catch (e) {
       emit(DepartmentFailure(e.toString()));
@@ -50,6 +49,7 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
     try {
       await repository.updateDepartment(event.department);
       emit(DepartmentSuccess());
+      add(GetListDepartment());
     } catch (e) {
       emit(DepartmentFailure(e.toString()));
     }

@@ -1,5 +1,5 @@
 import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
-import 'package:admin_hrm/pages/employee/table/data_table_employee.dart';
+import 'package:admin_hrm/pages/personnel_management/table/data_table_personnel.dart';
 import 'package:flutter/material.dart';
 
 class EmployeePageMobile extends StatelessWidget {

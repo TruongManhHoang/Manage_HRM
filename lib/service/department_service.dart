@@ -5,10 +5,13 @@ class DepartmentService {
   final _firestore = FirebaseFirestore.instance;
 
   Future<void> addDepartment(DepartmentModel departmentModel) async {
-    await _firestore
-        .collection('departments')
-        .doc(departmentModel.id)
-        .set(departmentModel.toMap());
+    final docRef = _firestore.collection('departments').doc();
+    final departmentWithId = departmentModel.copyWith(
+      id: docRef.id,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+    await docRef.set(departmentWithId.toMap());
   }
 
   Future<List<DepartmentModel>> getDepartments() async {
