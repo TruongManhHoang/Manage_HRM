@@ -1,3 +1,4 @@
+import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,7 +10,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'app.dart';
-import 'di/locator.dart';
+// import 'data/model/di/locator.dart';
 
 /// Entry point of Flutter App
 ServiceLocator dependencyInjector = ServiceLocator();

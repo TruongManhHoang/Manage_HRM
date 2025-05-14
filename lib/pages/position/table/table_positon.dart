@@ -37,7 +37,7 @@ class TablePositionRows extends DataTableSource {
         Center(child: Text(position.name!)),
       ),
       DataCell(
-        Center(child: Text('${position.positionSalary} VND')),
+        Center(child: Text('${position.positionSalary}')),
       ),
       DataCell(
         Center(child: Text('${position.description}')),

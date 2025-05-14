@@ -10,9 +10,10 @@ import 'package:admin_hrm/pages/department/add_deparment/add_department_page.dar
 import 'package:admin_hrm/pages/department/bloc/department_event.dart';
 import 'package:admin_hrm/pages/department/bloc/department_bloc.dart';
 import 'package:admin_hrm/pages/department/department_page.dart';
+import 'package:admin_hrm/pages/personnel_management/personnel_page.dart';
+import 'package:admin_hrm/pages/personnel_management/widgets/add_personnel.dart';
+import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/pages/department/edit_deparment/edit_deparment.dart';
-import 'package:admin_hrm/pages/employee/employee_page.dart';
-import 'package:admin_hrm/pages/employee/widgets/add_employee.dart';
 import 'package:admin_hrm/pages/auth/forget_password/forget_password.dart';
 import 'package:admin_hrm/pages/auth/login/login_page.dart';
 import 'package:admin_hrm/pages/auth/register/register_page.dart';
@@ -22,15 +23,13 @@ import 'package:admin_hrm/pages/position/position_page.dart';
 import 'package:admin_hrm/pages/position/add_position/add_position.dart';
 import 'package:admin_hrm/pages/salary/add_deparment/add_salary_page.dart';
 import 'package:admin_hrm/pages/salary/salary_page.dart';
-
 import 'package:admin_hrm/router/router_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import '../pages/dash_board/bloc/dash_board_bloc.dart';
 import '../pages/dash_board/dash_board.dart';
-
+import '../pages/personnel_management/bloc/personnel_bloc.dart';
 import 'routers_name.dart';
 
 class AppRouter {
@@ -86,14 +85,20 @@ class AppRouter {
           path: RouterName.employeePage,
           name: RouterName.employeePage,
           builder: (context, state) {
-            return const EmployeePage();
+            return BlocProvider(
+              create: (_) => PersonelCubit(),
+              child: const EmployeePage(),
+            );
           },
         ),
         GoRoute(
           path: RouterName.addEmployee,
           name: RouterName.addEmployee,
           builder: (context, state) {
-            return const AddEmployee();
+            return BlocProvider(
+              create: (_) => PersonelCubit(),
+              child: const AddEmployeeForm(),
+            );
           },
         ),
         GoRoute(
