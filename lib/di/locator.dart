@@ -1,10 +1,12 @@
 import 'package:admin_hrm/common/widgets/layouts/sidebars/bloc/sidebar_bloc.dart';
 import 'package:admin_hrm/data/repository/department_repository.dart';
+import 'package:admin_hrm/data/repository/disciplinary_repository.dart';
+import 'package:admin_hrm/data/repository/reward_repository.dart';
 import 'package:admin_hrm/data/repository/user_repository.dart';
-import 'package:admin_hrm/local/hive_storage.dart';
-import 'package:admin_hrm/local/storage.dart';
 import 'package:admin_hrm/service/auth_service.dart';
 import 'package:admin_hrm/service/department_service.dart';
+import 'package:admin_hrm/service/disciplinary_service.dart';
+import 'package:admin_hrm/service/reward_service.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt getIt = GetIt.instance;
@@ -12,7 +14,6 @@ GetIt getIt = GetIt.instance;
 class ServiceLocator {
   Future<void> servicesLocator() async {
     // final storage = GlobalStorageImpl();
-    final storage = StorageLocal();
     // await storage.init();
 
     // // 🟢 Đăng ký GlobalStorage
@@ -32,5 +33,13 @@ class ServiceLocator {
     getIt.registerSingleton<DepartmentService>(DepartmentService());
     getIt.registerSingleton<DepartmentRepository>(
         DepartmentRepository(getIt<DepartmentService>()));
+
+    getIt.registerSingleton<RewardService>(RewardService());
+    getIt.registerSingleton<RewardRepository>(
+        RewardRepository(getIt<RewardService>()));
+
+    getIt.registerSingleton<DisciplinaryService>(DisciplinaryService());
+    getIt.registerSingleton<DisciplinaryRepository>(
+        DisciplinaryRepository(getIt<DisciplinaryService>()));
   }
 }

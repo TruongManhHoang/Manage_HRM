@@ -61,6 +61,14 @@ class Sidebar extends StatelessWidget {
                         title: 'Employee',
                         router: RouterName.employeePage),
                     const MenuItem(
+                        icon: Iconsax.gift,
+                        title: 'Reward',
+                        router: RouterName.rewardPage),
+                    const MenuItem(
+                        icon: Iconsax.shield,
+                        title: 'Disciplinary',
+                        router: RouterName.disciplinaryPage),
+                    const MenuItem(
                         icon: Iconsax.home_1,
                         title: 'Contract',
                         router: RouterName.contractPage),
