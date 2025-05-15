@@ -1,18 +1,21 @@
+import 'package:admin_hrm/data/model/contract/contract_model.dart';
 import 'package:admin_hrm/data/model/department/department_model.dart';
 import 'package:admin_hrm/data/model/position/position_model.dart';
+import 'package:admin_hrm/data/repository/contract_repository.dart';
 import 'package:admin_hrm/data/repository/department_repository.dart';
 import 'package:admin_hrm/data/repository/positiion_repository.dart';
 import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/pages/contract/add_contract/add_contract.dart';
+import 'package:admin_hrm/pages/contract/bloc/contract_bloc.dart';
 
 import 'package:admin_hrm/pages/contract/contract_page.dart';
-import 'package:admin_hrm/pages/contract/widgets/add_contract.dart';
+import 'package:admin_hrm/pages/contract/edit_contract/edit_contract.dart';
 import 'package:admin_hrm/pages/department/add_deparment/add_department_page.dart';
 import 'package:admin_hrm/pages/department/bloc/department_event.dart';
 import 'package:admin_hrm/pages/department/bloc/department_bloc.dart';
 import 'package:admin_hrm/pages/department/department_page.dart';
 import 'package:admin_hrm/pages/personnel_management/personnel_page.dart';
 import 'package:admin_hrm/pages/personnel_management/widgets/add_personnel.dart';
-import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/pages/department/edit_deparment/edit_deparment.dart';
 import 'package:admin_hrm/pages/auth/forget_password/forget_password.dart';
 import 'package:admin_hrm/pages/auth/login/login_page.dart';
@@ -101,20 +104,6 @@ class AppRouter {
             );
           },
         ),
-        GoRoute(
-          path: RouterName.contractPage,
-          name: RouterName.contractPage,
-          builder: (context, state) {
-            return const ContractPage();
-          },
-        ),
-        GoRoute(
-          path: RouterName.addContract,
-          name: RouterName.addContract,
-          builder: (context, state) {
-            return const AddContract();
-          },
-        ),
         ShellRoute(
             builder: (context, state, child) {
               return BlocProvider<DepartmentBloc>(
@@ -177,6 +166,43 @@ class AppRouter {
                   final position = state.extra as PositionModel;
                   return EditPosition(
                     positionModel: position,
+                  );
+                },
+              ),
+            ]),
+        ShellRoute(
+            builder: (context, state, child) {
+              return BlocProvider<ContractBloc>(
+                create: (context) =>
+                    ContractBloc(repository: getIt<ContractRepository>())
+                      ..add(GetListContract()),
+                child: Scaffold(
+                  body: child,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: RouterName.contractPage,
+                name: RouterName.contractPage,
+                builder: (context, state) {
+                  return const ContractPage();
+                },
+              ),
+              GoRoute(
+                path: RouterName.addContract,
+                name: RouterName.addContract,
+                builder: (context, state) {
+                  return const AddContract();
+                },
+              ),
+              GoRoute(
+                path: RouterName.editContract,
+                name: RouterName.editContract,
+                builder: (context, state) {
+                  final contract = state.extra as ContractModel;
+                  return EditContract(
+                    contract: contract,
                   );
                 },
               ),
