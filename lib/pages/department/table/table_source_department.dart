@@ -38,21 +38,25 @@ class DepartmentTableRows extends DataTableSource {
 
     return DataRow2(cells: [
       DataCell(Padding(
-        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        padding: const EdgeInsets.symmetric(
+            horizontal: TSizes.xs, vertical: TSizes.xs),
         child:
             Center(child: Text(department.code ?? '-', style: highlightStyle)),
       )),
       DataCell(Padding(
-        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        padding: const EdgeInsets.symmetric(
+            horizontal: TSizes.xs, vertical: TSizes.xs),
         child: Center(child: Text(department.name, style: highlightStyle)),
       )),
       DataCell(Padding(
-        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        padding: const EdgeInsets.symmetric(
+            horizontal: TSizes.xs, vertical: TSizes.xs),
         child: Center(
             child: Text(department.managerName ?? '-', style: baseStyle)),
       )),
       DataCell(Padding(
-        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        padding: const EdgeInsets.symmetric(
+            horizontal: TSizes.xs, vertical: TSizes.xs),
         child: Center(
             child: Text(department.description ?? '-', style: baseStyle)),
       )),

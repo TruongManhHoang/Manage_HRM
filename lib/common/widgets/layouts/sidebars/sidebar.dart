@@ -58,7 +58,7 @@ class Sidebar extends StatelessWidget {
                         router: RouterName.departmentPage),
                     const MenuItem(
                         icon: Iconsax.home1,
-                        title: 'Employee',
+                        title: 'Nhân viên',
                         router: RouterName.employeePage),
                     const MenuItem(
                         icon: Iconsax.gift,
@@ -76,6 +76,10 @@ class Sidebar extends StatelessWidget {
                         icon: Iconsax.home_12,
                         title: 'Positions',
                         router: RouterName.positionPage),
+                    const MenuItem(
+                        icon: Iconsax.home_13,
+                        title: 'Salary',
+                        router: RouterName.salaryPage),
 
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
