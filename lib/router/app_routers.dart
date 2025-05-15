@@ -30,9 +30,12 @@ import 'package:admin_hrm/router/router_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../data/model/personnel_management.dart';
+
 import '../pages/dash_board/bloc/dash_board_bloc.dart';
 import '../pages/dash_board/dash_board.dart';
 import '../pages/personnel_management/bloc/personnel_bloc.dart';
+import '../pages/personnel_management/table/update_personnel.dart';
 import 'routers_name.dart';
 
 class AppRouter {
@@ -219,6 +222,18 @@ class AppRouter {
           name: RouterName.addSalary,
           builder: (context, state) {
             return const AddSalaryPage();
+          },
+        ),
+        GoRoute(
+          path: RouterName.updateEmployee,
+          name: RouterName.updateEmployee,
+          builder: (context, state) {
+            return BlocProvider(
+              create: (context) => PersonelCubit(),
+              child: UpdatePersonnel(
+                employee: state.extra as PersonnelManagement,
+              ),
+            );
           },
         ),
       ],

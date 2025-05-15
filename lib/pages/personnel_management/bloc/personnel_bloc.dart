@@ -1,4 +1,6 @@
 // add_employee_cubit.dart
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +32,27 @@ class PersonelCubit extends Cubit<AddEmployeeState> {
     } catch (e) {
       emit(AddEmployeeFailure(e.toString()));
       return [];
+    }
+  }
+
+  Future<void> deleteEmployee(String id, BuildContext context) async {
+    emit(AddEmployeeLoading());
+    try {
+      PersonnelService().deletePersonnel(id);
+      emit(DeleteEmployeeSuccess());
+    } catch (e) {
+      emit(DeleteEmployeeFailure(e.toString()));
+    }
+  }
+
+  Future<void> updateEmployee(
+      String id, PersonnelManagement employee) async {
+    emit(UpdateEmployeeLoading());
+    try {
+      PersonnelService().updatePersonnel(id, employee);
+      emit(UpdateEmployeeSuccess());
+    } catch (e) {
+      emit(UpdateEmployeeFailure(e.toString()));
     }
   }
 }

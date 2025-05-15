@@ -15,10 +15,12 @@ class RouterName {
   static const addSalary = '/add-salary';
   static const accountPage = '/account-page';
   static const positionPage = '/position-page';
+  static const updateEmployee = '/update-employee';
   static const salaryPage = '/salary-page';
   static const editDepartment = '/edit-department';
   static const editPosition = '/edit-position';
   static const editContract = '/edit-contract';
+
 
   static const sidebarMenuItem = [
     dashboard,
