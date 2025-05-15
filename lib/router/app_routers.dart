@@ -20,6 +20,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../data/model/personnel_management.dart';
+import '../pages/attenndance/attendance_page.dart';
 import '../pages/dash_board/bloc/dash_board_bloc.dart';
 import '../pages/dash_board/dash_board.dart';
 
@@ -151,6 +152,13 @@ class AppRouter {
           name: RouterName.addPosition,
           builder: (context, state) {
             return const AddPosition();
+          },
+        ),
+        GoRoute(
+          path: RouterName.attendancePage,
+          name: RouterName.attendancePage,
+          builder: (context, state) {
+            return const AttendancePage();
           },
         ),
         GoRoute(

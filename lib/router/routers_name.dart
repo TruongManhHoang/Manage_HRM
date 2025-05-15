@@ -15,6 +15,7 @@ class RouterName {
   static const accountPage = '/account-page';
   static const positionPage = '/position-page';
   static const updateEmployee = '/update-employee';
+  static const attendancePage = '/attendance-page';
 
   static const sidebarMenuItem = [
     dashboard,
