@@ -17,8 +17,8 @@ ServiceLocator dependencyInjector = ServiceLocator();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Hive.initFlutter();
-  await Hive.openBox(GlobalStorageKey.globalStorage);
+  // await Hive.initFlutter();
+  // await Hive.openBox(GlobalStorageKey.globalStorage);
   setPathUrlStrategy();
 
   await Hive.initFlutter();
@@ -27,7 +27,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  dependencyInjector.servicesLocator();
 
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb

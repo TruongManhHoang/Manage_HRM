@@ -1,33 +1,31 @@
-part of 'department_bloc.dart';
+import 'package:admin_hrm/data/model/department/department_model.dart';
+import 'package:equatable/equatable.dart';
 
-class DashboardState extends Equatable {
-  final List<double> weeklySales;
-  final List<OrderModel> orders;
-  final Map<OrderStatus, int> orderStatusData;
-  final Map<OrderStatus, double> totalAmounts;
+abstract class DepartmentState extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
 
-  const DashboardState({
-    this.weeklySales = const [],
-    this.orders = const [],
-    this.orderStatusData = const {},
-    this.totalAmounts = const {},
-  });
+class DepartmentInitial extends DepartmentState {}
 
-  DashboardState copyWith({
-    List<double>? weeklySales,
-    List<OrderModel>? orders,
-    Map<OrderStatus, int>? orderStatusData,
-    Map<OrderStatus, double>? totalAmounts,
-  }) {
-    return DashboardState(
-      weeklySales: weeklySales ?? this.weeklySales,
-      orders: orders ?? this.orders,
-      orderStatusData: orderStatusData ?? this.orderStatusData,
-      totalAmounts: totalAmounts ?? this.totalAmounts,
-    );
-  }
+class DepartmentLoading extends DepartmentState {}
+
+class DepartmentSuccess extends DepartmentState {}
+
+class DepartmentLoaded extends DepartmentState {
+  final List<DepartmentModel> departments;
+
+  DepartmentLoaded(this.departments);
 
   @override
-  List<Object?> get props =>
-      [weeklySales, orders, orderStatusData, totalAmounts];
+  List<Object?> get props => [departments];
+}
+
+class DepartmentFailure extends DepartmentState {
+  final String error;
+
+  DepartmentFailure(this.error);
+
+  @override
+  List<Object?> get props => [error];
 }
