@@ -155,16 +155,13 @@ class DataTableDepartment extends StatelessWidget {
               state.departments,
             ),
           );
-        } else if (state is DepartmentFailure) {
+        } else
           return Center(
             child: Text(
-              state.error,
+              'Không có dữ liệu',
               style: const TextStyle(color: Colors.red),
             ),
           );
-        } else {
-          return const Center(child: Text('No data available'));
-        }
       },
     );
   }

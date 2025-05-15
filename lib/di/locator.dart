@@ -1,12 +1,21 @@
 import 'package:admin_hrm/common/widgets/layouts/sidebars/bloc/sidebar_bloc.dart';
+import 'package:admin_hrm/data/repository/contract_repository.dart';
 import 'package:admin_hrm/data/repository/department_repository.dart';
+
 import 'package:admin_hrm/data/repository/disciplinary_repository.dart';
 import 'package:admin_hrm/data/repository/reward_repository.dart';
+
+import 'package:admin_hrm/data/repository/positiion_repository.dart';
+
 import 'package:admin_hrm/data/repository/user_repository.dart';
 import 'package:admin_hrm/service/auth_service.dart';
+import 'package:admin_hrm/service/contract_service.dart';
 import 'package:admin_hrm/service/department_service.dart';
+
 import 'package:admin_hrm/service/disciplinary_service.dart';
 import 'package:admin_hrm/service/reward_service.dart';
+
+import 'package:admin_hrm/service/positon_service.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt getIt = GetIt.instance;
@@ -31,6 +40,8 @@ class ServiceLocator {
     getIt.registerSingleton<UserRepository>(UserRepository());
     getIt.registerSingleton<AuthService>(AuthService());
     getIt.registerSingleton<DepartmentService>(DepartmentService());
+    getIt.registerSingleton<PositionService>(PositionService());
+    getIt.registerSingleton<ContractService>(ContractService());
     getIt.registerSingleton<DepartmentRepository>(
         DepartmentRepository(getIt<DepartmentService>()));
 
@@ -41,5 +52,11 @@ class ServiceLocator {
     getIt.registerSingleton<DisciplinaryService>(DisciplinaryService());
     getIt.registerSingleton<DisciplinaryRepository>(
         DisciplinaryRepository(getIt<DisciplinaryService>()));
+
+    getIt.registerSingleton<PositiionRepository>(
+        PositiionRepository(getIt<PositionService>()));
+    getIt.registerSingleton<ContractRepository>(
+        ContractRepository(getIt<ContractService>()));
+
   }
 }

@@ -12,15 +12,22 @@ class RouterName {
   static const addContract = '/add-contract';
   static const addAccount = '/add-account';
   static const addPosition = '/add-position';
+  static const addSalary = '/add-salary';
   static const accountPage = '/account-page';
   static const positionPage = '/position-page';
+  static const updateEmployee = '/update-employee';
+  static const salaryPage = '/salary-page';
   static const editDepartment = '/edit-department';
+
   static const rewardPage = '/reward-page';
   static const editReward = 'edit-employee';
   static const addReward = 'add-reward';
   static const disciplinaryPage = '/disciplinary-page';
   static const addDisciplinary = 'add-disciplinary';
   static const editDisciplinary = 'edit-disciplinary';
+
+  static const editPosition = '/edit-position';
+  static const editContract = '/edit-contract';
 
   static const sidebarMenuItem = [
     dashboard,
@@ -30,7 +37,8 @@ class RouterName {
     disciplinaryPage,
     contractPage,
     accountPage,
-    positionPage
+    positionPage,
+    salaryPage
   ];
   static const sidebarMenuItemsShort = [
     dashboard,
@@ -39,7 +47,8 @@ class RouterName {
     rewardPage,
     disciplinaryPage,
     accountPage,
-    positionPage
+    positionPage,
+    salaryPage
   ];
   static const register = '/register';
   static const forgotPassword = '/forgot-password';
@@ -50,6 +59,7 @@ class RouterName {
     dashboard,
     commentManager,
     departmentPage,
+    salaryPage,
     logout,
   ];
 }

@@ -19,7 +19,7 @@ class TDropDownMenu extends StatelessWidget {
         ),
         const Gap(TSizes.spaceBtwSections),
         DropdownMenu(
-          initialSelection: menus.first,
+          initialSelection: controller.text,
           controller: controller,
           width: 200,
           trailingIcon: const Icon(Icons.arrow_drop_down),
