@@ -18,3 +18,17 @@ class AddEmployeeFailure extends AddEmployeeState {
   final String error;
   AddEmployeeFailure(this.error);
 }
+
+class DeleteEmployeeSuccess extends AddEmployeeState {}
+class DeleteEmployeeFailure extends AddEmployeeState {
+  final String error;
+  DeleteEmployeeFailure(this.error);
+}
+
+
+class UpdateEmployeeSuccess extends AddEmployeeState {}
+class UpdateEmployeeFailure extends AddEmployeeState {
+  final String error;
+  UpdateEmployeeFailure(this.error);
+}
+class UpdateEmployeeLoading extends AddEmployeeState {}
