@@ -11,8 +11,9 @@ class PersonnelService {
 
   //  method to add a new personnel
   void addPersonnel(PersonnelManagement personnel, BuildContext context) async {
+    final String id = firebaseFirestore.collection("personnel").doc().id;
     PersonnelManagement newPersonnel = PersonnelManagement(
-      id: personnel.id,
+      id: id,
       name: personnel.name,
       dateOfBirth: personnel.dateOfBirth,
       gender: personnel.gender,
@@ -40,7 +41,10 @@ class PersonnelService {
                 style: TextStyle(color: Colors.black))));
         return;
       }
-      await firebaseFirestore.collection("personnel").add(newPersonnel.toMap());
+      await firebaseFirestore
+          .collection("personnel")
+          .doc(id)
+          .set(newPersonnel.toMap());
     } catch (e) {
       print("🔥 Error adding personnel: $e");
     }

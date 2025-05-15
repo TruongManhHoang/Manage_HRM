@@ -1,39 +1,59 @@
-import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
-import 'package:admin_hrm/common/widgets/drop_down_menu/drop_down_menu.dart';
-import 'package:admin_hrm/common/widgets/layouts/headers/headers.dart';
-import 'package:admin_hrm/common/widgets/layouts/sidebars/sidebar.dart';
-import 'package:admin_hrm/common/widgets/text_form/text_form_field.dart';
-import 'package:admin_hrm/constants/sizes.dart';
-import 'package:admin_hrm/router/routers_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+
+import '../../../common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
+import '../../../common/widgets/drop_down_menu/drop_down_menu.dart';
+import '../../../common/widgets/layouts/headers/headers.dart';
+import '../../../common/widgets/layouts/sidebars/sidebar.dart';
+import '../../../common/widgets/text_form/text_form_field.dart';
+import '../../../constants/sizes.dart';
 import '../../../data/model/personnel_management.dart';
-import '../../../service/personnel_service.dart';
+import '../../../router/routers_name.dart';
 import '../bloc/personnel_bloc.dart';
 import '../bloc/personnel_state.dart';
 
-class AddEmployeeForm extends StatelessWidget {
-  
-  const AddEmployeeForm({super.key});
+// ignore: must_be_immutable
+class UpdatePersonnel extends StatefulWidget {
+  PersonnelManagement employee;
+  UpdatePersonnel({super.key, required this.employee});
+
+  @override
+  State<UpdatePersonnel> createState() => _UpdatePersonnelState();
+}
+
+class _UpdatePersonnelState extends State<UpdatePersonnel> {
+  final fullNameController = TextEditingController();
+  final genderController = TextEditingController();
+  final positionController = TextEditingController();
+  final departmentController = TextEditingController();
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final addressController = TextEditingController();
+  final experienceController = TextEditingController();
+  final educationLevelController = TextEditingController();
+  final birthDateController = TextEditingController();
+
+  final positions = ['Nhân viên', 'Quản lý', 'Trưởng phòng'];
+  final departments = ['Phòng nhân sự', 'Phòng kế toán'];
+  final educationLevels = ['Cao đẳng', 'Đại học', 'Sau đại học'];
+  @override
+  void initState() {
+    fullNameController.text = widget.employee.name;
+    genderController.text = widget.employee.gender;
+    positionController.text = widget.employee.position.toString();
+    departmentController.text = widget.employee.department.toString();
+    phoneController.text = widget.employee.phone;
+    emailController.text = widget.employee.email;
+    addressController.text = widget.employee.address;
+    experienceController.text = widget.employee.experience;
+    educationLevelController.text = widget.employee.experience.toString();
+    birthDateController.text = widget.employee.dateOfBirth;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final fullNameController = TextEditingController();
-    final genderController = TextEditingController();
-    final positionController = TextEditingController();
-    final departmentController = TextEditingController();
-    final phoneController = TextEditingController();
-    final emailController = TextEditingController();
-    final addressController = TextEditingController();
-    final experienceController = TextEditingController();
-    final educationLevelController = TextEditingController();
-    final birthDateController = TextEditingController();
-
-    final positions = ['Nhân viên', 'Quản lý', 'Trưởng phòng'];
-    final departments = ['Phòng nhân sự', 'Phòng kế toán'];
-    final educationLevels = ['Cao đẳng', 'Đại học', 'Sau đại học'];
-
     return Scaffold(
       body: BlocConsumer<PersonelCubit, AddEmployeeState>(
         listener: (context, state) {
@@ -41,13 +61,13 @@ class AddEmployeeForm extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 backgroundColor: Colors.green,
                 content: Text(
-                  "Thêm thành viên thành công.",
+                  "Cập nhật thành viên thành công.",
                 )));
             Navigator.pop(context);
           } else if (state is AddEmployeeFailure) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 backgroundColor: Colors.red,
-                content: Text("Lỗi ! Thêm thành viên không thành công.",
+                content: Text("Lỗi ! Cập nhập thành viên không thành công.",
                     style: TextStyle(color: Colors.white))));
             Navigator.pop(context);
           }
@@ -69,7 +89,7 @@ class AddEmployeeForm extends StatelessWidget {
                           child: Column(
                             children: [
                               const TBreadcrumsWithHeading(
-                                heading: 'Nhân viên',
+                                heading: 'Cập nhật nhân viên',
                                 breadcrumbItems: [RouterName.addEmployee],
                               ),
                               const Gap(20),
@@ -176,10 +196,11 @@ class AddEmployeeForm extends StatelessWidget {
                                             vertical: 16,
                                           ),
                                         ),
-                                        onPressed: state is AddEmployeeLoading
+                                        onPressed: state
+                                                is UpdateEmployeeLoading
                                             ? null
                                             : () {
-                                                final newEmployee =
+                                                final updateEmployee =
                                                     PersonnelManagement(
                                                   name: fullNameController.text,
                                                   dateOfBirth:
@@ -200,18 +221,20 @@ class AddEmployeeForm extends StatelessWidget {
                                                 );
                                                 context
                                                     .read<PersonelCubit>()
-                                                    .addEmployee(
-                                                        newEmployee, context);
+                                                    .updateEmployee(
+                                                      widget.employee.id ?? '',
+                                                      updateEmployee,
+                                                    );
 
                                                 // context
                                                 //     .read<PersonelCubit>()
                                                 //     .getEmployee();
                                               },
-                                        child: state is AddEmployeeLoading
+                                        child: state is UpdateEmployeeLoading
                                             ? const CircularProgressIndicator(
                                                 color: Colors.white)
                                             : Text(
-                                                'Thêm nhân viên',
+                                                'Cập nhật',
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyMedium!
