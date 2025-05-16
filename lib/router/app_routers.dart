@@ -254,6 +254,87 @@ class AppRouter {
                 },
               ),
             ]),
+        ShellRoute(
+            builder: (context, state, child) {
+              return BlocProvider<RewardBloc>(
+                create: (context) => RewardBloc(
+                  getIt<RewardRepository>(),
+                )..add(LoadRewards()),
+                child: Scaffold(
+                  body: child,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                  path: RouterName.rewardPage,
+                  name: RouterName.rewardPage,
+                  routes: [
+                    GoRoute(
+                      path: RouterName.editReward,
+                      name: RouterName.editReward,
+                      builder: (context, state) {
+                        final reward = state.extra as RewardModel;
+                        return AddAndEditRewardPage(
+                          reward: reward,
+                        );
+                      },
+                    ),
+                    GoRoute(
+                      path: RouterName.addReward,
+                      name: RouterName.addReward,
+                      builder: (context, state) {
+                        return const AddAndEditRewardPage();
+                      },
+                    )
+                  ],
+                  builder: (context, state) {
+                    return BlocProvider(
+                      create: (context) => RewardBloc(
+                        getIt<RewardRepository>(),
+                      )..add(LoadRewards()),
+                      child: const RewardPage(),
+                    );
+                  }),
+            ]),
+        ShellRoute(
+            builder: (context, state, child) {
+              return BlocProvider<DisciplinaryBloc>(
+                create: (context) => DisciplinaryBloc(
+                  getIt<DisciplinaryRepository>(),
+                )..add(LoadDisciplinary()),
+                child: Scaffold(
+                  body: child,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                  path: RouterName.disciplinaryPage,
+                  name: RouterName.disciplinaryPage,
+                  routes: [
+                    GoRoute(
+                      path: RouterName.editDisciplinary,
+                      name: RouterName.editDisciplinary,
+                      builder: (context, state) {
+                        final disciplinary = state.extra as DisciplinaryModel;
+                        return AddAndEditDisciplinaryPage(
+                          disciplinary: disciplinary,
+                        );
+                      },
+                    ),
+                    GoRoute(
+                      path: RouterName.addDisciplinary,
+                      name: RouterName.addDisciplinary,
+                      builder: (context, state) {
+                        return const AddAndEditDisciplinaryPage();
+                      },
+                    )
+                  ],
+                  builder: (context, state) {
+                    return const DisciplinaryPage();
+                  }),
+            ]),
         GoRoute(
           path: RouterName.salaryPage,
           name: RouterName.salaryPage,

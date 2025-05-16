@@ -59,7 +59,7 @@ class AddPosition extends StatelessWidget {
                     child: Container(
                       height: MediaQuery.of(context).size.height,
                       color: Colors.grey[200],
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -101,7 +101,7 @@ class AddPosition extends StatelessWidget {
                                             ),
                                             const Gap(TSizes.spaceBtwItems),
                                             TDropDownMenu(
-                                                menus: [
+                                                menus: const [
                                                   'Nhân viên',
                                                   'Quản lý',
                                                   'Giám đốc',
