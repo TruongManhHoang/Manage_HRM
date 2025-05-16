@@ -1,5 +1,6 @@
 class RouterName {
   static const schoolPage = '/school-page';
+  static const splashScreen = '/splash-screen';
   static const dashboard = '/dashboard-page';
   static const commentManager = '/comment-manager-page';
   static const login = '/login';

@@ -4,21 +4,26 @@ import 'package:admin_hrm/common/widgets/layouts/headers/headers.dart';
 import 'package:admin_hrm/common/widgets/layouts/sidebars/sidebar.dart';
 import 'package:admin_hrm/common/widgets/text_form/text_form_field.dart';
 import 'package:admin_hrm/constants/sizes.dart';
+import 'package:admin_hrm/data/model/personnel_management.dart';
+import 'package:admin_hrm/pages/personnel_management/bloc/persional_bloc.dart';
 import 'package:admin_hrm/router/routers_name.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import '../../../data/model/personnel_management.dart';
-import '../../../service/personnel_service.dart';
-import '../bloc/personnel_bloc.dart';
-import '../bloc/personnel_state.dart';
+import 'package:go_router/go_router.dart';
 
-class AddEmployeeForm extends StatelessWidget {
-  
+class AddEmployeeForm extends StatefulWidget {
   const AddEmployeeForm({super.key});
 
   @override
+  State<AddEmployeeForm> createState() => _AddEmployeeFormState();
+}
+
+class _AddEmployeeFormState extends State<AddEmployeeForm> {
+  @override
   Widget build(BuildContext context) {
+    final codeController = TextEditingController();
     final fullNameController = TextEditingController();
     final genderController = TextEditingController();
     final positionController = TextEditingController();
@@ -35,21 +40,21 @@ class AddEmployeeForm extends StatelessWidget {
     final educationLevels = ['Cao đẳng', 'Đại học', 'Sau đại học'];
 
     return Scaffold(
-      body: BlocConsumer<PersonelCubit, AddEmployeeState>(
+      body: BlocConsumer<PersionalBloc, PersionalState>(
         listener: (context, state) {
-          if (state is AddEmployeeSuccess) {
+          if (state.isSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 backgroundColor: Colors.green,
                 content: Text(
                   "Thêm thành viên thành công.",
                 )));
-            Navigator.pop(context);
-          } else if (state is AddEmployeeFailure) {
+            context.go(RouterName.employeePage);
+          } else if (state.isFailure) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 backgroundColor: Colors.red,
                 content: Text("Lỗi ! Thêm thành viên không thành công.",
                     style: TextStyle(color: Colors.white))));
-            Navigator.pop(context);
+            context.pop();
           }
         },
         builder: (context, state) {
@@ -85,6 +90,13 @@ class AddEmployeeForm extends StatelessWidget {
                                   key: GlobalKey<FormState>(),
                                   child: Column(
                                     children: [
+                                      TTextFormField(
+                                        textAlign: true,
+                                        text: 'Mã nhân viên',
+                                        hint: 'Nhập mã nhân viên',
+                                        controller: codeController,
+                                      ),
+                                      const Gap(TSizes.spaceBtwItems),
                                       TTextFormField(
                                         textAlign: true,
                                         text: 'Họ tên',
@@ -176,18 +188,19 @@ class AddEmployeeForm extends StatelessWidget {
                                             vertical: 16,
                                           ),
                                         ),
-                                        onPressed: state is AddEmployeeLoading
+                                        onPressed: state.isLoading
                                             ? null
                                             : () {
                                                 final newEmployee =
-                                                    PersonnelManagement(
+                                                    PersionalManagement(
+                                                  code: codeController.text,
                                                   name: fullNameController.text,
                                                   dateOfBirth:
                                                       birthDateController.text,
                                                   gender: genderController.text,
-                                                  position:
+                                                  positionId:
                                                       positionController.text,
-                                                  department:
+                                                  departmentId:
                                                       departmentController.text,
                                                   address:
                                                       addressController.text,
@@ -199,15 +212,11 @@ class AddEmployeeForm extends StatelessWidget {
                                                       "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
                                                 );
                                                 context
-                                                    .read<PersonelCubit>()
-                                                    .addEmployee(
-                                                        newEmployee, context);
-
-                                                // context
-                                                //     .read<PersonelCubit>()
-                                                //     .getEmployee();
+                                                    .read<PersionalBloc>()
+                                                    .add(PersionalCreateEvent(
+                                                        newEmployee));
                                               },
-                                        child: state is AddEmployeeLoading
+                                        child: state.isLoading
                                             ? const CircularProgressIndicator(
                                                 color: Colors.white)
                                             : Text(

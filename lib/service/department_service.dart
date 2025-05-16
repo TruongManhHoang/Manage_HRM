@@ -32,4 +32,15 @@ class DepartmentService {
   Future<void> deleteDepartment(String id) async {
     await _firestore.collection('departments').doc(id).delete();
   }
+
+  Future<List<Map<String, dynamic>>> getDepartmentList() async {
+    final snapshot =
+        await FirebaseFirestore.instance.collection('departments').get();
+    return snapshot.docs
+        .map((doc) => {
+              'id': doc.id,
+              'name': doc['name'],
+            })
+        .toList();
+  }
 }
