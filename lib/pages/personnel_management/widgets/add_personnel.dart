@@ -215,10 +215,6 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                                                     .read<PersionalBloc>()
                                                     .add(PersionalCreateEvent(
                                                         newEmployee));
-
-                                                // context
-                                                //     .read<PersonelCubit>()
-                                                //     .getEmployee();
                                               },
                                         child: state.isLoading
                                             ? const CircularProgressIndicator(
