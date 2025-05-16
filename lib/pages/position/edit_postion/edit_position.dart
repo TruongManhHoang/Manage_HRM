@@ -212,15 +212,20 @@ class EditPosition extends StatelessWidget {
                                                                   position));
                                                         }
                                                       },
-                                                      child: Text(
-                                                        'Cập nhật chức vụ',
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyMedium!
-                                                            .copyWith(
-                                                                color: Colors
-                                                                    .white),
-                                                      )),
+                                                      child: state.isLoading
+                                                          ? const CircularProgressIndicator(
+                                                              color:
+                                                                  Colors.white)
+                                                          : Text(
+                                                              'Cập nhật chức vụ',
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .bodyMedium!
+                                                                  .copyWith(
+                                                                      color: Colors
+                                                                          .white),
+                                                            )),
                                                 ),
                                               ],
                                             ),

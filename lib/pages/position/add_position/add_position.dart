@@ -59,7 +59,7 @@ class AddPosition extends StatelessWidget {
                     child: Container(
                       height: MediaQuery.of(context).size.height,
                       color: Colors.grey[200],
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -101,7 +101,7 @@ class AddPosition extends StatelessWidget {
                                             ),
                                             const Gap(TSizes.spaceBtwItems),
                                             TDropDownMenu(
-                                                menus: [
+                                                menus: const [
                                                   'Nhân viên',
                                                   'Quản lý',
                                                   'Giám đốc',
@@ -133,13 +133,12 @@ class AddPosition extends StatelessWidget {
                                                       style: TextButton.styleFrom(
                                                           backgroundColor:
                                                               Colors.red,
-                                                          padding: EdgeInsets
+                                                          padding: const EdgeInsets
                                                               .symmetric(
-                                                                  horizontal:
-                                                                      TSizes.defaultSpace *
-                                                                          2,
-                                                                  vertical:
-                                                                      16)),
+                                                              horizontal: TSizes
+                                                                      .defaultSpace *
+                                                                  2,
+                                                              vertical: 16)),
                                                       onPressed: () {
                                                         context.pop();
                                                       },
@@ -201,15 +200,20 @@ class AddPosition extends StatelessWidget {
                                                           //     .positionPage);
                                                         }
                                                       },
-                                                      child: Text(
-                                                        'Thêm chức vụ',
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyMedium!
-                                                            .copyWith(
-                                                                color: Colors
-                                                                    .white),
-                                                      )),
+                                                      child: state.isLoading
+                                                          ? const CircularProgressIndicator(
+                                                              color:
+                                                                  Colors.white)
+                                                          : Text(
+                                                              'Thêm chức vụ',
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .bodyMedium!
+                                                                  .copyWith(
+                                                                      color: Colors
+                                                                          .white),
+                                                            )),
                                                 ),
                                               ],
                                             ),

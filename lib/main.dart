@@ -19,12 +19,10 @@ ServiceLocator dependencyInjector = ServiceLocator();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // await Hive.initFlutter();
+  await Hive.initFlutter();
   // await Hive.openBox(GlobalStorageKey.globalStorage);
   setPathUrlStrategy();
 
-  await Hive.initFlutter();
-  await Hive.openBox('userBox');
   // Initialize Firebase & Authentication Repository
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -37,6 +35,6 @@ void main() async {
   );
 
   dependencyInjector.servicesLocator();
-
+  await Hive.openBox(GlobalStorageKey.globalStorage);
   runApp(const App());
 }

@@ -1,4 +1,3 @@
-import 'package:admin_hrm/pages/dash_board/table/table_source.dart';
 import 'package:admin_hrm/pages/personnel_management/table/table_personnel.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
@@ -6,38 +5,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/widgets/data_table/paginated_data_table.dart';
 import '../../../constants/sizes.dart';
-import '../bloc/personnel_bloc.dart';
-import '../bloc/personnel_state.dart';
+import '../bloc/persional_bloc.dart';
 
 class DataTableEmployee extends StatelessWidget {
   const DataTableEmployee({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PersonelCubit, AddEmployeeState>(
+    return BlocConsumer<PersionalBloc, PersionalState>(
       listener: (context, state) {
-        if (state is AddEmployeeFailure) {
+        if (state.isFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(state.error),
+              content: Text(state.errorMessage ?? 'Unknown error'),
               backgroundColor: Colors.red,
             ),
           );
         }
       },
       builder: (context, state) {
-        if (state is AddEmployeeLoading) {
+        if (state.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        if (state is AddEmployeeFailure) {
-          return Center(child: Text('Lỗi: ${state.error}'));
+        if (state.isFailure) {
+          return Center(child: Text('Lỗi: ${state.errorMessage}'));
         }
 
-        if (state is GetEmployeeSuccess) {
-          final employees = state.employees;
+        if (state.isSuccess) {
+          final employees = state.personnel;
 
-          if (employees.isEmpty) {
+          if (employees!.isEmpty) {
             return const Center(child: Text('Không có dữ liệu nhân viên.'));
           }
 
@@ -53,13 +51,14 @@ class DataTableEmployee extends StatelessWidget {
               DataColumn2(label: Text('Chức vụ')),
               DataColumn2(label: Text('Ngày bắt đầu')),
               DataColumn2(label: Text('Trạng thái')),
+              DataColumn2(label: Text('Ngày tạo')),
               DataColumn2(label: Text('Chức năng khác')),
             ],
             source: TableEmployeeRows(context, employees),
           );
         }
 
-        return const SizedBox(); 
+        return const SizedBox();
       },
     );
   }
