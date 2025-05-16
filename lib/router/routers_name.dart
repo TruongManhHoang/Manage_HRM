@@ -19,6 +19,14 @@ class RouterName {
   static const updateEmployee = '/update-employee';
   static const salaryPage = '/salary-page';
   static const editDepartment = '/edit-department';
+
+  static const rewardPage = '/reward-page';
+  static const editReward = 'edit-employee';
+  static const addReward = 'add-reward';
+  static const disciplinaryPage = '/disciplinary-page';
+  static const addDisciplinary = 'add-disciplinary';
+  static const editDisciplinary = 'edit-disciplinary';
+
   static const editPosition = '/edit-position';
   static const editContract = '/edit-contract';
 
@@ -26,6 +34,8 @@ class RouterName {
     dashboard,
     departmentPage,
     employeePage,
+    rewardPage,
+    disciplinaryPage,
     contractPage,
     accountPage,
     positionPage,
@@ -35,6 +45,8 @@ class RouterName {
     dashboard,
     departmentPage,
     employeePage,
+    rewardPage,
+    disciplinaryPage,
     accountPage,
     positionPage,
     salaryPage

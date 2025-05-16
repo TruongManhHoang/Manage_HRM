@@ -1,4 +1,3 @@
-import 'package:admin_hrm/data/model/department/department_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -34,6 +33,18 @@ class THelperFunctions {
     } else if (department == 'Ngừng hoạt động') {
       return Colors.red;
     } else if (department == 'Đang chờ') {
+      return Colors.orange;
+    } else {
+      return Colors.grey;
+    }
+  }
+
+  static Color getStatusRewardColor(String status) {
+    if (status == 'Đã duyệt') {
+      return Colors.green;
+    } else if (status == 'Từ chối') {
+      return Colors.red;
+    } else if (status == 'Chờ duyệt') {
       return Colors.orange;
     } else {
       return Colors.grey;
