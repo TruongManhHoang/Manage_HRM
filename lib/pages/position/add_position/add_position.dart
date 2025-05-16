@@ -133,13 +133,12 @@ class AddPosition extends StatelessWidget {
                                                       style: TextButton.styleFrom(
                                                           backgroundColor:
                                                               Colors.red,
-                                                          padding: EdgeInsets
+                                                          padding: const EdgeInsets
                                                               .symmetric(
-                                                                  horizontal:
-                                                                      TSizes.defaultSpace *
-                                                                          2,
-                                                                  vertical:
-                                                                      16)),
+                                                              horizontal: TSizes
+                                                                      .defaultSpace *
+                                                                  2,
+                                                              vertical: 16)),
                                                       onPressed: () {
                                                         context.pop();
                                                       },
@@ -201,15 +200,20 @@ class AddPosition extends StatelessWidget {
                                                           //     .positionPage);
                                                         }
                                                       },
-                                                      child: Text(
-                                                        'Thêm chức vụ',
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyMedium!
-                                                            .copyWith(
-                                                                color: Colors
-                                                                    .white),
-                                                      )),
+                                                      child: state.isLoading
+                                                          ? const CircularProgressIndicator(
+                                                              color:
+                                                                  Colors.white)
+                                                          : Text(
+                                                              'Thêm chức vụ',
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .bodyMedium!
+                                                                  .copyWith(
+                                                                      color: Colors
+                                                                          .white),
+                                                            )),
                                                 ),
                                               ],
                                             ),

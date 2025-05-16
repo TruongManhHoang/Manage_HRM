@@ -1,5 +1,6 @@
 class RouterName {
   static const schoolPage = '/school-page';
+  static const splashScreen = '/splash-screen';
   static const dashboard = '/dashboard-page';
   static const commentManager = '/comment-manager-page';
   static const login = '/login';
@@ -20,7 +21,6 @@ class RouterName {
   static const editDepartment = '/edit-department';
   static const editPosition = '/edit-position';
   static const editContract = '/edit-contract';
-
 
   static const sidebarMenuItem = [
     dashboard,

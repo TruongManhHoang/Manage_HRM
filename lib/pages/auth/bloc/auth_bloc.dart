@@ -1,4 +1,5 @@
 import 'package:admin_hrm/data/repository/user_repository.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../local/storage.dart';
@@ -10,8 +11,10 @@ import 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService authService;
   final UserRepository userRepository;
+  final GlobalStorage globalStorage;
 
-  AuthBloc(this.authService, this.userRepository) : super(AuthInitial()) {
+  AuthBloc(this.authService, this.userRepository, this.globalStorage)
+      : super(AuthInitial()) {
     on<LoginRequested>((event, emit) async {
       emit(AuthLoading());
       try {
@@ -24,12 +27,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
 
         final appUser = await userRepository.fetchUserProfile();
+        globalStorage.updateAuthenticationState(
+            displayName: appUser.displayName, role: appUser.role);
         if (appUser.role != 'admin') {
           emit(AuthFailure("Bạn không có quyền truy cập admin."));
           return;
         }
 
-        await StorageLocal.saveUser(appUser);
+        // await StorageLocal.saveUser(appUser);
         emit(AuthSuccess(appUser));
       } catch (e) {
         emit(AuthFailure(e.toString()));
@@ -45,7 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           displayName: event.displayName,
         );
         final appUser = await userRepository.fetchUserProfile();
-        await StorageLocal.saveUser(appUser);
+        // await StorageLocal.saveUser(appUser);
         emit(AuthSuccess(appUser));
       } catch (e) {
         emit(AuthFailure(e.toString()));
@@ -66,7 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         await authService.signOut();
-        await StorageLocal.clearUser();
+        await globalStorage.clearAuthenticationState();
         emit(AuthInitial());
       } catch (e) {
         emit(AuthFailure(e.toString()));
