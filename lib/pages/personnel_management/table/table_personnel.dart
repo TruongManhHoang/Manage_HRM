@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/utils/popups/dialogs.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,13 @@ class TableEmployeeRows extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
+    final globalStorage = getIt<GlobalStorage>();
+    final personalManagers = globalStorage.positions!;
+    final position = personalManagers.firstWhere(
+      (p) => p.id == personnel[index].positionId,
+    );
+    final department = globalStorage.departments!
+        .firstWhere((d) => d.id == personnel[index].departmentId);
     final dateFormat = DateFormat('dd/MM/yyyy');
     if (index >= personnel.length) return null;
     final employee = personnel[index];
@@ -28,37 +37,105 @@ class TableEmployeeRows extends DataTableSource {
     return DataRow2(
       specificRowHeight: 100,
       cells: [
-        DataCell(Text(
-          employee.code!,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(color: TColors.primary),
+        DataCell(Center(
+          child: Text(
+            employee.code!,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: TColors.primary),
+          ),
         )),
-        DataCell(Text(
-          employee.name,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(color: TColors.textPrimary),
+        DataCell(Center(
+          child: Text(
+            employee.name,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: TColors.textPrimary),
+          ),
         )),
-        DataCell(Text(
-          employee.gender,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(color: TColors.primary),
+        DataCell(Center(
+          child: Text(
+            employee.gender,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: TColors.primary),
+          ),
         )),
-        DataCell(Text(
-          employee.phone,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(color: TColors.textPrimary),
+        DataCell(Center(
+          child: Text(
+            employee.dateOfBirth,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: TColors.textPrimary),
+          ),
         )),
-        DataCell(Text(employee.positionId.toString())),
-        DataCell(Text(employee.date.toString())),
-        DataCell(Text(dateFormat.format(employee.createdAt!))),
+        DataCell(Center(
+          child: Text(
+            employee.phone,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: TColors.textPrimary),
+          ),
+        )),
+        DataCell(Center(
+          child: Text(
+            employee.email,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: TColors.textPrimary),
+          ),
+        )),
+        DataCell(Center(
+          child: Text(
+            employee.address,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: TColors.textPrimary),
+          ),
+        )),
+        DataCell(Center(
+          child: Text(
+            employee.experience,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: TColors.textPrimary),
+          ),
+        )),
+        DataCell(Center(
+          child: Text(
+            position.name!,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: TColors.textPrimary),
+          ),
+        )),
+        DataCell(Center(
+          child: Text(
+            department.name!,
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium!
+                .copyWith(color: TColors.textPrimary),
+          ),
+        )),
+        DataCell(Center(
+          child: Text(
+            employee.date,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: TColors.textPrimary),
+          ),
+        )),
         DataCell(
           TRoundedContainer(
             radius: TSizes.cardRadiusSm,
@@ -92,46 +169,7 @@ class TableEmployeeRows extends DataTableSource {
               ),
             ],
           ),
-        )
-            // OtherFunctions(
-            //   collaborate: () {},
-            //   delete: () => showDialog(
-            //     context: context,
-            //     builder: (dialogContext) => Builder(
-            //       builder: (newContext) => AlertDialog(
-            //         title: const Text('Xóa nhân viên'),
-            //         content: const Text(
-            //             'Bạn có chắc chắn muốn xóa nhân viên này không?'),
-            //         actions: [
-            //           TextButton(
-            //             onPressed: () => Navigator.pop(dialogContext),
-            //             child: const Text('Hủy'),
-            //           ),
-            //           TextButton(
-            //             onPressed: () {
-            //               if (employee.id == null) return;
-
-            //               newContext
-            //                   .read<PersionalBloc>()
-            //                   .add(PersionalDeleteEvent(
-            //                     employee.id!,
-            //                   ));
-            //               Navigator.pop(dialogContext);
-            //             },
-            //             child: const Text('Xóa'),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            //   edit: () {
-            //     context.push(
-            //       RouterName.updateEmployee,
-            //       extra: employee,
-            //     );
-            //   },
-            // ),
-            ),
+        )),
       ],
     );
   }

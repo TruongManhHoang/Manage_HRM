@@ -40,7 +40,7 @@ class Sidebar extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Menu',
+                      'Danh sách',
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall!
@@ -49,36 +49,36 @@ class Sidebar extends StatelessWidget {
 
                     // Menu items
                     const MenuItem(
-                        icon: Iconsax.music_dashboard,
-                        title: 'DashBoard',
+                        icon: Iconsax.element_3,
+                        title: 'Tổng quan',
                         router: RouterName.dashboard),
                     const MenuItem(
-                        icon: Iconsax.building_3,
-                        title: 'Department',
-                        router: RouterName.departmentPage),
-                    const MenuItem(
-                        icon: Iconsax.home1,
+                        icon: Iconsax.profile,
                         title: 'Nhân viên',
                         router: RouterName.employeePage),
                     const MenuItem(
-                        icon: Iconsax.gift,
-                        title: 'Reward',
-                        router: RouterName.rewardPage),
+                        icon: Iconsax.building_3,
+                        title: 'Phòng ban',
+                        router: RouterName.departmentPage),
                     const MenuItem(
-                        icon: Iconsax.shield,
-                        title: 'Disciplinary',
-                        router: RouterName.disciplinaryPage),
-                    const MenuItem(
-                        icon: Iconsax.home_1,
-                        title: 'Contract',
+                        icon: Iconsax.document_text,
+                        title: 'Hợp đồng',
                         router: RouterName.contractPage),
                     const MenuItem(
-                        icon: Iconsax.home_12,
-                        title: 'Positions',
+                        icon: Iconsax.medal,
+                        title: 'Chức vụ',
                         router: RouterName.positionPage),
                     const MenuItem(
-                        icon: Iconsax.home_13,
-                        title: 'Salary',
+                        icon: Iconsax.gift1,
+                        title: 'Khen thưởng',
+                        router: RouterName.rewardPage),
+                    const MenuItem(
+                        icon: Iconsax.shield_slash,
+                        title: 'Kỷ luật',
+                        router: RouterName.disciplinaryPage),
+                    const MenuItem(
+                        icon: Iconsax.wallet,
+                        title: 'Lương',
                         router: RouterName.salaryPage),
 
                     Padding(

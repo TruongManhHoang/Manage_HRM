@@ -115,7 +115,7 @@ class AddDepartmentPage extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           const Text('Trạng thái'),
-                                          TDropDownMenu(menus: [
+                                          TDropDownMenu(menus: const [
                                             'Hoạt động',
                                             'Đang chờ',
                                             'Ngừng hoạt động',

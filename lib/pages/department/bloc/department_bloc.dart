@@ -1,4 +1,5 @@
 import 'package:admin_hrm/data/repository/department_repository.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/department/bloc/department_event.dart';
 import 'package:admin_hrm/pages/department/bloc/department_state.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
   final DepartmentRepository repository;
+  final GlobalStorage globalStorage;
 
-  DepartmentBloc({required this.repository}) : super(DepartmentInitial()) {
+  DepartmentBloc({required this.repository, required this.globalStorage})
+      : super(DepartmentInitial()) {
     on<CreateDepartment>(_onCreateDepartment);
     on<GetListDepartment>(_onGetListDepartment);
     on<UpdateDepartment>(_onUpdateDepartment);
@@ -21,6 +24,7 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
     emit(DepartmentLoading());
     try {
       await repository.createDepartment(event.department);
+      globalStorage.addToDepartment(event.department);
       emit(DepartmentSuccess());
       add(GetListDepartment());
     } catch (e) {
@@ -35,6 +39,7 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
     emit(DepartmentLoading());
     try {
       final departments = await repository.getDepartments();
+      globalStorage.fetchAllDepartment(departments);
       emit(DepartmentLoaded(departments));
     } catch (e) {
       emit(DepartmentFailure(e.toString()));
@@ -48,6 +53,7 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
     emit(DepartmentLoading());
     try {
       await repository.updateDepartment(event.department);
+      globalStorage.updateDepartment(event.department);
       emit(DepartmentSuccess());
       add(GetListDepartment());
     } catch (e) {
@@ -62,6 +68,7 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
     emit(DepartmentLoading());
     try {
       await repository.deleteDepartment(event.id);
+      globalStorage.removeFromDepartmentById(event.id);
       emit(DepartmentSuccess());
       add(GetListDepartment());
     } catch (e) {

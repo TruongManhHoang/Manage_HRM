@@ -1,4 +1,8 @@
+import 'package:admin_hrm/common/widgets/containers/rounded_container.dart';
 import 'package:admin_hrm/data/model/contract/contract_model.dart';
+import 'package:admin_hrm/data/model/personnel_management.dart';
+import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/contract/bloc/contract_bloc.dart';
 import 'package:admin_hrm/router/routers_name.dart';
 import 'package:data_table_2/data_table_2.dart';
@@ -18,7 +22,16 @@ class TableContractRows extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
+    final globalStorage = getIt<GlobalStorage>();
+
     final contract = contracts[index];
+    final personalManagers = globalStorage.personalManagers!;
+
+    // 🔍 Tìm user theo employeeId
+    final personal = personalManagers.firstWhere(
+      (p) => p.id == contract.employeeId,
+    );
+
     return DataRow2(cells: [
       DataCell(Center(
         child: Text(
@@ -30,7 +43,7 @@ class TableContractRows extends DataTableSource {
         ),
       )),
       DataCell(
-        Center(child: Text(contract.employeeId!)),
+        Center(child: Text(personal.name)),
       ),
       DataCell(
         Center(child: Text(contract.contractType!)),
@@ -58,18 +71,25 @@ class TableContractRows extends DataTableSource {
         ),
       ),
       DataCell(
-        Center(
-          child: Text(
-            THelperFunctions.getFormattedDate(contract.createdAt!),
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-      ),
-      DataCell(
-        Center(
-          child: Text(
-            THelperFunctions.getFormattedDate(contract.updatedAt!),
-            style: Theme.of(context).textTheme.bodyMedium,
+        Align(
+          alignment: Alignment.center,
+          child: Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 6, vertical: TSizes.xs),
+            decoration: BoxDecoration(
+              color: THelperFunctions.getContractStatusColor(contract.status!)
+                  .withOpacity(0.1),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              contract.status!,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 12,
+                    color: THelperFunctions.getContractStatusColor(
+                        contract.status!),
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
           ),
         ),
       ),

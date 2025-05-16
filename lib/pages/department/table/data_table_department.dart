@@ -54,35 +54,7 @@ class DataTableDepartment extends StatelessWidget {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Người quản lý',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              DataColumn2(
-                label: Center(
-                  child: Text(
                     'Mô tả',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              DataColumn2(
-                label: Center(
-                  child: Text(
-                    'Trạng thái',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -125,6 +97,20 @@ class DataTableDepartment extends StatelessWidget {
                 label: Center(
                   child: Text(
                     'Số điện thoại',
+                    maxLines: 2,
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn2(
+                label: Center(
+                  child: Text(
+                    'Trạng thái',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
