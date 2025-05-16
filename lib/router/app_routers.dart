@@ -13,6 +13,7 @@ import 'package:admin_hrm/data/repository/department_repository.dart';
 import 'package:admin_hrm/data/repository/persional_repository.dart';
 import 'package:admin_hrm/data/repository/positiion_repository.dart';
 import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/contract/add_contract/add_contract.dart';
 import 'package:admin_hrm/pages/contract/bloc/contract_bloc.dart';
 
@@ -104,23 +105,13 @@ class AppRouter {
             );
           },
         ),
-        GoRoute(
-            path: RouterName.departmentPage,
-            name: RouterName.departmentPage,
-            builder: (context, state) {
-              return BlocProvider(
-                create: (context) =>
-                    DepartmentBloc(repository: getIt<DepartmentRepository>())
-                      ..add(GetListDepartment()),
-                child: const DepartmentPage(),
-              );
-            }),
         ShellRoute(
             builder: (context, state, child) {
               return BlocProvider(
                 create: (context) => PersionalBloc(
-                    personnelRepository: getIt<PersionalRepository>())
-                  ..add(const PersionalLoadEvent()),
+                  personnelRepository: getIt<PersionalRepository>(),
+                  globalStorage: getIt<GlobalStorage>(),
+                )..add(const PersionalLoadEvent()),
                 child: Scaffold(
                   body: child,
                 ),
@@ -154,8 +145,10 @@ class AppRouter {
         ShellRoute(
             builder: (context, state, child) {
               return BlocProvider<DepartmentBloc>(
-                create: (context) =>
-                    DepartmentBloc(repository: getIt<DepartmentRepository>()),
+                create: (context) => DepartmentBloc(
+                    repository: getIt<DepartmentRepository>(),
+                    globalStorage: getIt<GlobalStorage>())
+                  ..add(GetListDepartment()),
                 child: Scaffold(
                   body: child,
                 ),
@@ -178,14 +171,21 @@ class AppRouter {
                     department: department,
                   );
                 },
-              )
+              ),
+              GoRoute(
+                  path: RouterName.departmentPage,
+                  name: RouterName.departmentPage,
+                  builder: (context, state) {
+                    return const DepartmentPage();
+                  }),
             ]),
         ShellRoute(
             builder: (context, state, child) {
               return BlocProvider<PositionBloc>(
-                create: (context) =>
-                    PositionBloc(repository: getIt<PositiionRepository>())
-                      ..add(GetListPosition()),
+                create: (context) => PositionBloc(
+                    repository: getIt<PositiionRepository>(),
+                    globalStorage: getIt<GlobalStorage>())
+                  ..add(GetListPosition()),
                 child: Scaffold(
                   body: child,
                 ),

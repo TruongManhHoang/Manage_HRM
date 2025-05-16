@@ -103,8 +103,8 @@ class EditContract extends StatelessWidget {
                             ),
                             Container(
                                 width: 600,
-                                padding:
-                                    const EdgeInsets.all(TSizes.defaultSpace),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.white,
@@ -124,10 +124,39 @@ class EditContract extends StatelessWidget {
                                                   codeContractController,
                                             ),
                                             Gap(TSizes.spaceBtwItems),
-                                            TDropDownMenu(
-                                                menus: employee,
-                                                text: 'Nhân viên:',
-                                                controller: employeeController),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Nhân viên:',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium!
+                                                      .copyWith(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                ),
+                                                const Gap(TSizes.spaceBtwItems),
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      color: Colors.white,
+                                                      border: Border.all(
+                                                          color: Colors
+                                                              .grey.shade300)),
+                                                  child: Text(
+                                                    contract.employeeId!,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                             const Gap(TSizes.spaceBtwItems),
                                             TDropDownMenu(
                                                 menus: contractType,
@@ -141,6 +170,7 @@ class EditContract extends StatelessWidget {
                                               text: 'Lương',
                                               controller: salaryController,
                                             ),
+                                            const Gap(TSizes.spaceBtwItems),
 
                                             /// Ngày bắt đầu
                                             GestureDetector(
@@ -208,6 +238,7 @@ class EditContract extends StatelessWidget {
                                                 ],
                                                 text: 'Trạng thái:',
                                                 controller: statusController),
+                                            const Gap(TSizes.spaceBtwItems),
                                             TTextFormField(
                                               textAlign: true,
                                               hint: 'Nhập Mô tả',

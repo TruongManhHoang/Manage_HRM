@@ -15,16 +15,23 @@ class PersionalLoadEvent extends PersionalEvent {
 
 class PersionalCreateEvent extends PersionalEvent {
   final PersionalManagement personnelManagement;
+  // final XFile? image;
 
-  const PersionalCreateEvent(this.personnelManagement);
+  const PersionalCreateEvent(
+    this.personnelManagement,
+  );
+
   @override
   List<Object?> get props => [personnelManagement];
 }
 
 class PersionalUpdateEvent extends PersionalEvent {
   final PersionalManagement personnelManagement;
+  // final XFile? image;
 
-  const PersionalUpdateEvent(this.personnelManagement);
+  const PersionalUpdateEvent(
+    this.personnelManagement,
+  );
   @override
   List<Object?> get props => [personnelManagement];
 }

@@ -1,7 +1,12 @@
+import 'dart:io';
+
+import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
 import '../../../common/widgets/drop_down_menu/drop_down_menu.dart';
@@ -34,9 +39,8 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
   final educationLevelController = TextEditingController();
   final birthDateController = TextEditingController();
   final codeController = TextEditingController();
+  final statusController = TextEditingController();
 
-  final positions = ['Nhân viên', 'Quản lý', 'Trưởng phòng'];
-  final departments = ['Phòng nhân sự', 'Phòng kế toán'];
   final educationLevels = ['Cao đẳng', 'Đại học', 'Sau đại học'];
   @override
   void initState() {
@@ -51,12 +55,33 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
     experienceController.text = widget.employee.experience;
     educationLevelController.text = widget.employee.experience.toString();
     birthDateController.text = widget.employee.dateOfBirth;
+    statusController.text = widget.employee.status.toString();
     super.initState();
   }
+
+  // XFile? avatarFile;
+  // Future<XFile?> pickImage() async {
+  //   final picker = ImagePicker();
+  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  //   return pickedFile;
+  // }
 
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final globalStorage = getIt<GlobalStorage>();
+    final departments = globalStorage.departments!;
+    final positions = globalStorage.positions!;
+
+    String? selectedDepartmentId;
+    String? selectedPositionId;
+
+    if (selectedDepartmentId == null) {
+      selectedDepartmentId = widget.employee.departmentId;
+    }
+    if (selectedPositionId == null) {
+      selectedPositionId = widget.employee.positionId;
+    }
     return Scaffold(
       body: BlocConsumer<PersionalBloc, PersionalState>(
         listener: (context, state) {
@@ -108,6 +133,32 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                   key: _formKey,
                                   child: Column(
                                     children: [
+                                      // GestureDetector(
+                                      //   onTap: () async {
+                                      //     final picked = await pickImage();
+                                      //     if (picked != null) {
+                                      //       setState(() {
+                                      //         avatarFile = picked;
+                                      //       });
+                                      //     }
+                                      //   },
+                                      //   child: Container(
+                                      //     height: 150,
+                                      //     width: 150,
+                                      //     decoration: BoxDecoration(
+                                      //       borderRadius:
+                                      //           BorderRadius.circular(10),
+                                      //       color: Colors.grey[200],
+                                      //     ),
+                                      //     child: avatarFile == null
+                                      //         ? const Icon(Icons.person)
+                                      //         : Image.file(
+                                      //             File(avatarFile!.path),
+                                      //             fit: BoxFit.cover,
+                                      //           ),
+                                      //   ),
+                                      // ),
+                                      const Gap(TSizes.spaceBtwItems),
                                       TTextFormField(
                                         textAlign: true,
                                         text: 'Mã nhân viên',
@@ -151,16 +202,83 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                         ),
                                       ),
                                       const Gap(TSizes.spaceBtwItems),
-                                      TDropDownMenu(
-                                        menus: positions,
-                                        controller: positionController,
-                                        text: 'Chức vụ',
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Chức vụ',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                          ),
+                                          Gap(
+                                            TSizes.spaceBtwItems,
+                                          ),
+                                          DropdownMenu(
+                                            initialSelection:
+                                                positionController.text,
+                                            controller: positionController,
+                                            width: 200,
+                                            trailingIcon: const Icon(
+                                                Icons.arrow_drop_down),
+                                            dropdownMenuEntries: positions
+                                                .map((position) =>
+                                                    DropdownMenuEntry<String>(
+                                                      label: position.name!,
+                                                      value: position.id!,
+                                                    ))
+                                                .toList(),
+                                            onSelected: (value) {
+                                              selectedPositionId = value;
+                                            },
+                                            hintText: 'Chọn chức vụ',
+                                          ),
+                                        ],
                                       ),
+                                      // TDropDownMenu(
+                                      //   menus: positions,
+                                      //   controller: positionController,
+                                      //   text: 'Chức vụ',
+                                      // ),
                                       const Gap(TSizes.spaceBtwItems),
-                                      TDropDownMenu(
-                                        menus: departments,
-                                        controller: departmentController,
-                                        text: 'Phòng ban',
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Phòng ban',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                          ),
+                                          const Gap(
+                                            TSizes.spaceBtwItems,
+                                          ),
+                                          DropdownMenu(
+                                            initialSelection:
+                                                departmentController.text,
+                                            controller: departmentController,
+                                            width: 200,
+                                            trailingIcon: const Icon(
+                                                Icons.arrow_drop_down),
+                                            dropdownMenuEntries: departments
+                                                .map((department) =>
+                                                    DropdownMenuEntry<String>(
+                                                      label: department.name!,
+                                                      value: department.id!,
+                                                    ))
+                                                .toList(),
+                                            onSelected: (value) {
+                                              selectedDepartmentId = value;
+                                            },
+                                            hintText: 'Chọn phòng ban',
+                                          ),
+                                        ],
                                       ),
                                       const Gap(TSizes.spaceBtwItems),
                                       TTextFormField(
@@ -195,6 +313,15 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                         menus: educationLevels,
                                         controller: educationLevelController,
                                         text: 'Trình độ',
+                                      ),
+                                      const Gap(TSizes.spaceBtwItems),
+                                      TDropDownMenu(
+                                        menus: const [
+                                          'Đang làm việc',
+                                          'Nghỉ việc',
+                                        ],
+                                        controller: statusController,
+                                        text: 'Trạng thái',
                                       ),
                                       const Gap(TSizes.spaceBtwSections),
                                       Row(
@@ -250,11 +377,9 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                                       gender:
                                                           genderController.text,
                                                       positionId:
-                                                          positionController
-                                                              .text,
+                                                          selectedPositionId!,
                                                       departmentId:
-                                                          departmentController
-                                                              .text,
+                                                          selectedDepartmentId!,
                                                       address: addressController
                                                           .text,
                                                       phone:
@@ -264,7 +389,8 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                                       experience:
                                                           experienceController
                                                               .text,
-                                                      status: 'Đang làm việc',
+                                                      status:
+                                                          statusController.text,
                                                       date:
                                                           "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
                                                       createdAt: widget
@@ -274,7 +400,8 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                                   context
                                                       .read<PersionalBloc>()
                                                       .add(PersionalUpdateEvent(
-                                                          updateEmployee));
+                                                        updateEmployee,
+                                                      ));
                                                 }
                                               },
                                               child: state.isLoading
