@@ -1,5 +1,6 @@
 import 'package:admin_hrm/data/repository/user_repository.dart';
 import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_event.dart';
 import 'package:admin_hrm/router/app_routers.dart';
@@ -21,10 +22,9 @@ class App extends StatelessWidget {
             create: (context) => SideBarBloc(),
           ),
           BlocProvider<AuthBloc>(
-              create: (_) => AuthBloc(
-                    getIt<AuthService>(),
-                    getIt<UserRepository>(),
-                  )..add(AuthStarted())),
+              create: (_) => AuthBloc(getIt<AuthService>(),
+                  getIt<UserRepository>(), getIt<GlobalStorage>())
+                ..add(AuthStarted())),
         ],
         child: MaterialApp.router(
           title: 'Admin Dai Hoc',

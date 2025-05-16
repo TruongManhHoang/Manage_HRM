@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
 import '../../../common/widgets/drop_down_menu/drop_down_menu.dart';
@@ -10,12 +11,11 @@ import '../../../common/widgets/text_form/text_form_field.dart';
 import '../../../constants/sizes.dart';
 import '../../../data/model/personnel_management.dart';
 import '../../../router/routers_name.dart';
-import '../bloc/personnel_bloc.dart';
-import '../bloc/personnel_state.dart';
+import '../bloc/persional_bloc.dart';
 
 // ignore: must_be_immutable
 class UpdatePersonnel extends StatefulWidget {
-  PersonnelManagement employee;
+  PersionalManagement employee;
   UpdatePersonnel({super.key, required this.employee});
 
   @override
@@ -33,16 +33,18 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
   final experienceController = TextEditingController();
   final educationLevelController = TextEditingController();
   final birthDateController = TextEditingController();
+  final codeController = TextEditingController();
 
   final positions = ['Nhân viên', 'Quản lý', 'Trưởng phòng'];
   final departments = ['Phòng nhân sự', 'Phòng kế toán'];
   final educationLevels = ['Cao đẳng', 'Đại học', 'Sau đại học'];
   @override
   void initState() {
+    codeController.text = widget.employee.code!;
     fullNameController.text = widget.employee.name;
     genderController.text = widget.employee.gender;
-    positionController.text = widget.employee.position.toString();
-    departmentController.text = widget.employee.department.toString();
+    positionController.text = widget.employee.positionId.toString();
+    departmentController.text = widget.employee.departmentId.toString();
     phoneController.text = widget.employee.phone;
     emailController.text = widget.employee.email;
     addressController.text = widget.employee.address;
@@ -52,24 +54,25 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
     super.initState();
   }
 
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<PersonelCubit, AddEmployeeState>(
+      body: BlocConsumer<PersionalBloc, PersionalState>(
         listener: (context, state) {
-          if (state is AddEmployeeSuccess) {
+          if (state.isSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 backgroundColor: Colors.green,
                 content: Text(
                   "Cập nhật thành viên thành công.",
                 )));
-            Navigator.pop(context);
-          } else if (state is AddEmployeeFailure) {
+            context.go(RouterName.employeePage);
+          } else if (state.isFailure) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 backgroundColor: Colors.red,
                 content: Text("Lỗi ! Cập nhập thành viên không thành công.",
                     style: TextStyle(color: Colors.white))));
-            Navigator.pop(context);
+            context.pop();
           }
         },
         builder: (context, state) {
@@ -102,9 +105,15 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                   color: Colors.white,
                                 ),
                                 child: Form(
-                                  key: GlobalKey<FormState>(),
+                                  key: _formKey,
                                   child: Column(
                                     children: [
+                                      TTextFormField(
+                                        textAlign: true,
+                                        text: 'Mã nhân viên',
+                                        hint: 'Nhập mã nhân viên',
+                                        controller: codeController,
+                                      ),
                                       TTextFormField(
                                         textAlign: true,
                                         text: 'Họ tên',
@@ -188,53 +197,24 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                         text: 'Trình độ',
                                       ),
                                       const Gap(TSizes.spaceBtwSections),
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: Colors.blue,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: TSizes.defaultSpace * 2,
-                                            vertical: 16,
-                                          ),
-                                        ),
-                                        onPressed: state
-                                                is UpdateEmployeeLoading
-                                            ? null
-                                            : () {
-                                                final updateEmployee =
-                                                    PersonnelManagement(
-                                                  name: fullNameController.text,
-                                                  dateOfBirth:
-                                                      birthDateController.text,
-                                                  gender: genderController.text,
-                                                  position:
-                                                      positionController.text,
-                                                  department:
-                                                      departmentController.text,
-                                                  address:
-                                                      addressController.text,
-                                                  phone: phoneController.text,
-                                                  email: emailController.text,
-                                                  experience:
-                                                      experienceController.text,
-                                                  date:
-                                                      "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                                );
-                                                context
-                                                    .read<PersonelCubit>()
-                                                    .updateEmployee(
-                                                      widget.employee.id ?? '',
-                                                      updateEmployee,
-                                                    );
-
-                                                // context
-                                                //     .read<PersonelCubit>()
-                                                //     .getEmployee();
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: TextButton(
+                                              style: TextButton.styleFrom(
+                                                backgroundColor: Colors.red,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      TSizes.defaultSpace * 2,
+                                                  vertical: 16,
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
                                               },
-                                        child: state is UpdateEmployeeLoading
-                                            ? const CircularProgressIndicator(
-                                                color: Colors.white)
-                                            : Text(
-                                                'Cập nhật',
+                                              child: Text(
+                                                'Hủy',
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyMedium!
@@ -242,6 +222,76 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                                       color: Colors.white,
                                                     ),
                                               ),
+                                            ),
+                                          ),
+                                          const Gap(TSizes.spaceBtwItems),
+                                          Expanded(
+                                            child: TextButton(
+                                              style: TextButton.styleFrom(
+                                                backgroundColor: Colors.blue,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      TSizes.defaultSpace * 2,
+                                                  vertical: 16,
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  final updateEmployee = PersionalManagement(
+                                                      id: widget.employee.id,
+                                                      code: codeController.text,
+                                                      name: fullNameController
+                                                          .text,
+                                                      dateOfBirth:
+                                                          birthDateController
+                                                              .text,
+                                                      gender:
+                                                          genderController.text,
+                                                      positionId:
+                                                          positionController
+                                                              .text,
+                                                      departmentId:
+                                                          departmentController
+                                                              .text,
+                                                      address: addressController
+                                                          .text,
+                                                      phone:
+                                                          phoneController.text,
+                                                      email:
+                                                          emailController.text,
+                                                      experience:
+                                                          experienceController
+                                                              .text,
+                                                      status: 'Đang làm việc',
+                                                      date:
+                                                          "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                                      createdAt: widget
+                                                          .employee.createdAt,
+                                                      updatedAt:
+                                                          DateTime.now());
+                                                  context
+                                                      .read<PersionalBloc>()
+                                                      .add(PersionalUpdateEvent(
+                                                          updateEmployee));
+                                                }
+                                              },
+                                              child: state.isLoading
+                                                  ? const CircularProgressIndicator(
+                                                      color: Colors.white)
+                                                  : Text(
+                                                      'Cập nhật',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyMedium!
+                                                          .copyWith(
+                                                            color: Colors.white,
+                                                          ),
+                                                    ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
