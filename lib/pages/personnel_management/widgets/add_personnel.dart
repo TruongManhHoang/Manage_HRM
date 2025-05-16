@@ -5,6 +5,8 @@ import 'package:admin_hrm/common/widgets/layouts/sidebars/sidebar.dart';
 import 'package:admin_hrm/common/widgets/text_form/text_form_field.dart';
 import 'package:admin_hrm/constants/sizes.dart';
 import 'package:admin_hrm/data/model/personnel_management.dart';
+import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/personnel_management/bloc/persional_bloc.dart';
 import 'package:admin_hrm/router/routers_name.dart';
 
@@ -35,10 +37,16 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
     final educationLevelController = TextEditingController();
     final birthDateController = TextEditingController();
 
-    final positions = ['Nhân viên', 'Quản lý', 'Trưởng phòng'];
-    final departments = ['Phòng nhân sự', 'Phòng kế toán'];
+    // final positions = ['Nhân viên', 'Quản lý', 'Trưởng phòng'];
+    // final departments = ['Phòng nhân sự', 'Phòng kế toán'];
     final educationLevels = ['Cao đẳng', 'Đại học', 'Sau đại học'];
 
+    final globalStorage = getIt<GlobalStorage>();
+    final departments = globalStorage.departments!;
+    final positions = globalStorage.positions!;
+
+    String? selectedDepartmentId;
+    String? selectedPositionId;
     return Scaffold(
       body: BlocConsumer<PersionalBloc, PersionalState>(
         listener: (context, state) {
@@ -134,16 +142,83 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                                         ),
                                       ),
                                       const Gap(TSizes.spaceBtwItems),
-                                      TDropDownMenu(
-                                        menus: positions,
-                                        controller: positionController,
-                                        text: 'Chức vụ',
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Chức vụ',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                          ),
+                                          Gap(
+                                            TSizes.spaceBtwItems,
+                                          ),
+                                          DropdownMenu(
+                                            initialSelection:
+                                                positionController.text,
+                                            controller: positionController,
+                                            width: 200,
+                                            trailingIcon: const Icon(
+                                                Icons.arrow_drop_down),
+                                            dropdownMenuEntries: positions
+                                                .map((position) =>
+                                                    DropdownMenuEntry<String>(
+                                                      label: position.name!,
+                                                      value: position.id!,
+                                                    ))
+                                                .toList(),
+                                            onSelected: (value) {
+                                              selectedPositionId = value;
+                                            },
+                                            hintText: 'Chọn chức vụ',
+                                          ),
+                                        ],
                                       ),
+                                      // TDropDownMenu(
+                                      //   menus: positions,
+                                      //   controller: positionController,
+                                      //   text: 'Chức vụ',
+                                      // ),
                                       const Gap(TSizes.spaceBtwItems),
-                                      TDropDownMenu(
-                                        menus: departments,
-                                        controller: departmentController,
-                                        text: 'Phòng ban',
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Phòng ban',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                          ),
+                                          const Gap(
+                                            TSizes.spaceBtwItems,
+                                          ),
+                                          DropdownMenu(
+                                            initialSelection:
+                                                departmentController.text,
+                                            controller: departmentController,
+                                            width: 200,
+                                            trailingIcon: const Icon(
+                                                Icons.arrow_drop_down),
+                                            dropdownMenuEntries: departments
+                                                .map((department) =>
+                                                    DropdownMenuEntry<String>(
+                                                      label: department.name!,
+                                                      value: department.id!,
+                                                    ))
+                                                .toList(),
+                                            onSelected: (value) {
+                                              selectedDepartmentId = value;
+                                            },
+                                            hintText: 'Chọn phòng ban',
+                                          ),
+                                        ],
                                       ),
                                       const Gap(TSizes.spaceBtwItems),
                                       TTextFormField(
@@ -180,54 +255,94 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                                         text: 'Trình độ',
                                       ),
                                       const Gap(TSizes.spaceBtwSections),
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: Colors.blue,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: TSizes.defaultSpace * 2,
-                                            vertical: 16,
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: TextButton(
+                                                style: TextButton.styleFrom(
+                                                    backgroundColor: Colors.red,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: TSizes
+                                                                .defaultSpace *
+                                                            2,
+                                                        vertical: 16)),
+                                                onPressed: () {
+                                                  context.pop();
+                                                },
+                                                child: Text(
+                                                  'Huỷ',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium!
+                                                      .copyWith(
+                                                          color: Colors.white),
+                                                )),
                                           ),
-                                        ),
-                                        onPressed: state.isLoading
-                                            ? null
-                                            : () {
-                                                final newEmployee =
-                                                    PersionalManagement(
-                                                  code: codeController.text,
-                                                  name: fullNameController.text,
-                                                  dateOfBirth:
-                                                      birthDateController.text,
-                                                  gender: genderController.text,
-                                                  positionId:
-                                                      positionController.text,
-                                                  departmentId:
-                                                      departmentController.text,
-                                                  address:
-                                                      addressController.text,
-                                                  phone: phoneController.text,
-                                                  email: emailController.text,
-                                                  experience:
-                                                      experienceController.text,
-                                                  date:
-                                                      "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                                );
-                                                context
-                                                    .read<PersionalBloc>()
-                                                    .add(PersionalCreateEvent(
-                                                        newEmployee));
-                                              },
-                                        child: state.isLoading
-                                            ? const CircularProgressIndicator(
-                                                color: Colors.white)
-                                            : Text(
-                                                'Thêm nhân viên',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium!
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                    ),
+                                          const Gap(TSizes.spaceBtwItems),
+                                          Expanded(
+                                            child: TextButton(
+                                              style: TextButton.styleFrom(
+                                                backgroundColor: Colors.blue,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      TSizes.defaultSpace * 2,
+                                                  vertical: 16,
+                                                ),
                                               ),
+                                              onPressed: state.isLoading
+                                                  ? null
+                                                  : () {
+                                                      final newEmployee =
+                                                          PersionalManagement(
+                                                        code:
+                                                            codeController.text,
+                                                        name: fullNameController
+                                                            .text,
+                                                        dateOfBirth:
+                                                            birthDateController
+                                                                .text,
+                                                        gender: genderController
+                                                            .text,
+                                                        positionId:
+                                                            selectedPositionId!,
+                                                        departmentId:
+                                                            selectedDepartmentId!,
+                                                        address:
+                                                            addressController
+                                                                .text,
+                                                        phone: phoneController
+                                                            .text,
+                                                        email: emailController
+                                                            .text,
+                                                        experience:
+                                                            experienceController
+                                                                .text,
+                                                        date:
+                                                            "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                                      );
+                                                      context
+                                                          .read<PersionalBloc>()
+                                                          .add(
+                                                              PersionalCreateEvent(
+                                                                  newEmployee));
+                                                    },
+                                              child: state.isLoading
+                                                  ? const CircularProgressIndicator(
+                                                      color: Colors.white)
+                                                  : Text(
+                                                      'Thêm nhân viên',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyMedium!
+                                                          .copyWith(
+                                                            color: Colors.white,
+                                                          ),
+                                                    ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),

@@ -126,21 +126,7 @@ class DataTableContract extends StatelessWidget {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Ngày tạo',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              DataColumn2(
-                label: Center(
-                  child: Text(
-                    'Ngày cập nhật',
+                    'Trạng thái',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,

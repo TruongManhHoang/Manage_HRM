@@ -5,6 +5,8 @@ import 'package:admin_hrm/common/widgets/layouts/sidebars/sidebar.dart';
 import 'package:admin_hrm/common/widgets/text_form/text_form_field.dart';
 import 'package:admin_hrm/constants/sizes.dart';
 import 'package:admin_hrm/data/model/contract/contract_model.dart';
+import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/contract/bloc/contract_bloc.dart';
 import 'package:admin_hrm/pages/position/add_position/add_position.dart';
 import 'package:admin_hrm/router/routers_name.dart';
@@ -32,11 +34,11 @@ class AddContract extends StatelessWidget {
       'Chính thức',
       'Thử việc',
     ];
-    final List<String> employee = [
-      '001',
-      '002',
-      '003',
-    ];
+
+    final globalStorage = getIt<GlobalStorage>();
+    final persionals = globalStorage.personalManagers;
+
+    String? selectPersonalId;
     final _globalKey = GlobalKey<FormState>();
     return BlocConsumer<ContractBloc, ContractState>(
         listener: (context, state) {
@@ -103,10 +105,42 @@ class AddContract extends StatelessWidget {
                                                   codeContractController,
                                             ),
                                             Gap(TSizes.spaceBtwItems),
-                                            TDropDownMenu(
-                                                menus: employee,
-                                                text: 'Nhân viên:',
-                                                controller: employeeController),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "nhân viên" ?? '',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall,
+                                                ),
+                                                const Gap(
+                                                    TSizes.spaceBtwSections),
+                                                DropdownMenu(
+                                                  initialSelection:
+                                                      employeeController.text,
+                                                  controller:
+                                                      employeeController,
+                                                  width: 200,
+                                                  trailingIcon: const Icon(
+                                                      Icons.arrow_drop_down),
+                                                  dropdownMenuEntries:
+                                                      persionals!
+                                                          .map((personal) =>
+                                                              DropdownMenuEntry<
+                                                                  String>(
+                                                                label: personal
+                                                                    .name!,
+                                                                value: personal
+                                                                    .id!,
+                                                              ))
+                                                          .toList(),
+                                                  onSelected: (value) {
+                                                    selectPersonalId = value;
+                                                  },
+                                                  hintText: 'Chọn nhân viên',
+                                                ),
+                                              ],
+                                            ),
                                             const Gap(TSizes.spaceBtwItems),
                                             TDropDownMenu(
                                                 menus: contractType,
@@ -257,9 +291,7 @@ class AddContract extends StatelessWidget {
                                                                     .text
                                                                     .trim(),
                                                             employeeId:
-                                                                employeeController
-                                                                    .text
-                                                                    .trim(),
+                                                                selectPersonalId,
                                                             contractType:
                                                                 contractTypeController
                                                                     .text
