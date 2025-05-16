@@ -39,6 +39,18 @@ class THelperFunctions {
     }
   }
 
+  static Color getContractStatusColor(String contract) {
+    if (contract == 'Hoạt động') {
+      return Colors.green;
+    } else if (contract == 'Ngừng hoạt động') {
+      return Colors.red;
+    } else if (contract == 'Đang chờ') {
+      return Colors.orange;
+    } else {
+      return Colors.grey;
+    }
+  }
+
   static Color getStatusRewardColor(String status) {
     if (status == 'Đã duyệt') {
       return Colors.green;

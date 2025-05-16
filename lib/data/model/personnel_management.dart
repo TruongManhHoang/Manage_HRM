@@ -15,6 +15,7 @@ class PersionalManagement {
   String experience;
   String date;
   String? status;
+  // String? avatar;
   DateTime? createdAt;
   DateTime? updatedAt;
   PersionalManagement({
@@ -31,6 +32,7 @@ class PersionalManagement {
     required this.experience,
     required this.date,
     this.status,
+    // this.avatar,
     this.createdAt,
     this.updatedAt,
   });
@@ -49,6 +51,7 @@ class PersionalManagement {
     String? experience,
     String? date,
     String? status,
+    // String? avatar,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -66,6 +69,7 @@ class PersionalManagement {
       experience: experience ?? this.experience,
       date: date ?? this.date,
       status: status ?? this.status,
+      // avatar: avatar ?? this.avatar,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -86,6 +90,7 @@ class PersionalManagement {
       'experience': experience,
       'date': date,
       'status': status,
+      // 'avatar': avatar,
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
     };
@@ -106,6 +111,7 @@ class PersionalManagement {
       experience: map['experience'] as String,
       date: map['date'] as String,
       status: map['status'] as String?,
+      // avatar: map['avatar'] as String?,
       createdAt:
           map['createdAt'] != null ? DateTime.parse(map['createdAt']) : null,
       updatedAt:

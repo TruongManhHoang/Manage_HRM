@@ -1,4 +1,5 @@
 import 'package:admin_hrm/data/model/department/department_model.dart';
+import 'package:admin_hrm/data/model/personnel_management.dart';
 import 'package:admin_hrm/data/model/position/position_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -17,19 +18,31 @@ class GlobalStorageKey {
   static const userData = 'userData';
   static const positions = "positions";
   static const departments = "departments";
+  static const personalManagers = "personalManagers";
 }
 
 abstract class GlobalStorage {
   Future<void> init();
   List<PositionModel>? get positions;
   Future<void> addToPosition(PositionModel position);
+  Future<void> fetchAllPosition(List<PositionModel> positions);
+  Future<void> updatePosition(PositionModel position);
   Future<void> removeFromPositionById(String id);
   Future<void> removeAllPosition();
 
   List<DepartmentModel>? get departments;
   Future<void> addToDepartment(DepartmentModel department);
+  Future<void> fetchAllDepartment(List<DepartmentModel> departments);
+  Future<void> updateDepartment(DepartmentModel department);
   Future<void> removeFromDepartmentById(String id);
   Future<void> removeAllDepartment();
+
+  List<PersionalManagement>? get personalManagers;
+  Future<void> addToPersonalManager(PersionalManagement manager);
+  Future<void> fetchAllPersonalManagers(List<PersionalManagement> managers);
+  Future<void> updatePersonalManager(PersionalManagement manager);
+  Future<void> removeFromPersonalManagerById(String id);
+  Future<void> removeAllPersonalManagers();
 
   // New authentication methods
   String? get accessToken;
@@ -179,6 +192,9 @@ class GlobalStorageImpl implements GlobalStorage {
     departmentList.add(department);
     await _box.put(
         GlobalStorageKey.departments, departmentList.map((e) => e.toMap()));
+    debugPrint(
+      "Department list is ${_box.get(GlobalStorageKey.departments)}",
+    );
   }
 
   @override
@@ -187,6 +203,9 @@ class GlobalStorageImpl implements GlobalStorage {
     positionList.add(position);
     await _box.put(
         GlobalStorageKey.positions, positionList.map((e) => e.toMap()));
+    debugPrint(
+      "Position list is ${_box.get(GlobalStorageKey.positions)}",
+    );
   }
 
   @override
@@ -215,6 +234,9 @@ class GlobalStorageImpl implements GlobalStorage {
     departmentList.removeWhere((department) => department.id == id);
     await _box.put(
         GlobalStorageKey.departments, departmentList.map((e) => e.toMap()));
+    debugPrint(
+      "Department list is ${_box.get(GlobalStorageKey.departments)}",
+    );
   }
 
   @override
@@ -223,9 +245,133 @@ class GlobalStorageImpl implements GlobalStorage {
     positionList.removeWhere((position) => position.id == id);
     await _box.put(
         GlobalStorageKey.positions, positionList.map((e) => e.toMap()));
+    debugPrint(
+      "Position list is ${_box.get(GlobalStorageKey.positions)}",
+    );
   }
 
   @override
-  // TODO: implement displayName
   String? get displayName => _box.get(GlobalStorageKey.displayName);
+
+  @override
+  Future<void> updateDepartment(DepartmentModel department) async {
+    List<DepartmentModel> departmentList = departments ?? [];
+    final index = departmentList.indexWhere((d) => d.id == department.id);
+    if (index != -1) {
+      departmentList[index] = department;
+    } else {
+      departmentList.add(department);
+    }
+    await _box.put(
+      GlobalStorageKey.departments,
+      departmentList.map((e) => e.toMap()).toList(),
+    );
+    debugPrint(
+      "Department list is ${_box.get(GlobalStorageKey.departments)}",
+    );
+  }
+
+  @override
+  Future<void> updatePosition(PositionModel position) async {
+    List<PositionModel> positionList = positions ?? [];
+    final index = positionList.indexWhere((p) => p.id == position.id);
+    if (index != -1) {
+      positionList[index] = position;
+    } else {
+      positionList.add(position);
+    }
+    await _box.put(
+      GlobalStorageKey.positions,
+      positionList.map((e) => e.toMap()).toList(),
+    );
+    debugPrint(
+      "Position list is ${_box.get(GlobalStorageKey.positions)}",
+    );
+  }
+
+  @override
+  Future<void> fetchAllDepartment(List<DepartmentModel> departments) async {
+    await _box.put(
+      GlobalStorageKey.departments,
+      departments.map((e) => e.toMap()).toList(),
+    );
+    debugPrint(
+      "Department list is ${_box.get(GlobalStorageKey.departments)}",
+    );
+  }
+
+  @override
+  Future<void> fetchAllPosition(List<PositionModel> positions) async {
+    await _box.put(
+      GlobalStorageKey.positions,
+      positions.map((e) => e.toMap()).toList(),
+    );
+    debugPrint(
+      "Position list is ${_box.get(GlobalStorageKey.positions)}",
+    );
+  }
+
+  @override
+  Future<void> addToPersonalManager(PersionalManagement manager) async {
+    List<PersionalManagement> managerList = personalManagers ?? [];
+    managerList.add(manager);
+    await _box.put(
+        GlobalStorageKey.personalManagers, managerList.map((e) => e.toMap()));
+    debugPrint(
+      "Personal manager list is ${_box.get(GlobalStorageKey.personalManagers)}",
+    );
+  }
+
+  @override
+  Future<void> fetchAllPersonalManagers(
+      List<PersionalManagement> managers) async {
+    await _box.put(
+      GlobalStorageKey.personalManagers,
+      managers.map((e) => e.toMap()).toList(),
+    );
+    debugPrint(
+      "Personal manager list is ${_box.get(GlobalStorageKey.personalManagers)}",
+    );
+  }
+
+  @override
+  List<PersionalManagement>? get personalManagers {
+    final jsonList =
+        _box.get(GlobalStorageKey.personalManagers, defaultValue: []);
+    if (jsonList is List) {
+      return jsonList
+          .map((e) => PersionalManagement.fromMap(Map<String, dynamic>.from(e)))
+          .toList();
+    }
+  }
+
+  @override
+  Future<void> removeAllPersonalManagers() {
+    return _box.put(GlobalStorageKey.personalManagers, []);
+  }
+
+  @override
+  Future<void> removeFromPersonalManagerById(String id) async {
+    List<PersionalManagement> managerList = personalManagers ?? [];
+    managerList.removeWhere((manager) => manager.id == id);
+    await _box.put(
+        GlobalStorageKey.personalManagers, managerList.map((e) => e.toMap()));
+    debugPrint(
+      "Personal manager list is ${_box.get(GlobalStorageKey.personalManagers)}",
+    );
+  }
+
+  @override
+  Future<void> updatePersonalManager(PersionalManagement manager) async {
+    List<PersionalManagement> managerList = personalManagers ?? [];
+    final index = managerList.indexWhere((m) => m.id == manager.id);
+    if (index != -1) {
+      managerList[index] = manager;
+    }
+    await _box.put(
+        GlobalStorageKey.personalManagers, managerList.map((e) => e.toMap()));
+    debugPrint(
+      "Personal manager list is ${_box.get(GlobalStorageKey.personalManagers)}",
+    );
+  }
 }

@@ -37,29 +37,54 @@ class DepartmentTableRows extends DataTableSource {
     );
 
     return DataRow2(cells: [
-      DataCell(Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: TSizes.xs, vertical: TSizes.xs),
-        child:
-            Center(child: Text(department.code ?? '-', style: highlightStyle)),
-      )),
-      DataCell(Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: TSizes.xs, vertical: TSizes.xs),
-        child: Center(child: Text(department.name, style: highlightStyle)),
-      )),
-      DataCell(Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: TSizes.xs, vertical: TSizes.xs),
-        child: Center(
-            child: Text(department.managerName ?? '-', style: baseStyle)),
-      )),
-      DataCell(Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: TSizes.xs, vertical: TSizes.xs),
-        child: Center(
-            child: Text(department.description ?? '-', style: baseStyle)),
-      )),
+      DataCell(Center(
+          child: Text(
+        department.code ?? '-',
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(color: TColors.textPrimary),
+      ))),
+      DataCell(Center(
+          child: Text(
+        department.name,
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(color: TColors.textPrimary),
+      ))),
+      DataCell(Center(
+          child: Text(
+        department.description ?? '-',
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(color: TColors.textPrimary),
+      ))),
+      DataCell(Center(
+          child: Text(
+        department.employeeCount.toString(),
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(color: TColors.textPrimary),
+      ))),
+      DataCell(Center(
+          child: Text(
+        department.email ?? '-',
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(color: TColors.textPrimary),
+      ))),
+      DataCell(Center(
+          child: Text(
+        department.phoneNumber ?? '-',
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(color: TColors.textPrimary),
+      ))),
       DataCell(
         Align(
           alignment: Alignment.center,
@@ -84,46 +109,29 @@ class DepartmentTableRows extends DataTableSource {
           ),
         ),
       ),
-      DataCell(Padding(
-        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(
-            child: Text(department.employeeCount.toString(), style: baseStyle)),
-      )),
-      DataCell(Padding(
-        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(child: Text(department.email ?? '-', style: baseStyle)),
-      )),
-      DataCell(Padding(
-        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(
-            child: Text(department.phoneNumber ?? '-', style: baseStyle)),
-      )),
-      DataCell(Padding(
-        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-              onPressed: () {
-                context.go(
-                  RouterName.editDepartment,
-                  extra: department,
-                );
-              },
-              icon: const Icon(Icons.edit),
-              color: TColors.primary,
-            ),
-            const SizedBox(width: TSizes.xs),
-            IconButton(
-              onPressed: () {
-                _confirmDelete(context, department);
-              },
-              icon: const Icon(Icons.delete),
-              color: Colors.red,
-            ),
-          ],
-        ),
+      DataCell(Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          IconButton(
+            onPressed: () {
+              context.go(
+                RouterName.editDepartment,
+                extra: department,
+              );
+            },
+            icon: const Icon(Icons.edit),
+            color: TColors.primary,
+          ),
+          const SizedBox(width: TSizes.xs),
+          IconButton(
+            onPressed: () {
+              _confirmDelete(context, department);
+            },
+            icon: const Icon(Icons.delete),
+            color: Colors.red,
+          ),
+        ],
       )),
     ]);
   }
