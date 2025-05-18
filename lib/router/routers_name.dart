@@ -24,7 +24,7 @@ class RouterName {
   static const editReward = '/edit-reward';
   static const addReward = '/add-reward';
   static const disciplinaryPage = '/disciplinary-page';
-  static const addDisciplinary = 'add-disciplinary';
+  static const addDisciplinary = '/add-disciplinary';
   static const editDisciplinary = '/edit-disciplinary';
 
   static const editPosition = '/edit-position';

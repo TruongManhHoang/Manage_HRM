@@ -7,9 +7,8 @@ class DisciplinaryService {
 
   Future<void> createDisciplinary(DisciplinaryModel disciplinary) async {
     final docRef = _disciplinaryCollection.doc();
-    final disiplinaryWidId = disciplinary.copyWith(
-      id: docRef.id,
-    );
+    final disiplinaryWidId =
+        disciplinary.copyWith(id: docRef.id, disciplinaryDate: DateTime.now());
     await docRef.set(disiplinaryWidId.toMap());
   }
 
@@ -25,9 +24,18 @@ class DisciplinaryService {
   Future<DisciplinaryModel?> getDisciplinaryById(String id) async {
     final doc = await _disciplinaryCollection.doc(id).get();
     if (doc.exists) {
-      return DisciplinaryModel.fromFirestore(doc);
+      return DisciplinaryModel.fromFirestore(
+          doc.data() as Map<String, dynamic>);
     }
     return null;
+  }
+
+  Future<List<DisciplinaryModel>> getAllDisciplinarys() async {
+    final snapshot = await _disciplinaryCollection.get();
+    return snapshot.docs
+        .map((doc) =>
+            DisciplinaryModel.fromFirestore(doc.data() as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<DisciplinaryModel>> getAllDisciplinary() async {
@@ -35,7 +43,8 @@ class DisciplinaryService {
         .orderBy('disciplinaryDate', descending: true)
         .get();
     return snapshot.docs
-        .map((doc) => DisciplinaryModel.fromFirestore(doc))
+        .map((doc) =>
+            DisciplinaryModel.fromFirestore(doc.data() as Map<String, dynamic>))
         .toList();
   }
 
@@ -44,7 +53,8 @@ class DisciplinaryService {
         .orderBy('disciplinaryDate', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs
-            .map((doc) => DisciplinaryModel.fromFirestore(doc))
+            .map((doc) => DisciplinaryModel.fromFirestore(
+                doc.data() as Map<String, dynamic>))
             .toList());
   }
 }
