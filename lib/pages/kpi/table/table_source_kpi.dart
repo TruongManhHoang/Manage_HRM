@@ -1,13 +1,16 @@
+import 'package:admin_hrm/constants/sizes.dart';
 import 'package:admin_hrm/data/model/kpi/kpi_model.dart';
 import 'package:admin_hrm/pages/department/bloc/department_bloc.dart';
 import 'package:admin_hrm/pages/department/bloc/department_event.dart';
 import 'package:admin_hrm/pages/kpi/bloc/kpi_bloc.dart';
 import 'package:admin_hrm/pages/kpi/bloc/kpi_event.dart';
+import 'package:admin_hrm/router/routers_name.dart';
 
 import 'package:data_table_2/data_table_2.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../constants/colors.dart';
 
@@ -80,6 +83,29 @@ class KPITableRows extends DataTableSource {
             .bodyLarge!
             .copyWith(color: TColors.textPrimary),
       ))),
+      DataCell(Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            onPressed: () {
+              context.pushNamed(
+                RouterName.editKpi,
+                extra: kpi,
+              );
+            },
+            icon: const Icon(Icons.edit),
+            color: TColors.primary,
+          ),
+          const SizedBox(width: TSizes.xs),
+          IconButton(
+            onPressed: () {
+              _confirmDelete(context, kpi);
+            },
+            icon: const Icon(Icons.delete),
+            color: Colors.red,
+          ),
+        ],
+      )),
     ]);
   }
 
