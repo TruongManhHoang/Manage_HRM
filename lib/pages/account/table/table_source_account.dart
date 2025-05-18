@@ -1,9 +1,12 @@
 import 'package:admin_hrm/constants/sizes.dart';
-import 'package:admin_hrm/data/model/disciplinary/disciplinary_model.dart';
+import 'package:admin_hrm/data/model/account/account_model.dart';
+import 'package:admin_hrm/data/model/reward/reward_model.dart';
 import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
-import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_bloc.dart';
-import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_event.dart';
+import 'package:admin_hrm/pages/account/bloc/account_bloc.dart';
+
+import 'package:admin_hrm/pages/reward/bloc/reward_bloc.dart';
+import 'package:admin_hrm/pages/reward/bloc/reward_event.dart';
 
 import 'package:admin_hrm/router/routers_name.dart';
 
@@ -15,18 +18,21 @@ import '../../../constants/colors.dart';
 
 import '../../../utils/helpers/helper_functions.dart';
 
-class DisciplinaryTableRows extends DataTableSource {
+class TableSourceAccount extends DataTableSource {
   final BuildContext context;
-  final List<DisciplinaryModel> disciplinarys;
+  final List<AccountModel> accounts;
 
-  DisciplinaryTableRows(this.context, this.disciplinarys);
+  TableSourceAccount(this.context, this.accounts);
 
   @override
   DataRow? getRow(int index) {
-    final disciplinary = disciplinarys[index];
+    final account = accounts[index];
+
     final globalStorage = getIt<GlobalStorage>();
-    final personal = globalStorage.personalManagers!
-        .firstWhere((element) => element.id == disciplinary.employeeId);
+    final employee = globalStorage.personalManagers!.firstWhere(
+      (element) => element.id == account.employeeId,
+    );
+
     TextStyle baseStyle = Theme.of(context).textTheme.bodyLarge!.copyWith(
           color: TColors.dark,
           fontWeight: FontWeight.w500,
@@ -49,30 +55,23 @@ class DisciplinaryTableRows extends DataTableSource {
       )),
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(child: Text(disciplinary.code, style: baseStyle)),
+        child: Center(child: Text(account.code, style: baseStyle)),
       )),
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(child: Text(personal.name, style: baseStyle)),
+        child: Center(child: Text(employee.name, style: baseStyle)),
       )),
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(
-            child: Text(disciplinary.disciplinaryType, style: highlightStyle)),
+        child: Center(child: Text(account.email, style: highlightStyle)),
       )),
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(child: Text(disciplinary.reason, style: baseStyle)),
+        child: Center(child: Text('${account.password}', style: baseStyle)),
       )),
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(
-            child: Text(disciplinary.disciplinaryValue.toString(),
-                style: baseStyle)),
-      )),
-      DataCell(Padding(
-        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(child: Text(disciplinary.severity, style: baseStyle)),
+        child: Center(child: Text('${account.role}', style: baseStyle)),
       )),
       DataCell(
         Align(
@@ -81,16 +80,15 @@ class DisciplinaryTableRows extends DataTableSource {
             padding:
                 const EdgeInsets.symmetric(horizontal: 6, vertical: TSizes.xs),
             decoration: BoxDecoration(
-              color: THelperFunctions.getStatusRewardColor(disciplinary.status)
+              color: THelperFunctions.getContractStatusColor(account.status)
                   .withOpacity(0.1),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
-              disciplinary.status,
+              account.status,
               style: baseStyle.copyWith(
                 fontSize: 12,
-                color:
-                    THelperFunctions.getStatusRewardColor(disciplinary.status),
+                color: THelperFunctions.getStatusRewardColor(account.status),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -105,13 +103,10 @@ class DisciplinaryTableRows extends DataTableSource {
           children: [
             IconButton(
               onPressed: () async {
-                final result = await context.pushNamed(
-                  RouterName.editDisciplinary,
-                  extra: disciplinary,
+                context.push(
+                  RouterName.editAccount,
+                  extra: account,
                 );
-                if (result == true) {
-                  context.read<DisciplinaryBloc>().add(LoadDisciplinary());
-                }
               },
               icon: const Icon(Icons.edit),
               color: TColors.primary,
@@ -119,7 +114,7 @@ class DisciplinaryTableRows extends DataTableSource {
             const SizedBox(width: TSizes.xs),
             IconButton(
               onPressed: () {
-                _confirmDelete(context, disciplinary);
+                _confirmDelete(context, account);
               },
               icon: const Icon(Icons.delete),
               color: Colors.red,
@@ -134,18 +129,18 @@ class DisciplinaryTableRows extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => disciplinarys.length;
+  int get rowCount => accounts.length;
 
   @override
   int get selectedRowCount => 0;
 
-  void _confirmDelete(BuildContext context, DisciplinaryModel reward) {
+  void _confirmDelete(BuildContext context, AccountModel account) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Xác nhận xoá'),
         content: Text(
-            'Bạn có chắc chắn muốn xoá kỷ luật của "${reward.code}" không?'),
+            'Bạn có chắc chắn muốn xoá tài khoản của "${account.employeeId}" không?'),
         actions: [
           TextButton(
             child: const Text('Huỷ'),
@@ -154,9 +149,7 @@ class DisciplinaryTableRows extends DataTableSource {
           TextButton(
             child: const Text('Xoá', style: TextStyle(color: Colors.red)),
             onPressed: () {
-              context
-                  .read<DisciplinaryBloc>()
-                  .add(DeleteDisciplinary(reward.id!));
+              context.read<AccountBloc>().add(DeleteAccount(account.id!));
               context.pop();
             },
           ),

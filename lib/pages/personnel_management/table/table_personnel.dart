@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
+import 'package:admin_hrm/utils/helpers/helper_functions.dart';
 import 'package:admin_hrm/utils/popups/dialogs.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,10 @@ class TableEmployeeRows extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
+    TextStyle baseStyle = Theme.of(context).textTheme.bodyLarge!.copyWith(
+          color: TColors.dark,
+          fontWeight: FontWeight.w500,
+        );
     final globalStorage = getIt<GlobalStorage>();
     final personalManagers = globalStorage.positions!;
     final position = personalManagers.firstWhere(
@@ -37,103 +42,76 @@ class TableEmployeeRows extends DataTableSource {
     return DataRow2(
       specificRowHeight: 100,
       cells: [
-        DataCell(Center(
-          child: Text(
-            employee.code!,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: TColors.primary),
+        DataCell(Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(
+              '${index + 1}',
+              style: baseStyle,
+            ),
           ),
         )),
         DataCell(Center(
-          child: Text(
-            employee.name,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: TColors.textPrimary),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+            child: Text(employee.code!, style: baseStyle),
           ),
         )),
-        DataCell(Center(
-          child: Text(
-            employee.gender,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: TColors.primary),
+        DataCell(Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(employee.name, style: baseStyle),
           ),
         )),
-        DataCell(Center(
-          child: Text(
-            employee.dateOfBirth,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: TColors.textPrimary),
+        DataCell(Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(
+              employee.gender,
+              style: baseStyle,
+            ),
           ),
         )),
-        DataCell(Center(
-          child: Text(
-            employee.phone,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: TColors.textPrimary),
+        DataCell(Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(employee.dateOfBirth, style: baseStyle),
           ),
         )),
-        DataCell(Center(
-          child: Text(
-            employee.email,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: TColors.textPrimary),
+        DataCell(Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(employee.phone, style: baseStyle),
           ),
         )),
-        DataCell(Center(
-          child: Text(
-            employee.address,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: TColors.textPrimary),
+        DataCell(Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(employee.email, style: baseStyle),
           ),
         )),
-        DataCell(Center(
-          child: Text(
-            employee.experience,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: TColors.textPrimary),
+        DataCell(Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(employee.address, style: baseStyle),
           ),
         )),
-        DataCell(Center(
-          child: Text(
-            position.name!,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: TColors.textPrimary),
+        DataCell(Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(position.name!, style: baseStyle),
           ),
         )),
-        DataCell(Center(
-          child: Text(
-            department.name!,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: TColors.textPrimary),
+        DataCell(Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(department.name!, style: baseStyle),
           ),
         )),
-        DataCell(Center(
-          child: Text(
-            employee.date,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: TColors.textPrimary),
+        DataCell(Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(employee.date, style: baseStyle),
           ),
         )),
         DataCell(
@@ -145,6 +123,10 @@ class TableEmployeeRows extends DataTableSource {
             ),
             child: Text(
               employee.status.toString(),
+              style: baseStyle.copyWith(
+                color:
+                    THelperFunctions.getContractStatusColor(employee.status!),
+              ),
             ),
           ),
         ),
