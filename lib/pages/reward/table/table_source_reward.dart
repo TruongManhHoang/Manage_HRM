@@ -1,5 +1,7 @@
 import 'package:admin_hrm/constants/sizes.dart';
 import 'package:admin_hrm/data/model/reward/reward_model.dart';
+import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 
 import 'package:admin_hrm/pages/reward/bloc/reward_bloc.dart';
 import 'package:admin_hrm/pages/reward/bloc/reward_event.dart';
@@ -24,6 +26,11 @@ class RewardTableRows extends DataTableSource {
   DataRow? getRow(int index) {
     final reward = rewards[index];
 
+    final globalStorage = getIt<GlobalStorage>();
+    final employee = globalStorage.personalManagers!.firstWhere(
+      (element) => element.id == reward.employeeId,
+    );
+
     TextStyle baseStyle = Theme.of(context)
         .textTheme
         .bodyMedium!
@@ -37,7 +44,11 @@ class RewardTableRows extends DataTableSource {
     return DataRow2(cells: [
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(child: Text(reward.employeeName, style: highlightStyle)),
+        child: Center(child: Text(reward.code, style: baseStyle)),
+      )),
+      DataCell(Padding(
+        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        child: Center(child: Text(employee.name, style: baseStyle)),
       )),
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
@@ -45,7 +56,7 @@ class RewardTableRows extends DataTableSource {
       )),
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(child: Text(reward.reason, style: baseStyle)),
+        child: Center(child: Text('${reward.reason}', style: baseStyle)),
       )),
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
@@ -58,7 +69,7 @@ class RewardTableRows extends DataTableSource {
             padding:
                 const EdgeInsets.symmetric(horizontal: 6, vertical: TSizes.xs),
             decoration: BoxDecoration(
-              color: THelperFunctions.getStatusRewardColor(reward.status)
+              color: THelperFunctions.getContractStatusColor(reward.status)
                   .withOpacity(0.1),
               borderRadius: BorderRadius.circular(6),
             ),
@@ -81,13 +92,10 @@ class RewardTableRows extends DataTableSource {
           children: [
             IconButton(
               onPressed: () async {
-                final result = await context.pushNamed(
+                context.push(
                   RouterName.editReward,
                   extra: reward,
                 );
-                if (result == true) {
-                  context.read<RewardBloc>().add(LoadRewards());
-                }
               },
               icon: const Icon(Icons.edit),
               color: TColors.primary,
@@ -121,7 +129,7 @@ class RewardTableRows extends DataTableSource {
       builder: (ctx) => AlertDialog(
         title: const Text('Xác nhận xoá'),
         content: Text(
-            'Bạn có chắc chắn muốn xoá khen thưởng của "${reward.employeeName}" không?'),
+            'Bạn có chắc chắn muốn xoá khen thưởng của "${reward.employeeId}" không?'),
         actions: [
           TextButton(
             child: const Text('Huỷ'),
@@ -130,7 +138,7 @@ class RewardTableRows extends DataTableSource {
           TextButton(
             child: const Text('Xoá', style: TextStyle(color: Colors.red)),
             onPressed: () {
-              context.read<RewardBloc>().add(DeleteReward(reward.id));
+              context.read<RewardBloc>().add(DeleteReward(reward.id!));
               context.pop();
             },
           ),

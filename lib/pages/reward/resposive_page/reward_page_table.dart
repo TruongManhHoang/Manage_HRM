@@ -50,8 +50,8 @@ class RewardPageTable extends StatelessWidget {
                               backgroundColor: Colors.blue,
                             ),
                             onPressed: () async {
-                              final result = await context
-                                  .pushNamed(RouterName.addDepartment);
+                              final result =
+                                  await context.push(RouterName.addReward);
                               if (result == true) {
                                 context.read<RewardBloc>().add(LoadRewards());
                               }
@@ -76,7 +76,6 @@ class RewardPageTable extends StatelessWidget {
                                     headers: [
                                       'Mã khen thưởng',
                                       'Mã nhân viên',
-                                      'Tên nhân viên',
                                       'Lý do',
                                       'Loại khen thưởng',
                                       'Trạng thái',
@@ -88,7 +87,6 @@ class RewardPageTable extends StatelessWidget {
                                         .map((reward) => [
                                               reward.id,
                                               reward.employeeId,
-                                              reward.employeeName,
                                               reward.reason,
                                               reward.status,
                                               reward.rewardType,

@@ -123,7 +123,7 @@ class TableEmployeeRows extends DataTableSource {
             department.name!,
             style: Theme.of(context)
                 .textTheme
-                .titleMedium!
+                .bodyLarge!
                 .copyWith(color: TColors.textPrimary),
           ),
         )),
