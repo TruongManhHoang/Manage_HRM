@@ -10,13 +10,14 @@ class DisciplinaryRepository {
       _service.createDisciplinary(disciplinary);
 
   Future<void> updateDisciplinary(DisciplinaryModel disciplinary) =>
-      _service.updateDisciplinary(disciplinary.id, disciplinary);
+      _service.updateDisciplinary(disciplinary.id!, disciplinary);
 
   Future<void> deleteDisciplinary(String id) => _service.deleteDisciplinary(id);
 
   Future<DisciplinaryModel?> getDisciplinary(String id) =>
       _service.getDisciplinaryById(id);
-
+  Future<List<DisciplinaryModel>> getAllDisciplinarys() =>
+      _service.getAllDisciplinarys();
   Future<List<DisciplinaryModel>> fetchAllDisciplinary() =>
       _service.getAllDisciplinary();
 

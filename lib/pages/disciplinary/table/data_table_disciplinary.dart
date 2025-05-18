@@ -32,6 +32,20 @@ class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
               DataColumn2(
                 label: Center(
                   child: Text(
+                    'Mã kỷ luật',
+                    maxLines: 2,
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn2(
+                label: Center(
+                  child: Text(
                     'Nhân viên',
                     maxLines: 2,
                     softWrap: true,
@@ -74,6 +88,20 @@ class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
               DataColumn2(
                 label: Center(
                   child: Text(
+                    'Giá trị kỷ luật',
+                    maxLines: 2,
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn2(
+                label: Center(
+                  child: Text(
                     'Mức độ kỷ luật',
                     maxLines: 2,
                     softWrap: true,
@@ -88,7 +116,7 @@ class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Người phê duyệt',
+                    'Trạng thái',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -102,7 +130,7 @@ class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Trạng thái',
+                    'Hành động',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,

@@ -1,6 +1,7 @@
 import 'package:admin_hrm/data/repository/disciplinary_repository.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_event.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DisciplinaryBloc extends Bloc<DisciplinaryEvent, DisciplinaryState> {
@@ -17,7 +18,7 @@ class DisciplinaryBloc extends Bloc<DisciplinaryEvent, DisciplinaryState> {
       LoadDisciplinary event, Emitter<DisciplinaryState> emit) async {
     emit(DisciplinaryLoading());
     try {
-      final disciplinary = await repository.fetchAllDisciplinary();
+      final disciplinary = await repository.getAllDisciplinarys();
       emit(DisciplinaryLoaded(disciplinary));
     } catch (e) {
       emit(DisciplinaryError('Không thể tải danh sách kỷ luật'));

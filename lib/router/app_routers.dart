@@ -23,11 +23,12 @@ import 'package:admin_hrm/pages/department/add_deparment/add_department_page.dar
 import 'package:admin_hrm/pages/department/bloc/department_event.dart';
 import 'package:admin_hrm/pages/department/bloc/department_bloc.dart';
 import 'package:admin_hrm/pages/department/department_page.dart';
+import 'package:admin_hrm/pages/disciplinary/add_disciplinary_page/add_disciplinary_page.dart';
+import 'package:admin_hrm/pages/disciplinary/edit_disciplinary_page/edit_disciplinary_page.dart';
 import 'package:admin_hrm/pages/personnel_management/personnel_page.dart';
 import 'package:admin_hrm/pages/personnel_management/widgets/add_personnel.dart';
 import 'package:admin_hrm/pages/department/edit_deparment/edit_deparment.dart';
 
-import 'package:admin_hrm/pages/disciplinary/add_edit_page/add_edit_disciplinary_page.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_bloc.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_event.dart';
 import 'package:admin_hrm/pages/disciplinary/disciplinary.dart';
@@ -306,30 +307,29 @@ class AppRouter {
             },
             routes: [
               GoRoute(
-                  path: RouterName.disciplinaryPage,
-                  name: RouterName.disciplinaryPage,
-                  routes: [
-                    GoRoute(
-                      path: RouterName.editDisciplinary,
-                      name: RouterName.editDisciplinary,
-                      builder: (context, state) {
-                        final disciplinary = state.extra as DisciplinaryModel;
-                        return AddAndEditDisciplinaryPage(
-                          disciplinary: disciplinary,
-                        );
-                      },
-                    ),
-                    GoRoute(
-                      path: RouterName.addDisciplinary,
-                      name: RouterName.addDisciplinary,
-                      builder: (context, state) {
-                        return const AddAndEditDisciplinaryPage();
-                      },
-                    )
-                  ],
-                  builder: (context, state) {
-                    return const DisciplinaryPage();
-                  }),
+                path: RouterName.addDisciplinary,
+                name: RouterName.addDisciplinary,
+                builder: (context, state) {
+                  return AddDisciplinaryPage();
+                },
+              ),
+              GoRoute(
+                path: RouterName.disciplinaryPage,
+                name: RouterName.disciplinaryPage,
+                builder: (context, state) {
+                  return const DisciplinaryPage();
+                },
+              ),
+              GoRoute(
+                path: RouterName.editDisciplinary,
+                name: RouterName.editDisciplinary,
+                builder: (context, state) {
+                  final disciplinary = state.extra as DisciplinaryModel;
+                  return EditDisciplinaryPage(
+                    disciplinaryModel: disciplinary,
+                  );
+                },
+              ),
             ]),
         GoRoute(
           path: RouterName.salaryPage,

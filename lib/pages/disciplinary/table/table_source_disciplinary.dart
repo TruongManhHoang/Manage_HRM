@@ -1,10 +1,9 @@
 import 'package:admin_hrm/constants/sizes.dart';
 import 'package:admin_hrm/data/model/disciplinary/disciplinary_model.dart';
+import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_bloc.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_event.dart';
-
-import 'package:admin_hrm/pages/reward/bloc/reward_bloc.dart';
-import 'package:admin_hrm/pages/reward/bloc/reward_event.dart';
 
 import 'package:admin_hrm/router/routers_name.dart';
 
@@ -25,7 +24,9 @@ class DisciplinaryTableRows extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     final disciplinary = disciplinarys[index];
-
+    final globalStorage = getIt<GlobalStorage>();
+    final personal = globalStorage.personalManagers!
+        .firstWhere((element) => element.id == disciplinary.employeeId);
     TextStyle baseStyle = Theme.of(context)
         .textTheme
         .bodyMedium!
@@ -39,8 +40,11 @@ class DisciplinaryTableRows extends DataTableSource {
     return DataRow2(cells: [
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(
-            child: Text(disciplinary.employeeName, style: highlightStyle)),
+        child: Center(child: Text(disciplinary.code, style: baseStyle)),
+      )),
+      DataCell(Padding(
+        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        child: Center(child: Text(personal.name, style: baseStyle)),
       )),
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
@@ -50,6 +54,12 @@ class DisciplinaryTableRows extends DataTableSource {
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
         child: Center(child: Text(disciplinary.reason, style: baseStyle)),
+      )),
+      DataCell(Padding(
+        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        child: Center(
+            child: Text(disciplinary.disciplinaryValue.toString(),
+                style: baseStyle)),
       )),
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
@@ -126,7 +136,7 @@ class DisciplinaryTableRows extends DataTableSource {
       builder: (ctx) => AlertDialog(
         title: const Text('Xác nhận xoá'),
         content: Text(
-            'Bạn có chắc chắn muốn xoá kỷ luật của "${reward.employeeName}" không?'),
+            'Bạn có chắc chắn muốn xoá kỷ luật của "${reward.code}" không?'),
         actions: [
           TextButton(
             child: const Text('Huỷ'),
@@ -137,7 +147,7 @@ class DisciplinaryTableRows extends DataTableSource {
             onPressed: () {
               context
                   .read<DisciplinaryBloc>()
-                  .add(DeleteDisciplinary(reward.id));
+                  .add(DeleteDisciplinary(reward.id!));
               context.pop();
             },
           ),
