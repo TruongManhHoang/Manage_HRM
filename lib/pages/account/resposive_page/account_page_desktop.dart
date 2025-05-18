@@ -1,18 +1,22 @@
 import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
 import 'package:admin_hrm/common/widgets/method/method.dart';
 import 'package:admin_hrm/constants/sizes.dart';
-import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_bloc.dart';
-import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_event.dart';
-import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_state.dart';
-import 'package:admin_hrm/pages/disciplinary/table/data_table_disciplinary.dart';
+import 'package:admin_hrm/pages/account/bloc/account_bloc.dart';
+import 'package:admin_hrm/pages/account/table/data_table_account.dart';
+import 'package:admin_hrm/pages/reward/bloc/reward_bloc.dart';
+import 'package:admin_hrm/pages/reward/bloc/reward_event.dart';
+import 'package:admin_hrm/pages/reward/bloc/reward_state.dart';
+import 'package:admin_hrm/pages/reward/table/data_table_reward.dart';
 import 'package:admin_hrm/router/routers_name.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class DisciplinaryPageTable extends StatelessWidget {
-  const DisciplinaryPageTable({super.key});
+class AccountPageDesktop extends StatelessWidget {
+  const AccountPageDesktop({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,13 +29,13 @@ class DisciplinaryPageTable extends StatelessWidget {
           child: Column(
             children: [
               const TBreadcrumsWithHeading(
-                heading: 'Kỷ luật',
+                heading: 'Tài Khoản',
                 breadcrumbItems: [],
               ),
               const Row(
                 children: [
                   Text(
-                    'Kỷ luật',
+                    'Tài Khoản',
                     style: TextStyle(fontSize: 25, color: Colors.black),
                   ),
                 ],
@@ -50,58 +54,56 @@ class DisciplinaryPageTable extends StatelessWidget {
                               backgroundColor: Colors.blue,
                             ),
                             onPressed: () async {
-                              final result = await context
-                                  .push(RouterName.addDisciplinary);
+                              final result =
+                                  await context.push(RouterName.addAccount);
                               if (result == true) {
-                                context
-                                    .read<DisciplinaryBloc>()
-                                    .add(LoadDisciplinary());
+                                context.read<AccountBloc>().add(LoadAccounts());
                               }
                             },
                             child: Text(
-                              'Thêm kỷ luật',
+                              'Thêm tài khoản',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
                                   .copyWith(color: Colors.white),
                             )),
                         const Gap(10),
-                        BlocBuilder<DisciplinaryBloc, DisciplinaryState>(
+                        BlocBuilder<AccountBloc, AccountState>(
                             builder: (context, state) {
-                          if (state is DisciplinaryLoaded) {
+                          if (state is AccountLoaded) {
                             return TextButton(
                                 style: TextButton.styleFrom(
                                   backgroundColor: Colors.blue,
                                 ),
                                 onPressed: () {
                                   exportDynamicExcel(
-                                    fileName: 'Danh sách kỷ luật',
+                                    fileName: 'Danh sách tài khoản',
                                     headers: [
-                                      'Mã kỷ luật',
+                                      'Mã tài khoản',
                                       'Mã nhân viên',
-                                      'Lý do',
-                                      'Loại kỷ luật',
-                                      'Giá trị kỷ luật',
-                                      'Mức độ kỷ luật',
+                                      'Tên tài khoản',
+                                      'Mật khẩu',
                                       'Trạng thái',
-                                      'Ngày khen thưởng',
+                                      'Loại tài khoản',
+                                      'Ngày tạo',
+                                      'Ngày cập nhật',
                                     ],
-                                    dataRows: state.disciplinary
-                                        .map((disciplinary) => [
-                                              disciplinary.id,
-                                              disciplinary.employeeId,
-                                              disciplinary.reason,
-                                              disciplinary.disciplinaryType,
-                                              disciplinary.disciplinaryValue,
-                                              disciplinary.severity,
-                                              disciplinary.status,
-                                              disciplinary.disciplinaryDate,
+                                    dataRows: state.accounts
+                                        .map((account) => [
+                                              account.id,
+                                              account.employeeId,
+                                              account.name,
+                                              account.password,
+                                              account.status,
+                                              account.role,
+                                              account.createdAt,
+                                              account.updatedAt
                                             ])
                                         .toList(),
                                   );
                                 },
                                 child: Text(
-                                  'Xuất danh sách kỷ luật',
+                                  'Xuất danh sách tài khoản',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium!
@@ -114,7 +116,7 @@ class DisciplinaryPageTable extends StatelessWidget {
                       ],
                     ),
                     const Gap(TSizes.spaceBtwItems),
-                    const DataTableDisciplinary()
+                    const DataTableAccount()
                   ],
                 ),
               ),

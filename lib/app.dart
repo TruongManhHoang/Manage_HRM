@@ -22,8 +22,10 @@ class App extends StatelessWidget {
             create: (context) => SideBarBloc(),
           ),
           BlocProvider<AuthBloc>(
-              create: (_) => AuthBloc(getIt<AuthService>(),
-                  getIt<UserRepository>(), getIt<GlobalStorage>())
+              create: (_) => AuthBloc(
+                  authService: getIt<AuthService>(),
+                  userRepository: getIt<UserRepository>(),
+                  globalStorage: getIt<GlobalStorage>())
                 ..add(AuthStarted())),
         ],
         child: MaterialApp.router(

@@ -80,6 +80,10 @@ class Sidebar extends StatelessWidget {
                         icon: Iconsax.wallet,
                         title: 'Lương',
                         router: RouterName.salaryPage),
+                    const MenuItem(
+                        icon: Iconsax.add,
+                        title: 'Tài khoản',
+                        router: RouterName.accountPage),
 
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),

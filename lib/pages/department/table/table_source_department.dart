@@ -26,10 +26,10 @@ class DepartmentTableRows extends DataTableSource {
   DataRow? getRow(int index) {
     final department = departments[index];
 
-    TextStyle baseStyle = Theme.of(context)
-        .textTheme
-        .bodyMedium!
-        .copyWith(color: TColors.dark, fontSize: 12);
+    TextStyle baseStyle = Theme.of(context).textTheme.bodyLarge!.copyWith(
+          color: TColors.dark,
+          fontWeight: FontWeight.w500,
+        );
 
     TextStyle highlightStyle = baseStyle.copyWith(
       color: TColors.primary,
@@ -37,53 +37,24 @@ class DepartmentTableRows extends DataTableSource {
     );
 
     return DataRow2(cells: [
-      DataCell(Center(
-          child: Text(
-        department.code ?? '-',
-        style: Theme.of(context)
-            .textTheme
-            .bodyLarge!
-            .copyWith(color: TColors.textPrimary),
-      ))),
-      DataCell(Center(
-          child: Text(
-        department.name,
-        style: Theme.of(context)
-            .textTheme
-            .bodyLarge!
-            .copyWith(color: TColors.textPrimary),
-      ))),
-      DataCell(Center(
-          child: Text(
-        department.description ?? '-',
-        style: Theme.of(context)
-            .textTheme
-            .bodyLarge!
-            .copyWith(color: TColors.textPrimary),
-      ))),
+      DataCell(Center(child: Text(department.code ?? '-', style: baseStyle))),
+      DataCell(Center(child: Text(department.name, style: baseStyle))),
+      DataCell(
+          Center(child: Text(department.description ?? '-', style: baseStyle))),
       DataCell(Center(
           child: Text(
         department.employeeCount.toString(),
-        style: Theme.of(context)
-            .textTheme
-            .bodyLarge!
-            .copyWith(color: TColors.textPrimary),
+        style: baseStyle,
       ))),
       DataCell(Center(
           child: Text(
         department.email ?? '-',
-        style: Theme.of(context)
-            .textTheme
-            .bodyLarge!
-            .copyWith(color: TColors.textPrimary),
+        style: baseStyle,
       ))),
       DataCell(Center(
           child: Text(
         department.phoneNumber ?? '-',
-        style: Theme.of(context)
-            .textTheme
-            .bodyLarge!
-            .copyWith(color: TColors.textPrimary),
+        style: baseStyle,
       ))),
       DataCell(
         Align(
@@ -100,10 +71,8 @@ class DepartmentTableRows extends DataTableSource {
             child: Text(
               department.status,
               style: baseStyle.copyWith(
-                fontSize: 12,
                 color: THelperFunctions.getDepartmentStatusColor(
                     department.status),
-                fontWeight: FontWeight.w500,
               ),
             ),
           ),

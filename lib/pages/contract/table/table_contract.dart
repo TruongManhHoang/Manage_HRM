@@ -32,41 +32,68 @@ class TableContractRows extends DataTableSource {
       (p) => p.id == contract.employeeId,
     );
 
+    TextStyle baseStyle = Theme.of(context).textTheme.bodyLarge!.copyWith(
+          color: TColors.dark,
+          fontWeight: FontWeight.w500,
+        );
+
     return DataRow2(cells: [
-      DataCell(Center(
-        child: Text(
-          contract.contractCode!,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(color: TColors.primary),
+      DataCell(Padding(
+        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        child: Center(
+          child: Text(
+            '${index + 1}',
+            style: baseStyle,
+          ),
+        ),
+      )),
+      DataCell(Padding(
+        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        child: Center(
+          child: Text(contract.contractCode!, style: baseStyle),
         ),
       )),
       DataCell(
-        Center(child: Text(personal.name)),
-      ),
-      DataCell(
-        Center(child: Text(contract.contractType!)),
-      ),
-      DataCell(
-        Center(child: Text(NumberFormat('#,###').format(contract.salary))),
-      ),
-      DataCell(
-        Center(child: Text(contract.description)),
-      ),
-      DataCell(
-        Center(
-          child: Text(
-            THelperFunctions.getFormattedDate(contract.startDate!),
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(child: Text(personal.name, style: baseStyle)),
         ),
       ),
       DataCell(
-        Center(
-          child: Text(
-            THelperFunctions.getFormattedDate(contract.endDate!),
-            style: Theme.of(context).textTheme.bodyMedium,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(child: Text(contract.contractType, style: baseStyle)),
+        ),
+      ),
+      DataCell(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+              child: Text(NumberFormat('#,###').format(contract.salary),
+                  style: baseStyle)),
+        ),
+      ),
+      DataCell(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(child: Text(contract.description, style: baseStyle)),
+        ),
+      ),
+      DataCell(
+        Padding(
+            padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+            child: Center(
+              child: Text(
+                  THelperFunctions.getFormattedDate(contract.startDate!),
+                  style: baseStyle),
+            )),
+      ),
+      DataCell(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(THelperFunctions.getFormattedDate(contract.endDate!),
+                style: baseStyle),
           ),
         ),
       ),
@@ -83,36 +110,37 @@ class TableContractRows extends DataTableSource {
             ),
             child: Text(
               contract.status!,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: 12,
-                    color: THelperFunctions.getContractStatusColor(
-                        contract.status!),
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: baseStyle.copyWith(
+                color:
+                    THelperFunctions.getContractStatusColor(contract.status!),
+              ),
             ),
           ),
         ),
       ),
-      DataCell(Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              onPressed: () {
-                context.go(RouterName.editContract, extra: contract);
-              },
-              icon: const Icon(Icons.edit),
-              color: TColors.primary,
-            ),
-            const SizedBox(width: TSizes.xs),
-            IconButton(
-              onPressed: () {
-                _confirmDelete(context, contract);
-              },
-              icon: const Icon(Icons.delete),
-              color: Colors.red,
-            ),
-          ],
+      DataCell(Padding(
+        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: () {
+                  context.go(RouterName.editContract, extra: contract);
+                },
+                icon: const Icon(Icons.edit),
+                color: TColors.primary,
+              ),
+              const SizedBox(width: TSizes.xs),
+              IconButton(
+                onPressed: () {
+                  _confirmDelete(context, contract);
+                },
+                icon: const Icon(Icons.delete),
+                color: Colors.red,
+              ),
+            ],
+          ),
         ),
       ))
     ]);

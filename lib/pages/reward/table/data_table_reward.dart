@@ -1,3 +1,4 @@
+import 'package:admin_hrm/constants/colors.dart';
 import 'package:admin_hrm/pages/reward/bloc/reward_bloc.dart';
 import 'package:admin_hrm/pages/reward/bloc/reward_event.dart';
 import 'package:admin_hrm/pages/reward/bloc/reward_state.dart';
@@ -26,6 +27,10 @@ class _DataTableRewardState extends State<DataTableReward> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle baseStyle = Theme.of(context).textTheme.bodyLarge!.copyWith(
+          color: TColors.dark,
+          fontWeight: FontWeight.w500,
+        );
     return BlocBuilder<RewardBloc, RewardState>(
       builder: (context, state) {
         if (state is RewardLoading) {
@@ -35,103 +40,77 @@ class _DataTableRewardState extends State<DataTableReward> {
             minWidth: 700,
             tableHeight: 500,
             dataRowHeight: TSizes.xl * 1.45,
-            columns: const [
+            columns: [
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Mã khen thưởng',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Mã khen thưởng',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Nhân viên',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Nhân viên',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Loại khen thưởng',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Loại khen thưởng',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Lý do',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Lý do',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Giá trị',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Giá trị',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Người phê duyệt',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Người phê duyệt',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Trạng thái',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Trạng thái',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
+                ),
+              ),
+              DataColumn2(
+                label: Center(
+                  child: Text('Hành động',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
             ],
