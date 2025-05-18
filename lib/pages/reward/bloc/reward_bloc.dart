@@ -1,4 +1,5 @@
 import 'package:admin_hrm/data/repository/reward_repository.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'reward_event.dart';
 import 'reward_state.dart';
@@ -17,7 +18,9 @@ class RewardBloc extends Bloc<RewardEvent, RewardState> {
       LoadRewards event, Emitter<RewardState> emit) async {
     emit(RewardLoading());
     try {
-      final rewards = await repository.fetchAllRewards();
+      debugPrint('Loading rewards...');
+      final rewards = await repository.getAllRewards();
+
       emit(RewardLoaded(rewards));
     } catch (e) {
       emit(RewardError('Không thể tải danh sách khen thưởng'));
@@ -26,6 +29,7 @@ class RewardBloc extends Bloc<RewardEvent, RewardState> {
 
   Future<void> _onAddReward(AddReward event, Emitter<RewardState> emit) async {
     try {
+      debugPrint('Adding reward: ');
       await repository.addReward(event.reward);
       emit(RewardSuccess());
       add(LoadRewards());
@@ -37,6 +41,7 @@ class RewardBloc extends Bloc<RewardEvent, RewardState> {
   Future<void> _onUpdateReward(
       UpdateReward event, Emitter<RewardState> emit) async {
     try {
+      debugPrint('Updating reward: ${event.reward}');
       await repository.updateReward(event.reward);
       emit(RewardSuccess());
       add(LoadRewards());

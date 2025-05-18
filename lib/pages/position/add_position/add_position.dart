@@ -158,13 +158,12 @@ class AddPosition extends StatelessWidget {
                                                       style: TextButton.styleFrom(
                                                           backgroundColor:
                                                               Colors.blue,
-                                                          padding: EdgeInsets
+                                                          padding: const EdgeInsets
                                                               .symmetric(
-                                                                  horizontal:
-                                                                      TSizes.defaultSpace *
-                                                                          2,
-                                                                  vertical:
-                                                                      16)),
+                                                              horizontal: TSizes
+                                                                      .defaultSpace *
+                                                                  2,
+                                                              vertical: 16)),
                                                       onPressed: () {
                                                         // Handle form submission
 

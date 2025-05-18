@@ -40,9 +40,10 @@ import 'package:admin_hrm/pages/position/edit_postion/edit_position.dart';
 import 'package:admin_hrm/pages/position/position_page.dart';
 import 'package:admin_hrm/pages/position/add_position/add_position.dart';
 
-import 'package:admin_hrm/pages/reward/add_edit_page/add_edit_reward_page.dart';
+import 'package:admin_hrm/pages/reward/add_reward/add_reward_page.dart';
 import 'package:admin_hrm/pages/reward/bloc/reward_bloc.dart';
 import 'package:admin_hrm/pages/reward/bloc/reward_event.dart';
+import 'package:admin_hrm/pages/reward/edit_reward/edit_reward_page.dart';
 import 'package:admin_hrm/pages/reward/reward_page.dart';
 
 import 'package:admin_hrm/pages/salary/add_deparment/add_salary_page.dart';
@@ -255,48 +256,43 @@ class AppRouter {
               ),
             ]),
         ShellRoute(
-            builder: (context, state, child) {
-              return BlocProvider<RewardBloc>(
-                create: (context) => RewardBloc(
-                  getIt<RewardRepository>(),
-                )..add(LoadRewards()),
-                child: Scaffold(
-                  body: child,
-                ),
-              );
-            },
-            routes: [
-              GoRoute(
-                  path: RouterName.rewardPage,
-                  name: RouterName.rewardPage,
-                  routes: [
-                    GoRoute(
-                      path: RouterName.editReward,
-                      name: RouterName.editReward,
-                      builder: (context, state) {
-                        final reward = state.extra as RewardModel;
-                        return AddAndEditRewardPage(
-                          reward: reward,
-                        );
-                      },
-                    ),
-                    GoRoute(
-                      path: RouterName.addReward,
-                      name: RouterName.addReward,
-                      builder: (context, state) {
-                        return const AddAndEditRewardPage();
-                      },
-                    )
-                  ],
-                  builder: (context, state) {
-                    return BlocProvider(
-                      create: (context) => RewardBloc(
-                        getIt<RewardRepository>(),
-                      )..add(LoadRewards()),
-                      child: const RewardPage(),
-                    );
-                  }),
-            ]),
+          builder: (context, state, child) {
+            return BlocProvider<RewardBloc>(
+              create: (context) => RewardBloc(
+                getIt<RewardRepository>(),
+              )..add(LoadRewards()),
+              child: Scaffold(
+                body: child,
+              ),
+            );
+          },
+          routes: [
+            GoRoute(
+              path: RouterName.addReward,
+              name: RouterName.addReward,
+              builder: (context, state) {
+                return const AddRewardPage();
+              },
+            ),
+            GoRoute(
+              path: RouterName.editReward,
+              name: RouterName.editReward,
+              builder: (context, state) {
+                final reward = state.extra as RewardModel;
+                return EditRewardPage(
+                  rewardModel: reward,
+                );
+              },
+            ),
+            GoRoute(
+              path: RouterName.rewardPage,
+              name: RouterName.rewardPage,
+              builder: (context, state) {
+                return RewardPage();
+              },
+            ),
+          ],
+        ),
         ShellRoute(
             builder: (context, state, child) {
               return BlocProvider<DisciplinaryBloc>(

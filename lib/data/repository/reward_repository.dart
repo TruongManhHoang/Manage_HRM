@@ -9,11 +9,13 @@ class RewardRepository {
   Future<void> addReward(RewardModel reward) => _service.createReward(reward);
 
   Future<void> updateReward(RewardModel reward) =>
-      _service.updateReward(reward.id, reward);
+      _service.updateReward(reward);
 
   Future<void> deleteReward(String id) => _service.deleteReward(id);
 
   Future<RewardModel?> getReward(String id) => _service.getRewardById(id);
+
+  Future<List<RewardModel>> getAllRewards() => _service.getAllReward();
 
   Future<List<RewardModel>> fetchAllRewards() => _service.getAllRewards();
 
