@@ -1,58 +1,56 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class DisciplinaryModel {
-  final String id; // ID tự sinh từ Firestore
-  final String employeeId; // ID của nhân viên bị kỷ luật
-  final String employeeName; // Tên nhân viên bị kỷ luật
+  final String? id;
+  final String employeeId;
+  final String code;
   final String disciplinaryType;
-  final Timestamp
-      disciplinaryDate; // Firebase sử dụng Timestamp thay vì DateTime
+  final int disciplinaryValue;
+  final DateTime? disciplinaryDate;
   final String reason;
   final String severity;
-  final String approvedBy;
   final String status;
-  final String? document; // Optional, có thể lưu đường dẫn tài liệu
+  final String? document;
 
   DisciplinaryModel({
-    required this.id,
+    this.id,
     required this.employeeId,
-    required this.employeeName,
+    required this.code,
     required this.disciplinaryType,
-    required this.disciplinaryDate,
+    required this.disciplinaryValue,
+    this.disciplinaryDate,
     required this.reason,
     required this.severity,
-    required this.approvedBy,
     required this.status,
     this.document,
   });
 
-  // Chuyển đổi từ Firebase Firestore Document sang object
-  factory DisciplinaryModel.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data() as Map;
+  factory DisciplinaryModel.fromFirestore(Map<String, dynamic> map) {
     return DisciplinaryModel(
-      id: doc.id, // Firebase sẽ tự động gán ID tài liệu
-      employeeId: data['employeeId'],
-      employeeName: data['employeeName'],
-      disciplinaryType: data['disciplinaryType'],
-      disciplinaryDate: data['disciplinaryDate'],
-      reason: data['reason'],
-      severity: data['severity'],
-      approvedBy: data['approvedBy'],
-      status: data['status'],
-      document: data['document'],
+      id: map['id'],
+      employeeId: map['employeeId'],
+      code: map['code'],
+      disciplinaryType: map['disciplinaryType'],
+      disciplinaryValue: map['disciplinaryValue'],
+      disciplinaryDate: map['disciplinaryDate'] != null
+          ? DateTime.parse(map['disciplinaryDate'])
+          : null,
+      reason: map['reason'],
+      severity: map['severity'],
+      status: map['status'],
+      document: map['document'],
     );
   }
 
   // Chuyển đổi từ object sang dữ liệu để lưu vào Firestore
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'employeeId': employeeId,
-      'employeeName': employeeName,
+      'code': code,
       'disciplinaryType': disciplinaryType,
-      'disciplinaryDate': disciplinaryDate,
+      'disciplinaryValue': disciplinaryValue,
+      'disciplinaryDate': disciplinaryDate?.toIso8601String(),
       'reason': reason,
       'severity': severity,
-      'approvedBy': approvedBy,
       'status': status,
       'document': document,
     };
@@ -64,7 +62,9 @@ class DisciplinaryModel {
     String? employeeId,
     String? employeeName,
     String? disciplinaryType,
-    Timestamp? disciplinaryDate,
+    String? code,
+    int? disciplinaryValue,
+    DateTime? disciplinaryDate,
     String? reason,
     String? severity,
     String? approvedBy,
@@ -73,15 +73,15 @@ class DisciplinaryModel {
   }) {
     return DisciplinaryModel(
       id: id ?? this.id,
+      code: code ?? this.code,
       employeeId: employeeId ?? this.employeeId,
-      employeeName: employeeName ?? this.employeeName,
       disciplinaryType: disciplinaryType ?? this.disciplinaryType,
       disciplinaryDate: disciplinaryDate ?? this.disciplinaryDate,
       reason: reason ?? this.reason,
       severity: severity ?? this.severity,
-      approvedBy: approvedBy ?? this.approvedBy,
       status: status ?? this.status,
       document: document ?? this.document,
+      disciplinaryValue: disciplinaryValue ?? this.disciplinaryValue,
     );
   }
 }

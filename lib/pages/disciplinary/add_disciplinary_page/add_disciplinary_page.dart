@@ -4,9 +4,13 @@ import 'package:admin_hrm/common/widgets/layouts/headers/headers.dart';
 import 'package:admin_hrm/common/widgets/layouts/sidebars/sidebar.dart';
 import 'package:admin_hrm/common/widgets/text_form/text_form_field.dart';
 import 'package:admin_hrm/constants/sizes.dart';
+import 'package:admin_hrm/data/model/disciplinary/disciplinary_model.dart';
 import 'package:admin_hrm/data/model/reward/reward_model.dart';
 import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
+import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_bloc.dart';
+import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_event.dart';
+import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_state.dart';
 import 'package:admin_hrm/pages/position/bloc/position_bloc.dart';
 import 'package:admin_hrm/pages/reward/bloc/reward_bloc.dart';
 import 'package:admin_hrm/pages/reward/bloc/reward_event.dart';
@@ -18,8 +22,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class AddRewardPage extends StatelessWidget {
-  const AddRewardPage({super.key});
+class AddDisciplinaryPage extends StatelessWidget {
+  const AddDisciplinaryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,27 +32,28 @@ class AddRewardPage extends StatelessWidget {
     String? selectedPersonalId;
     TextEditingController personalIdController = TextEditingController();
     TextEditingController codeController = TextEditingController();
-    TextEditingController rewardTypeController = TextEditingController();
-    TextEditingController rewardValueController = TextEditingController();
+    TextEditingController disciplinaryTypeController = TextEditingController();
+    TextEditingController disciplinaryValueController = TextEditingController();
     TextEditingController reasonController = TextEditingController();
-    TextEditingController approvedByController = TextEditingController();
+    TextEditingController severityController = TextEditingController();
     TextEditingController statusController = TextEditingController();
 
     final _formKey = GlobalKey<FormState>();
 
-    return BlocConsumer<RewardBloc, RewardState>(listener: (context, state) {
-      if (state is RewardSuccess) {
+    return BlocConsumer<DisciplinaryBloc, DisciplinaryState>(
+        listener: (context, state) {
+      if (state is DisciplinarySuccess) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Thêm phần thưởng thành công'),
+            content: Text('Thêm kỷ luật thành công'),
           ),
         );
-        context.go(RouterName.rewardPage);
+        context.go(RouterName.disciplinaryPage);
         // context.go(RouterName.rewardPage);
       } else if (state is RewardError) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Thêm phần thưởng thất bại: ${state.message}'),
+            content: Text('Thêm phần thưởng thất bại: '),
           ),
         );
       }
@@ -73,9 +78,9 @@ class AddRewardPage extends StatelessWidget {
                         child: Column(
                           children: [
                             const TBreadcrumsWithHeading(
-                              heading: 'Khen thưởng',
+                              heading: 'Kỷ luật',
                               breadcrumbItems: [
-                                RouterName.addReward,
+                                RouterName.addDisciplinary,
                               ],
                             ),
                             Container(
@@ -95,8 +100,8 @@ class AddRewardPage extends StatelessWidget {
                                           children: [
                                             TTextFormField(
                                               textAlign: true,
-                                              text: 'Mã khen thưởng',
-                                              hint: 'Nhập mã khen thưởng',
+                                              text: 'Mã kỷ luật',
+                                              hint: 'Nhập mã kỷ luật',
                                               controller: codeController,
                                             ),
                                             const Gap(
@@ -145,34 +150,43 @@ class AddRewardPage extends StatelessWidget {
                                               TSizes.spaceBtwItems,
                                             ),
                                             TDropDownMenu(
-                                              menus: const ['Kip', 'Khác'],
-                                              controller: rewardTypeController,
-                                              text: 'Loại khen thưởng',
+                                              menus: const [
+                                                'Chậm tiến độ',
+                                                'Thái độ làm việc',
+                                                'Khác'
+                                              ],
+                                              controller:
+                                                  disciplinaryTypeController,
+                                              text: 'Loại kỷ luật',
                                             ),
                                             Gap(
                                               TSizes.spaceBtwItems,
                                             ),
                                             TTextFormField(
                                               textAlign: true,
-                                              text: 'Lý do khen thưởng',
-                                              hint: 'Nhập lý do khen thưởng',
+                                              text: 'Lý do kỷ luật',
+                                              hint: 'Nhập lý do kỷ luật',
                                               controller: reasonController,
                                             ),
                                             const Gap(TSizes.spaceBtwItems),
                                             TTextFormField(
                                               textAlign: true,
-                                              text: 'Giá trị khen thưởng',
-                                              hint: 'Nhập giá trị khen thưởng',
-                                              controller: rewardValueController,
+                                              text: 'Giá trị kỷ luật',
+                                              hint: 'Nhập giá trị kỷ luật',
+                                              controller:
+                                                  disciplinaryValueController,
                                               keyboardType:
                                                   TextInputType.number,
                                             ),
                                             const Gap(TSizes.spaceBtwItems),
-                                            TTextFormField(
-                                              textAlign: true,
-                                              text: 'Người duyệt',
-                                              hint: 'Nhập người duyệt',
-                                              controller: approvedByController,
+                                            TDropDownMenu(
+                                              menus: const [
+                                                'Nghiêm trọng',
+                                                'Thường',
+                                                'Nhẹ'
+                                              ],
+                                              controller: severityController,
+                                              text: 'Mức độ kỷ luật',
                                             ),
                                             const Gap(TSizes.spaceBtwItems),
                                             TDropDownMenu(
@@ -227,37 +241,34 @@ class AddRewardPage extends StatelessWidget {
                                                         if (_formKey
                                                             .currentState!
                                                             .validate()) {
-                                                          final reward =
-                                                              RewardModel(
-                                                            employeeId:
-                                                                selectedPersonalId!,
-                                                            code: codeController
-                                                                .text,
-                                                            rewardType:
-                                                                rewardTypeController
-                                                                    .text,
-                                                            reason:
-                                                                reasonController
-                                                                    .text,
-                                                            rewardValue: int.tryParse(
-                                                                    rewardValueController
-                                                                        .text
-                                                                        .replaceAll(
-                                                                            '.',
-                                                                            '')) ??
-                                                                0,
-                                                            approvedBy:
-                                                                approvedByController
-                                                                    .text,
-                                                            status:
-                                                                statusController
-                                                                    .text,
-                                                          );
+                                                          final disciplinary = DisciplinaryModel(
+                                                              employeeId:
+                                                                  selectedPersonalId!,
+                                                              code:
+                                                                  codeController
+                                                                      .text,
+                                                              disciplinaryType:
+                                                                  disciplinaryTypeController
+                                                                      .text,
+                                                              disciplinaryValue:
+                                                                  int.parse(
+                                                                      disciplinaryValueController
+                                                                          .text),
+                                                              reason:
+                                                                  reasonController
+                                                                      .text,
+                                                              severity:
+                                                                  severityController
+                                                                      .text,
+                                                              status:
+                                                                  statusController
+                                                                      .text);
+
                                                           context
                                                               .read<
-                                                                  RewardBloc>()
-                                                              .add(AddReward(
-                                                                  reward));
+                                                                  DisciplinaryBloc>()
+                                                              .add(AddDisciplinary(
+                                                                  disciplinary));
                                                         }
                                                       },
                                                       child: state

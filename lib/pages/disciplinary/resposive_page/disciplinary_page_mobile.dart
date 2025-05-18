@@ -37,9 +37,9 @@ class DisciplinaryPageMobile extends StatelessWidget {
                   ),
                 ],
               ),
-              Gap(TSizes.spaceBtwItems),
+              const Gap(TSizes.spaceBtwItems),
               Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 color: Colors.white,
                 child: Column(
                   children: [
@@ -52,7 +52,7 @@ class DisciplinaryPageMobile extends StatelessWidget {
                             ),
                             onPressed: () async {
                               final result = await context
-                                  .pushNamed(RouterName.addDisciplinary);
+                                  .push(RouterName.addDisciplinary);
                               if (result == true) {
                                 context
                                     .read<DisciplinaryBloc>()
@@ -60,7 +60,7 @@ class DisciplinaryPageMobile extends StatelessWidget {
                               }
                             },
                             child: Text(
-                              'Thêm Kỷ luật',
+                              'Thêm kỷ luật',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -79,25 +79,21 @@ class DisciplinaryPageMobile extends StatelessWidget {
                                     headers: [
                                       'Mã kỷ luật',
                                       'Mã nhân viên',
-                                      'Tên nhân viên',
                                       'Lý do',
                                       'Loại kỷ luật',
-                                      'Mức độ kỷ luật'
-                                          'Trạng thái',
+                                      'Mức độ kỷ luật',
+                                      'Trạng thái',
                                       'Ngày khen thưởng',
-                                      'Người phê duyệt',
                                     ],
                                     dataRows: state.disciplinary
                                         .map((disciplinary) => [
                                               disciplinary.id,
                                               disciplinary.employeeId,
-                                              disciplinary.employeeName,
                                               disciplinary.reason,
                                               disciplinary.disciplinaryType,
                                               disciplinary.severity,
                                               disciplinary.status,
                                               disciplinary.disciplinaryDate,
-                                              disciplinary.approvedBy,
                                             ])
                                         .toList(),
                                   );
@@ -115,7 +111,7 @@ class DisciplinaryPageMobile extends StatelessWidget {
                         }),
                       ],
                     ),
-                    Gap(TSizes.spaceBtwItems),
+                    const Gap(TSizes.spaceBtwItems),
                     const DataTableDisciplinary()
                   ],
                 ),

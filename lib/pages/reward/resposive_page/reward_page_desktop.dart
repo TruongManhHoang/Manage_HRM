@@ -53,7 +53,7 @@ class RewardPageDesktop extends StatelessWidget {
                             ),
                             onPressed: () async {
                               final result =
-                                  await context.pushNamed(RouterName.addReward);
+                                  await context.push(RouterName.addReward);
                               if (result == true) {
                                 context.read<RewardBloc>().add(LoadRewards());
                               }
@@ -78,7 +78,6 @@ class RewardPageDesktop extends StatelessWidget {
                                     headers: [
                                       'Mã khen thưởng',
                                       'Mã nhân viên',
-                                      'Tên nhân viên',
                                       'Lý do',
                                       'Loại khen thưởng',
                                       'Trạng thái',
@@ -90,7 +89,6 @@ class RewardPageDesktop extends StatelessWidget {
                                         .map((reward) => [
                                               reward.id,
                                               reward.employeeId,
-                                              reward.employeeName,
                                               reward.reason,
                                               reward.status,
                                               reward.rewardType,
