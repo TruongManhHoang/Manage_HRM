@@ -21,7 +21,7 @@ class _DataTableRewardState extends State<DataTableReward> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    BlocProvider.of<RewardBloc>(context).add(LoadRewards());
+    // BlocProvider.of<RewardBloc>(context).add(LoadRewards());
   }
 
   @override
@@ -36,6 +36,20 @@ class _DataTableRewardState extends State<DataTableReward> {
             tableHeight: 500,
             dataRowHeight: TSizes.xl * 1.45,
             columns: const [
+              DataColumn2(
+                label: Center(
+                  child: Text(
+                    'Mã khen thưởng',
+                    maxLines: 2,
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
               DataColumn2(
                 label: Center(
                   child: Text(
