@@ -1,6 +1,6 @@
-import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_bloc.dart';
-import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_state.dart';
-import 'package:admin_hrm/pages/disciplinary/table/table_source_disciplinary.dart';
+import 'package:admin_hrm/pages/attendance/bloc/attendance_bloc.dart';
+import 'package:admin_hrm/pages/attendance/bloc/attendance_state.dart';
+import 'package:admin_hrm/pages/attendance/table/table_source_attendance.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,21 +8,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widgets/data_table/paginated_data_table.dart';
 import '../../../constants/sizes.dart';
 
-class DataTableDisciplinary extends StatefulWidget {
-  const DataTableDisciplinary({super.key});
+class DataTableAttendance extends StatelessWidget {
+  const DataTableAttendance({super.key});
 
-  @override
-  State<DataTableDisciplinary> createState() => _DataTableDisciplinaryState();
-}
-
-class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DisciplinaryBloc, DisciplinaryState>(
+    return BlocBuilder<AttendanceBloc, AttendanceState>(
       builder: (context, state) {
-        if (state is DisciplinaryLoading) {
+        if (state is AttendanceLoading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state is DisciplinaryLoaded) {
+        } else if (state is AttendanceLoaded) {
           return TPaginatedDataTable(
             minWidth: 700,
             tableHeight: 500,
@@ -45,7 +40,7 @@ class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Loại kỷ luật',
+                    'Ngày',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -59,7 +54,7 @@ class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Lý do',
+                    'Giờ vào',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -73,7 +68,7 @@ class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Mức độ kỷ luật',
+                    'Giờ ra',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -87,7 +82,7 @@ class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Người phê duyệt',
+                    'Vị trí',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -101,7 +96,49 @@ class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Trạng thái',
+                    'Ghi chú',
+                    maxLines: 2,
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn2(
+                label: Center(
+                  child: Text(
+                    'Đi trễ',
+                    maxLines: 2,
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn2(
+                label: Center(
+                  child: Text(
+                    'Vắng',
+                    maxLines: 2,
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn2(
+                label: Center(
+                  child: Text(
+                    'Hành động',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -113,21 +150,18 @@ class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
                 ),
               ),
             ],
-            source: DisciplinaryTableRows(
+            source: AttendanceTableRows(
               context,
-              state.disciplinary,
+              state.attendances,
             ),
           );
-        } else if (state is DisciplinaryError) {
+        } else
           return Center(
             child: Text(
-              state.message,
+              'Không có dữ liệu',
               style: const TextStyle(color: Colors.red),
             ),
           );
-        } else {
-          return const Center(child: Text('No data available'));
-        }
       },
     );
   }

@@ -3,8 +3,6 @@ import 'package:admin_hrm/pages/department/resposive_page/department_page_mobile
 import 'package:admin_hrm/pages/personnel_management/resposive_page/personnel_page_desktop.dart';
 import 'package:admin_hrm/pages/personnel_management/resposive_page/personnel_page_table.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bloc/persional_bloc.dart';
 
 class EmployeePage extends StatefulWidget {
   const EmployeePage({super.key});
