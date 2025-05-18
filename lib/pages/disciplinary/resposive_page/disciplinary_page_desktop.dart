@@ -53,7 +53,7 @@ class DisciplinaryPageDesktop extends StatelessWidget {
                             ),
                             onPressed: () async {
                               final result = await context
-                                  .pushNamed(RouterName.addDisciplinary);
+                                  .push(RouterName.addDisciplinary);
                               if (result == true) {
                                 context
                                     .read<DisciplinaryBloc>()
@@ -80,25 +80,21 @@ class DisciplinaryPageDesktop extends StatelessWidget {
                                     headers: [
                                       'Mã kỷ luật',
                                       'Mã nhân viên',
-                                      'Tên nhân viên',
                                       'Lý do',
                                       'Loại kỷ luật',
-                                      'Mức độ kỷ luật'
-                                          'Trạng thái',
+                                      'Mức độ kỷ luật',
+                                      'Trạng thái',
                                       'Ngày khen thưởng',
-                                      'Người phê duyệt',
                                     ],
                                     dataRows: state.disciplinary
                                         .map((disciplinary) => [
                                               disciplinary.id,
                                               disciplinary.employeeId,
-                                              disciplinary.employeeName,
                                               disciplinary.reason,
                                               disciplinary.disciplinaryType,
                                               disciplinary.severity,
                                               disciplinary.status,
                                               disciplinary.disciplinaryDate,
-                                              disciplinary.approvedBy,
                                             ])
                                         .toList(),
                                   );
