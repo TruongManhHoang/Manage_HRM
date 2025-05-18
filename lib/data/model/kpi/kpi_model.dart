@@ -57,4 +57,30 @@ class KPIModel {
       'updatedAt': Timestamp.fromDate(updatedAt),
     };
   }
+
+  KPIModel copyWith({
+    String? id,
+    String? userId,
+    String? departmentId,
+    String? period,
+    List<KPIMetric>? metrics,
+    double? totalScore,
+    String? evaluatorId,
+    String? notes,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return KPIModel(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      departmentId: departmentId ?? this.departmentId,
+      period: period ?? this.period,
+      metrics: metrics ?? this.metrics,
+      totalScore: totalScore ?? this.totalScore,
+      evaluatorId: evaluatorId ?? this.evaluatorId,
+      notes: notes ?? this.notes,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }

@@ -1,6 +1,6 @@
-import 'package:admin_hrm/pages/department/bloc/department_bloc.dart';
-import 'package:admin_hrm/pages/department/bloc/department_state.dart';
-import 'package:admin_hrm/pages/department/table/table_source_department.dart';
+import 'package:admin_hrm/pages/kpi/bloc/kpi_bloc.dart';
+import 'package:admin_hrm/pages/kpi/bloc/kpi_state.dart';
+import 'package:admin_hrm/pages/kpi/table/table_source_kpi.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,11 +13,11 @@ class DataTableKPI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DepartmentBloc, DepartmentState>(
+    return BlocBuilder<KPIBloc, KPIState>(
       builder: (context, state) {
-        if (state is DepartmentLoading) {
+        if (state is KPILoading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state is DepartmentLoaded) {
+        } else if (state is KPILoaded) {
           return TPaginatedDataTable(
             minWidth: 700,
             tableHeight: 500,
@@ -26,7 +26,7 @@ class DataTableKPI extends StatelessWidget {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Mã phòng ban',
+                    'Mã nhân sự',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -40,7 +40,7 @@ class DataTableKPI extends StatelessWidget {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Tên phòng ban',
+                    'Phòng ban',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -54,7 +54,7 @@ class DataTableKPI extends StatelessWidget {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Mô tả',
+                    'Tháng',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -68,7 +68,7 @@ class DataTableKPI extends StatelessWidget {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Số lượng nhân viên',
+                    'Tổng điểm',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -82,7 +82,7 @@ class DataTableKPI extends StatelessWidget {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Email',
+                    'Người đánh giá',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -96,35 +96,7 @@ class DataTableKPI extends StatelessWidget {
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Số điện thoại',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              DataColumn2(
-                label: Center(
-                  child: Text(
-                    'Trạng thái',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              DataColumn2(
-                label: Center(
-                  child: Text(
-                    'Hành động',
+                    'Ghi chú',
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -136,9 +108,9 @@ class DataTableKPI extends StatelessWidget {
                 ),
               ),
             ],
-            source: DepartmentTableRows(
+            source: KPITableRows(
               context,
-              state.departments,
+              state.kpis,
             ),
           );
         } else

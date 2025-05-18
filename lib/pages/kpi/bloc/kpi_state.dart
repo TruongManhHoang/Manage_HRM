@@ -11,6 +11,10 @@ class KPILoaded extends KPIState {
   KPILoaded(this.kpis);
 }
 
+class KPISuccess extends KPIState {
+  KPISuccess();
+}
+
 class KPIError extends KPIState {
   final String message;
   KPIError(this.message);

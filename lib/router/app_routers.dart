@@ -3,6 +3,7 @@ import 'package:admin_hrm/data/model/contract/contract_model.dart';
 import 'package:admin_hrm/data/model/department/department_model.dart';
 
 import 'package:admin_hrm/data/model/disciplinary/disciplinary_model.dart';
+import 'package:admin_hrm/data/model/kpi/kpi_model.dart';
 import 'package:admin_hrm/data/model/reward/reward_model.dart';
 import 'package:admin_hrm/data/repository/department_repository.dart';
 import 'package:admin_hrm/data/repository/disciplinary_repository.dart';
@@ -10,7 +11,6 @@ import 'package:admin_hrm/data/repository/reward_repository.dart';
 
 import 'package:admin_hrm/data/model/position/position_model.dart';
 import 'package:admin_hrm/data/repository/contract_repository.dart';
-import 'package:admin_hrm/data/repository/department_repository.dart';
 import 'package:admin_hrm/data/repository/persional_repository.dart';
 import 'package:admin_hrm/data/repository/positiion_repository.dart';
 import 'package:admin_hrm/di/locator.dart';
@@ -28,6 +28,10 @@ import 'package:admin_hrm/pages/department/add_deparment/add_department_page.dar
 import 'package:admin_hrm/pages/department/bloc/department_event.dart';
 import 'package:admin_hrm/pages/department/bloc/department_bloc.dart';
 import 'package:admin_hrm/pages/department/department_page.dart';
+import 'package:admin_hrm/pages/kpi/add_edit_kpi/kpi_form_page.dart';
+import 'package:admin_hrm/pages/kpi/bloc/kpi_bloc.dart';
+import 'package:admin_hrm/pages/kpi/bloc/kpi_event.dart';
+import 'package:admin_hrm/pages/kpi/kpi_page.dart';
 import 'package:admin_hrm/pages/personnel_management/personnel_page.dart';
 import 'package:admin_hrm/pages/personnel_management/widgets/add_personnel.dart';
 import 'package:admin_hrm/pages/department/edit_deparment/edit_deparment.dart';
@@ -55,6 +59,7 @@ import 'package:admin_hrm/pages/salary/salary_page.dart';
 import 'package:admin_hrm/pages/splash_screen/splash_screen.dart';
 import 'package:admin_hrm/router/router_observer.dart';
 import 'package:admin_hrm/service/attendance_service.dart';
+import 'package:admin_hrm/service/kpi_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -388,6 +393,44 @@ class AppRouter {
                         final attendance = state.extra as AttendanceModel;
                         return AttendanceForm(
                           attendance: attendance,
+                        );
+                      },
+                    ),
+                  ]),
+            ]),
+        ShellRoute(
+            builder: (context, state, child) {
+              return BlocProvider(
+                create: (context) => KPIBloc(
+                  getIt<KPIService>(),
+                )..add(LoadKPIs()),
+                child: Scaffold(
+                  body: child,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                  path: RouterName.kpiPage,
+                  name: RouterName.kpiPage,
+                  builder: (context, state) {
+                    return const KPIPage();
+                  },
+                  routes: [
+                    GoRoute(
+                      path: RouterName.addKpi,
+                      name: RouterName.addKpi,
+                      builder: (context, state) {
+                        return const KPIFormPage();
+                      },
+                    ),
+                    GoRoute(
+                      path: RouterName.editKpi,
+                      name: RouterName.editKpi,
+                      builder: (context, state) {
+                        final kpi = state.extra as KPIModel;
+                        return KPIFormPage(
+                          initialKPI: kpi,
                         );
                       },
                     ),

@@ -28,4 +28,18 @@ class KPIMetric {
       'score': score,
     };
   }
+
+  KPIMetric copyWith({
+    String? name,
+    String? description,
+    double? weight,
+    double? score,
+  }) {
+    return KPIMetric(
+      name: name ?? this.name,
+      description: description ?? this.description,
+      weight: weight ?? this.weight,
+      score: score ?? this.score,
+    );
+  }
 }
