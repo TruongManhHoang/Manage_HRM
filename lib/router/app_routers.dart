@@ -1,3 +1,4 @@
+import 'package:admin_hrm/data/model/attendance/attendance_model.dart';
 import 'package:admin_hrm/data/model/contract/contract_model.dart';
 import 'package:admin_hrm/data/model/department/department_model.dart';
 
@@ -14,6 +15,10 @@ import 'package:admin_hrm/data/repository/persional_repository.dart';
 import 'package:admin_hrm/data/repository/positiion_repository.dart';
 import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
+import 'package:admin_hrm/pages/attendance/add_edit_attendance/attendance_form.dart';
+import 'package:admin_hrm/pages/attendance/attendance_page.dart';
+import 'package:admin_hrm/pages/attendance/bloc/attendance_bloc.dart';
+import 'package:admin_hrm/pages/attendance/bloc/attendance_event.dart';
 import 'package:admin_hrm/pages/contract/add_contract/add_contract.dart';
 import 'package:admin_hrm/pages/contract/bloc/contract_bloc.dart';
 
@@ -49,6 +54,7 @@ import 'package:admin_hrm/pages/salary/add_deparment/add_salary_page.dart';
 import 'package:admin_hrm/pages/salary/salary_page.dart';
 import 'package:admin_hrm/pages/splash_screen/splash_screen.dart';
 import 'package:admin_hrm/router/router_observer.dart';
+import 'package:admin_hrm/service/attendance_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -349,6 +355,44 @@ class AppRouter {
             return const AddSalaryPage();
           },
         ),
+        ShellRoute(
+            builder: (context, state, child) {
+              return BlocProvider(
+                create: (context) => AttendanceBloc(
+                  getIt<AttendanceService>(),
+                )..add(LoadAttendances()),
+                child: Scaffold(
+                  body: child,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                  path: RouterName.attendancePage,
+                  name: RouterName.attendancePage,
+                  builder: (context, state) {
+                    return const AttendancePage();
+                  },
+                  routes: [
+                    GoRoute(
+                      path: RouterName.addAttendance,
+                      name: RouterName.addAttendance,
+                      builder: (context, state) {
+                        return const AttendanceForm();
+                      },
+                    ),
+                    GoRoute(
+                      path: RouterName.editAttendance,
+                      name: RouterName.editAttendance,
+                      builder: (context, state) {
+                        final attendance = state.extra as AttendanceModel;
+                        return AttendanceForm(
+                          attendance: attendance,
+                        );
+                      },
+                    ),
+                  ]),
+            ]),
       ],
 
       // Định nghĩa redirection logic:
