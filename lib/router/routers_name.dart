@@ -21,11 +21,11 @@ class RouterName {
   static const editDepartment = '/edit-department';
 
   static const rewardPage = '/reward-page';
-  static const editReward = 'edit-employee';
-  static const addReward = 'add-reward';
+  static const editReward = '/edit-reward';
+  static const addReward = '/add-reward';
   static const disciplinaryPage = '/disciplinary-page';
-  static const addDisciplinary = 'add-disciplinary';
-  static const editDisciplinary = 'edit-disciplinary';
+  static const addDisciplinary = '/add-disciplinary';
+  static const editDisciplinary = '/edit-disciplinary';
 
   static const editPosition = '/edit-position';
   static const editContract = '/edit-contract';
