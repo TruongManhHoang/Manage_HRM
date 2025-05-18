@@ -31,7 +31,7 @@ class _KPIFormPageState extends State<KPIFormPage> {
   final _notesController = TextEditingController();
 
   List<PersionalManagement> _users = [];
-  PersionalManagement? _selectedUser;
+  String? _selectedUserId;
   List<KPIMetric> _metrics = [];
 
   bool _isLoadingUsers = true;
@@ -39,32 +39,36 @@ class _KPIFormPageState extends State<KPIFormPage> {
   @override
   void initState() {
     super.initState();
-    _loadUsers().then((_) {
-      if (widget.initialKPI != null) {
-        final initial = widget.initialKPI!;
-        _selectedUser = _users.firstWhere((u) => u.id == initial.userId,
-            orElse: () => PersionalManagement(
-                  id: '',
-                  name: '',
-                  code: '',
-                  departmentId: '',
-                  positionId: '',
-                  email: '',
-                  phone: '',
-                  address: '',
-                  dateOfBirth: '',
-                  gender: '',
-                  experience: '',
-                  date: '',
-                  status: '',
-                ));
-        _departmentIdController.text = initial.departmentId;
-        _periodController.text = initial.period;
-        _evaluatorIdController.text = initial.evaluatorId ?? '';
-        _notesController.text = initial.notes ?? '';
-        _metrics = List<KPIMetric>.from(initial.metrics);
-      }
+    _loadUsers();
+  }
+
+  Future<void> _loadUsers() async {
+    final snapshot =
+        await FirebaseFirestore.instance.collection('personnel').get();
+    setState(() {
+      _users = snapshot.docs
+          .map((doc) => PersionalManagement.fromJson(doc.data()))
+          .toList();
+      _isLoadingUsers = false;
     });
+
+    if (widget.initialKPI != null) {
+      final initial = widget.initialKPI!;
+      final matchedUser = _users.firstWhere(
+        (u) => u.code == initial.userId,
+        orElse: () => _users.first,
+      );
+      _selectedUserId = matchedUser.id;
+      _departmentIdController.text = matchedUser.departmentId;
+      _periodController.text = initial.period;
+      _evaluatorIdController.text = initial.evaluatorId ?? '';
+      _notesController.text = initial.notes ?? '';
+      _metrics = List<KPIMetric>.from(initial.metrics);
+    }
+  }
+
+  double _calculateTotalScore() {
+    return _metrics.fold(0.0, (sum, m) => sum + m.score * m.weight);
   }
 
   void _addMetricField() {
@@ -79,28 +83,14 @@ class _KPIFormPageState extends State<KPIFormPage> {
     });
   }
 
-  Future<void> _loadUsers() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('personnel').get();
-    setState(() {
-      _users = snapshot.docs
-          .map((doc) => PersionalManagement.fromJson(doc.data()))
-          .toList();
-      _isLoadingUsers = false;
-    });
-  }
-
-  double _calculateTotalScore() {
-    return _metrics.fold(0.0, (sum, m) => sum + m.score * m.weight);
-  }
-
   void _submitForm() {
-    if (_formKey.currentState!.validate() && _selectedUser != null) {
+    final selectedUser = _users.firstWhere((u) => u.id == _selectedUserId);
+    if (_formKey.currentState!.validate()) {
       final now = DateTime.now();
       final newKPI = KPIModel(
         id: widget.initialKPI?.id ?? '',
-        userId: _selectedUser!.code!,
-        departmentId: _selectedUser!.departmentId,
+        userId: selectedUser.code ?? '',
+        departmentId: selectedUser.departmentId,
         period: _periodController.text,
         metrics: _metrics,
         totalScore: _calculateTotalScore(),
@@ -158,22 +148,24 @@ class _KPIFormPageState extends State<KPIFormPage> {
                           children: [
                             _isLoadingUsers
                                 ? const CircularProgressIndicator()
-                                : DropdownButtonFormField<PersionalManagement>(
-                                    value: _selectedUser,
+                                : DropdownButtonFormField<String>(
+                                    value: _selectedUserId,
                                     decoration: const InputDecoration(
                                         labelText: 'Chọn nhân sự'),
                                     items: _users.map((user) {
-                                      return DropdownMenuItem(
-                                        value: user,
+                                      return DropdownMenuItem<String>(
+                                        value: user.id,
                                         child:
-                                            Text('${user.name} (${user.id})'),
+                                            Text('${user.name} (${user.code})'),
                                       );
                                     }).toList(),
-                                    onChanged: (user) {
+                                    onChanged: (userId) {
+                                      final selected = _users
+                                          .firstWhere((u) => u.id == userId);
                                       setState(() {
-                                        _selectedUser = user!;
+                                        _selectedUserId = selected.id;
                                         _departmentIdController.text =
-                                            user.departmentId;
+                                            selected.departmentId;
                                       });
                                     },
                                     validator: (value) => value == null
@@ -185,7 +177,7 @@ class _KPIFormPageState extends State<KPIFormPage> {
                               controller: _departmentIdController,
                               decoration:
                                   const InputDecoration(labelText: 'Phòng ban'),
-                              enabled: false, // Không cho nhập
+                              enabled: false,
                             ),
                             const Gap(8),
                             TextFormField(
@@ -292,10 +284,11 @@ class _KPIFormPageState extends State<KPIFormPage> {
                             ),
                             const Gap(8),
                             ElevatedButton(
-                                onPressed: _submitForm,
-                                child: widget.initialKPI != null
-                                    ? const Text('Sửa KPI')
-                                    : const Text('Thêm KPI')),
+                              onPressed: _submitForm,
+                              child: Text(widget.initialKPI != null
+                                  ? 'Sửa KPI'
+                                  : 'Thêm KPI'),
+                            ),
                           ],
                         ),
                       ),

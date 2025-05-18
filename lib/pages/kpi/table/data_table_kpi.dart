@@ -107,6 +107,20 @@ class DataTableKPI extends StatelessWidget {
                   ),
                 ),
               ),
+              DataColumn2(
+                label: Center(
+                  child: Text(
+                    'Hành động',
+                    maxLines: 2,
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
             ],
             source: KPITableRows(
               context,
