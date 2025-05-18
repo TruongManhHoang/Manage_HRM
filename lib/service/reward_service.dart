@@ -7,14 +7,13 @@ class RewardService {
 
   Future<void> createReward(RewardModel reward) async {
     final docRef = _rewardCollection.doc();
-    final rewardWithId = reward.copyWith(
-      id: docRef.id,
-    );
+    final rewardWithId =
+        reward.copyWith(id: docRef.id, rewardDate: DateTime.now());
     await docRef.set(rewardWithId.toMap());
   }
 
-  Future<void> updateReward(String id, RewardModel reward) async {
-    await _rewardCollection.doc(id).update(reward.toMap());
+  Future<void> updateReward(RewardModel reward) async {
+    await _rewardCollection.doc(reward.id).update(reward.toMap());
   }
 
   Future<void> deleteReward(String id) async {
@@ -24,15 +23,24 @@ class RewardService {
   Future<RewardModel?> getRewardById(String id) async {
     final doc = await _rewardCollection.doc(id).get();
     if (doc.exists) {
-      return RewardModel.fromFirestore(doc);
+      return RewardModel.fromMap(doc.data() as Map<String, dynamic>);
     }
     return null;
+  }
+
+  Future<List<RewardModel>> getAllReward() async {
+    final snapshot = await _rewardCollection.get();
+    return snapshot.docs
+        .map((doc) => RewardModel.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
   }
 
   Future<List<RewardModel>> getAllRewards() async {
     final snapshot =
         await _rewardCollection.orderBy('rewardDate', descending: true).get();
-    return snapshot.docs.map((doc) => RewardModel.fromFirestore(doc)).toList();
+    return snapshot.docs
+        .map((doc) => RewardModel.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
   }
 
   Stream<List<RewardModel>> streamAllRewards() {
@@ -40,7 +48,8 @@ class RewardService {
         .orderBy('rewardDate', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs
-            .map((doc) => RewardModel.fromFirestore(doc))
+            .map((doc) =>
+                RewardModel.fromMap(doc.data() as Map<String, dynamic>))
             .toList());
   }
 }
