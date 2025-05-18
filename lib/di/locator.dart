@@ -14,6 +14,7 @@ import 'package:admin_hrm/service/attendance_service.dart';
 import 'package:admin_hrm/service/auth_service.dart';
 import 'package:admin_hrm/service/contract_service.dart';
 import 'package:admin_hrm/service/department_service.dart';
+import 'package:admin_hrm/service/kpi_service.dart';
 import 'package:admin_hrm/service/persional_service.dart';
 
 import 'package:admin_hrm/service/disciplinary_service.dart';
@@ -69,5 +70,7 @@ class ServiceLocator {
         PersionalRepository(persionalService: getIt<PersionalService>()));
 
     getIt.registerSingleton<AttendanceService>(AttendanceService());
+
+    getIt.registerSingleton<KPIService>(KPIService());
   }
 }

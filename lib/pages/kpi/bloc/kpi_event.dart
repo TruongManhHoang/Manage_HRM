@@ -4,8 +4,7 @@ import 'package:admin_hrm/data/model/kpi/kpi_model.dart';
 abstract class KPIEvent {}
 
 class LoadKPIs extends KPIEvent {
-  final String userId;
-  LoadKPIs(this.userId);
+  LoadKPIs();
 }
 
 class AddKPI extends KPIEvent {
@@ -20,6 +19,6 @@ class UpdateKPI extends KPIEvent {
 
 class DeleteKPI extends KPIEvent {
   final String id;
-  final String userId;
-  DeleteKPI(this.id, this.userId);
+
+  DeleteKPI(this.id);
 }

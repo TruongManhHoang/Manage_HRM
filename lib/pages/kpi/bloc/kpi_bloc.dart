@@ -16,7 +16,7 @@ class KPIBloc extends Bloc<KPIEvent, KPIState> {
   Future<void> _onLoad(LoadKPIs event, Emitter emit) async {
     emit(KPILoading());
     try {
-      final list = await service.getKPIsByUser(event.userId);
+      final list = await service.getListKPI();
       emit(KPILoaded(list));
     } catch (e) {
       emit(KPIError(e.toString()));
@@ -26,7 +26,8 @@ class KPIBloc extends Bloc<KPIEvent, KPIState> {
   Future<void> _onAdd(AddKPI event, Emitter emit) async {
     try {
       await service.addKPI(event.kpi);
-      add(LoadKPIs(event.kpi.userId));
+      emit(KPISuccess());
+      add(LoadKPIs());
     } catch (e) {
       emit(KPIError(e.toString()));
     }
@@ -35,7 +36,8 @@ class KPIBloc extends Bloc<KPIEvent, KPIState> {
   Future<void> _onUpdate(UpdateKPI event, Emitter emit) async {
     try {
       await service.updateKPI(event.kpi);
-      add(LoadKPIs(event.kpi.userId));
+      emit(KPISuccess());
+      add(LoadKPIs());
     } catch (e) {
       emit(KPIError(e.toString()));
     }
@@ -44,7 +46,8 @@ class KPIBloc extends Bloc<KPIEvent, KPIState> {
   Future<void> _onDelete(DeleteKPI event, Emitter emit) async {
     try {
       await service.deleteKPI(event.id);
-      add(LoadKPIs(event.userId));
+      emit(KPISuccess());
+      add(LoadKPIs());
     } catch (e) {
       emit(KPIError(e.toString()));
     }
