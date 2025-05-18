@@ -2,6 +2,7 @@ import 'package:admin_hrm/constants/device_utility.dart';
 import 'package:admin_hrm/router/routers_name.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -45,7 +46,12 @@ class SideBarBloc extends HydratedBloc<SideBarEvent, SideBarState> {
       if (TDeviceUtils.isMobileScreen(event.context)) {
         Navigator.of(event.context).pop();
       }
-      GoRouter.of(event.context).goNamed(event.route);
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        GoRouter.of(event.context).goNamed(event.route);
+      } else {
+        GoRouter.of(event.context).go(RouterName.login);
+      }
     }
   }
 
