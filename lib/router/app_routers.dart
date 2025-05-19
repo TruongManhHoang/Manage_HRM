@@ -1,8 +1,10 @@
 import 'package:admin_hrm/data/model/account/account_model.dart';
+import 'package:admin_hrm/data/model/attendance/attendance_model.dart';
 import 'package:admin_hrm/data/model/contract/contract_model.dart';
 import 'package:admin_hrm/data/model/department/department_model.dart';
 
 import 'package:admin_hrm/data/model/disciplinary/disciplinary_model.dart';
+import 'package:admin_hrm/data/model/kpi/kpi_model.dart';
 import 'package:admin_hrm/data/model/reward/reward_model.dart';
 import 'package:admin_hrm/data/repository/account_repository.dart';
 import 'package:admin_hrm/data/repository/department_repository.dart';
@@ -11,7 +13,6 @@ import 'package:admin_hrm/data/repository/reward_repository.dart';
 
 import 'package:admin_hrm/data/model/position/position_model.dart';
 import 'package:admin_hrm/data/repository/contract_repository.dart';
-import 'package:admin_hrm/data/repository/department_repository.dart';
 import 'package:admin_hrm/data/repository/persional_repository.dart';
 import 'package:admin_hrm/data/repository/positiion_repository.dart';
 import 'package:admin_hrm/data/repository/user_repository.dart';
@@ -22,6 +23,10 @@ import 'package:admin_hrm/pages/account/add_account/add_account_page.dart';
 import 'package:admin_hrm/pages/account/bloc/account_bloc.dart';
 import 'package:admin_hrm/pages/account/edit_account/edit_account_page.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
+import 'package:admin_hrm/pages/attendance/add_edit_attendance/attendance_form.dart';
+import 'package:admin_hrm/pages/attendance/attendance_page.dart';
+import 'package:admin_hrm/pages/attendance/bloc/attendance_bloc.dart';
+import 'package:admin_hrm/pages/attendance/bloc/attendance_event.dart';
 import 'package:admin_hrm/pages/contract/add_contract/add_contract.dart';
 import 'package:admin_hrm/pages/contract/bloc/contract_bloc.dart';
 
@@ -31,8 +36,15 @@ import 'package:admin_hrm/pages/department/add_deparment/add_department_page.dar
 import 'package:admin_hrm/pages/department/bloc/department_event.dart';
 import 'package:admin_hrm/pages/department/bloc/department_bloc.dart';
 import 'package:admin_hrm/pages/department/department_page.dart';
+
+import 'package:admin_hrm/pages/kpi/add_edit_kpi/kpi_form_page.dart';
+import 'package:admin_hrm/pages/kpi/bloc/kpi_bloc.dart';
+import 'package:admin_hrm/pages/kpi/bloc/kpi_event.dart';
+import 'package:admin_hrm/pages/kpi/kpi_page.dart';
+
 import 'package:admin_hrm/pages/disciplinary/add_disciplinary_page/add_disciplinary_page.dart';
 import 'package:admin_hrm/pages/disciplinary/edit_disciplinary_page/edit_disciplinary_page.dart';
+
 import 'package:admin_hrm/pages/personnel_management/personnel_page.dart';
 import 'package:admin_hrm/pages/personnel_management/widgets/add_personnel.dart';
 import 'package:admin_hrm/pages/department/edit_deparment/edit_deparment.dart';
@@ -60,6 +72,8 @@ import 'package:admin_hrm/pages/salary/salary_page.dart';
 import 'package:admin_hrm/pages/splash_screen/splash_screen.dart';
 import 'package:admin_hrm/router/router_observer.dart';
 import 'package:admin_hrm/service/auth_service.dart';
+import 'package:admin_hrm/service/attendance_service.dart';
+import 'package:admin_hrm/service/kpi_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -121,6 +135,7 @@ class AppRouter {
               return BlocProvider(
                 create: (context) => PersionalBloc(
                   personnelRepository: getIt<PersionalRepository>(),
+                  departmentRepository: getIt<DepartmentRepository>(),
                   globalStorage: getIt<GlobalStorage>(),
                 )..add(const PersionalLoadEvent()),
                 child: Scaffold(
@@ -399,6 +414,82 @@ class AppRouter {
             return const AddSalaryPage();
           },
         ),
+        ShellRoute(
+            builder: (context, state, child) {
+              return BlocProvider(
+                create: (context) => AttendanceBloc(
+                  getIt<AttendanceService>(),
+                )..add(LoadAttendances()),
+                child: Scaffold(
+                  body: child,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                  path: RouterName.attendancePage,
+                  name: RouterName.attendancePage,
+                  builder: (context, state) {
+                    return const AttendancePage();
+                  },
+                  routes: [
+                    GoRoute(
+                      path: RouterName.addAttendance,
+                      name: RouterName.addAttendance,
+                      builder: (context, state) {
+                        return const AttendanceForm();
+                      },
+                    ),
+                    GoRoute(
+                      path: RouterName.editAttendance,
+                      name: RouterName.editAttendance,
+                      builder: (context, state) {
+                        final attendance = state.extra as AttendanceModel;
+                        return AttendanceForm(
+                          attendance: attendance,
+                        );
+                      },
+                    ),
+                  ]),
+            ]),
+        ShellRoute(
+            builder: (context, state, child) {
+              return BlocProvider(
+                create: (context) => KPIBloc(
+                  getIt<KPIService>(),
+                )..add(LoadKPIs()),
+                child: Scaffold(
+                  body: child,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                  path: RouterName.kpiPage,
+                  name: RouterName.kpiPage,
+                  builder: (context, state) {
+                    return const KPIPage();
+                  },
+                  routes: [
+                    GoRoute(
+                      path: RouterName.addKpi,
+                      name: RouterName.addKpi,
+                      builder: (context, state) {
+                        return const KPIFormPage();
+                      },
+                    ),
+                    GoRoute(
+                      path: RouterName.editKpi,
+                      name: RouterName.editKpi,
+                      builder: (context, state) {
+                        final kpi = state.extra as KPIModel;
+                        return KPIFormPage(
+                          initialKPI: kpi,
+                        );
+                      },
+                    ),
+                  ]),
+            ]),
       ],
 
       // Định nghĩa redirection logic:
