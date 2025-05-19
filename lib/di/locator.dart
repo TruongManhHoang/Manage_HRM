@@ -12,9 +12,12 @@ import 'package:admin_hrm/data/repository/positiion_repository.dart';
 import 'package:admin_hrm/data/repository/user_repository.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/service/account_service.dart';
+
+import 'package:admin_hrm/service/attendance_service.dart';
 import 'package:admin_hrm/service/auth_service.dart';
 import 'package:admin_hrm/service/contract_service.dart';
 import 'package:admin_hrm/service/department_service.dart';
+import 'package:admin_hrm/service/kpi_service.dart';
 import 'package:admin_hrm/service/persional_service.dart';
 
 import 'package:admin_hrm/service/disciplinary_service.dart';
@@ -69,7 +72,12 @@ class ServiceLocator {
         ContractRepository(getIt<ContractService>()));
     getIt.registerSingleton<PersionalRepository>(
         PersionalRepository(persionalService: getIt<PersionalService>()));
+
     getIt.registerSingleton<AccountRepository>(
         AccountRepository(accountService: getIt<AccountService>()));
+
+    getIt.registerSingleton<AttendanceService>(AttendanceService());
+
+    getIt.registerSingleton<KPIService>(KPIService());
   }
 }

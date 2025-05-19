@@ -31,6 +31,14 @@ class RouterName {
   static const editPosition = '/edit-position';
   static const editContract = '/edit-contract';
 
+  static const attendancePage = '/attendance-page';
+  static const addAttendance = 'add-attendance';
+  static const editAttendance = 'edit-attendance';
+
+  static const kpiPage = '/kpi-page';
+  static const addKpi = 'add-kpi';
+  static const editKpi = 'edit-kpi';
+
   static const sidebarMenuItem = [
     dashboard,
     departmentPage,
@@ -40,6 +48,8 @@ class RouterName {
     contractPage,
     accountPage,
     positionPage,
+    attendancePage,
+    kpiPage,
     salaryPage
   ];
   static const sidebarMenuItemsShort = [
@@ -50,6 +60,8 @@ class RouterName {
     disciplinaryPage,
     accountPage,
     positionPage,
+    attendancePage,
+    kpiPage,
     salaryPage
   ];
   static const register = '/register';

@@ -382,6 +382,8 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                                       .read<PersionalBloc>()
                                                       .add(PersionalUpdateEvent(
                                                         updateEmployee,
+                                                        widget.employee
+                                                            .departmentId,
                                                       ));
                                                 }
                                               },

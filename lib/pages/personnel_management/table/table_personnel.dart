@@ -14,7 +14,6 @@ import '../../../constants/sizes.dart';
 import '../../../data/model/personnel_management.dart';
 import '../../../router/routers_name.dart';
 import '../bloc/persional_bloc.dart';
-import '../widgets/other_functions.dart';
 
 class TableEmployeeRows extends DataTableSource {
   final BuildContext context;
@@ -102,10 +101,13 @@ class TableEmployeeRows extends DataTableSource {
             child: Text(position.name!, style: baseStyle),
           ),
         )),
-        DataCell(Padding(
-          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-          child: Center(
-            child: Text(department.name!, style: baseStyle),
+        DataCell(Center(
+          child: Text(
+            department.name,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: TColors.textPrimary),
           ),
         )),
         DataCell(Padding(
@@ -182,9 +184,8 @@ class TableEmployeeRows extends DataTableSource {
             child: const Text('Xoá', style: TextStyle(color: Colors.red)),
             onPressed: () {
               Navigator.of(ctx).pop();
-              context
-                  .read<PersionalBloc>()
-                  .add(PersionalDeleteEvent(personnelManagement.id!));
+              context.read<PersionalBloc>().add(PersionalDeleteEvent(
+                  personnelManagement.id!, personnelManagement.departmentId));
             },
           ),
         ],
