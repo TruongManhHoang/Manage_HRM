@@ -4,10 +4,11 @@ class AttendanceModel {
   final String id;
   final String userId;
   final String? userName;
-  final DateTime date;
+  final DateTime? date;
   final DateTime? checkInTime;
   final DateTime? checkOutTime;
   final String? workLocation;
+  final double? numberOfHours;
   final String? notes;
   final bool isLate;
   final bool isAbsent;
@@ -18,10 +19,11 @@ class AttendanceModel {
     required this.id,
     required this.userId,
     this.userName,
-    required this.date,
+    this.date,
     this.checkInTime,
     this.checkOutTime,
     this.workLocation,
+    this.numberOfHours,
     this.notes,
     this.isLate = false,
     this.isAbsent = false,
@@ -30,23 +32,27 @@ class AttendanceModel {
   });
 
   factory AttendanceModel.fromJson(Map<String, dynamic> json) {
+    DateTime? parseDate(dynamic value) {
+      if (value == null) return null;
+      if (value is Timestamp) return value.toDate();
+      if (value is String) return DateTime.tryParse(value);
+      return null;
+    }
+
     return AttendanceModel(
-      id: json['id'],
-      userId: json['userId'],
+      id: json['id'] ?? '',
+      userId: json['userId'] ?? '',
       userName: json['userName'],
-      date: (json['date'] as Timestamp).toDate(),
-      checkInTime: json['checkInTime'] != null
-          ? (json['checkInTime'] as Timestamp).toDate()
-          : null,
-      checkOutTime: json['checkOutTime'] != null
-          ? (json['checkOutTime'] as Timestamp).toDate()
-          : null,
+      date: parseDate(json['date']),
+      checkInTime: parseDate(json['checkInTime']),
+      checkOutTime: parseDate(json['checkOutTime']),
       workLocation: json['workLocation'],
+      numberOfHours: json['numberOfHours']?.toDouble(),
       notes: json['notes'],
       isLate: json['isLate'] ?? false,
       isAbsent: json['isAbsent'] ?? false,
-      createdAt: (json['createdAt'] as Timestamp).toDate(),
-      updatedAt: (json['updatedAt'] as Timestamp).toDate(),
+      createdAt: parseDate(json['createdAt']) ?? DateTime.now(),
+      updatedAt: parseDate(json['updatedAt']) ?? DateTime.now(),
     );
   }
 
@@ -55,17 +61,16 @@ class AttendanceModel {
       'id': id,
       'userId': userId,
       'userName': userName,
-      'date': Timestamp.fromDate(date),
-      'checkInTime':
-          checkInTime != null ? Timestamp.fromDate(checkInTime!) : null,
-      'checkOutTime':
-          checkOutTime != null ? Timestamp.fromDate(checkOutTime!) : null,
+      'date': date?.toIso8601String(),
+      'checkInTime': checkInTime?.toIso8601String(),
+      'checkOutTime': checkOutTime?.toIso8601String(),
       'workLocation': workLocation,
+      'numberOfHours': numberOfHours,
       'notes': notes,
       'isLate': isLate,
       'isAbsent': isAbsent,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'updatedAt': Timestamp.fromDate(updatedAt),
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 
@@ -77,6 +82,7 @@ class AttendanceModel {
     DateTime? checkInTime,
     DateTime? checkOutTime,
     String? workLocation,
+    double? numberOfHours,
     String? notes,
     bool? isLate,
     bool? isAbsent,
@@ -91,6 +97,7 @@ class AttendanceModel {
       checkInTime: checkInTime ?? this.checkInTime,
       checkOutTime: checkOutTime ?? this.checkOutTime,
       workLocation: workLocation ?? this.workLocation,
+      numberOfHours: numberOfHours ?? this.numberOfHours,
       notes: notes ?? this.notes,
       isLate: isLate ?? this.isLate,
       isAbsent: isAbsent ?? this.isAbsent,
