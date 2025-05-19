@@ -419,6 +419,7 @@ class AppRouter {
               return BlocProvider(
                 create: (context) => AttendanceBloc(
                   getIt<AttendanceService>(),
+                  getIt<GlobalStorage>(),
                 )..add(LoadAttendances()),
                 child: Scaffold(
                   body: child,

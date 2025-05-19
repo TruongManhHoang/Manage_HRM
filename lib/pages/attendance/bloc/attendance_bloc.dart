@@ -1,3 +1,4 @@
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/attendance/bloc/attendance_event.dart';
 import 'package:admin_hrm/pages/attendance/bloc/attendance_state.dart';
 import 'package:admin_hrm/service/attendance_service.dart';
@@ -6,8 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
   final AttendanceService service;
+  final GlobalStorage globalStorage;
 
-  AttendanceBloc(this.service) : super(AttendanceInitial()) {
+  AttendanceBloc(this.service, this.globalStorage)
+      : super(AttendanceInitial()) {
     on<LoadAttendances>(_onLoad);
     on<AddAttendance>(_onAdd);
     on<UpdateAttendance>(_onUpdate);
@@ -17,7 +20,10 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
   Future<void> _onLoad(LoadAttendances event, Emitter emit) async {
     emit(AttendanceLoading());
     try {
+      debugPrint("Loading Attendances");
       final list = await service.getAllAttendances();
+      debugPrint("Attendances Loaded: ${list.length}");
+      globalStorage.fetchAllAttendance(list);
       emit(AttendanceLoaded(list));
     } catch (e) {
       emit(AttendanceError(e.toString()));

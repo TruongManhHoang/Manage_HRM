@@ -2,13 +2,13 @@ import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.da
 import 'package:admin_hrm/common/widgets/layouts/headers/headers.dart';
 import 'package:admin_hrm/common/widgets/layouts/sidebars/sidebar.dart';
 import 'package:admin_hrm/constants/sizes.dart';
+import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/router/routers_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gap/gap.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 
 import 'package:admin_hrm/pages/attendance/bloc/attendance_bloc.dart';
 import 'package:admin_hrm/pages/attendance/bloc/attendance_event.dart';
@@ -38,19 +38,26 @@ class _AttendanceFormState extends State<AttendanceForm> {
 
   List<Map<String, String>> personnelList = [];
   bool isLoadingPersonnel = true;
-
+  String? selectedPersonalId;
+  final globalStorage = getIt<GlobalStorage>();
+  late final personnels = globalStorage.personalManagers;
   @override
   void initState() {
     super.initState();
-    _loadPersonnel();
-
+    // _loadPersonnel();
+    if (personnels!.isNotEmpty) {
+      final first = personnels!.first;
+      selectedPersonalId = first.id;
+      userIdCtrl.text = first.id!;
+      userNameCtrl.text = first.name ?? '';
+    }
     if (widget.attendance != null) {
       final a = widget.attendance!;
       userIdCtrl.text = a.userId;
       userNameCtrl.text = a.userName ?? '';
       workLocationCtrl.text = a.workLocation ?? '';
       notesCtrl.text = a.notes ?? '';
-      date = a.date;
+      date = a.date!;
       checkInTime = a.checkInTime;
       checkOutTime = a.checkOutTime;
       isLate = a.isLate;
@@ -58,22 +65,22 @@ class _AttendanceFormState extends State<AttendanceForm> {
     }
   }
 
-  Future<void> _loadPersonnel() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('personnel').get();
+  // Future<void> _loadPersonnel() async {
+  //   final snapshot =
+  //       await FirebaseFirestore.instance.collection('personnel').get();
 
-    personnelList = snapshot.docs.map((doc) {
-      final data = doc.data();
-      return {
-        'code': data['code'] as String,
-        'name': data['name'] as String,
-      };
-    }).toList();
+  //   personnelList = snapshot.docs.map((doc) {
+  //     final data = doc.data();
+  //     return {
+  //       'id': data['id'] as String,
+  //       'name': data['name'] as String,
+  //     };
+  //   }).toList();
 
-    setState(() {
-      isLoadingPersonnel = false;
-    });
-  }
+  //   setState(() {
+  //     isLoadingPersonnel = false;
+  //   });
+  // }
 
   Future<void> _pickDate() async {
     final picked = await showDatePicker(
@@ -103,17 +110,32 @@ class _AttendanceFormState extends State<AttendanceForm> {
     }
   }
 
+  double? calculateWorkingUnit(DateTime? checkInTime, DateTime? checkOutTime) {
+    if (checkInTime != null && checkOutTime != null) {
+      final totalMinutes = checkOutTime.difference(checkInTime).inMinutes;
+      final hours = totalMinutes / 60.0;
+
+      final workingUnit = hours / 8.0;
+
+      // Giới hạn tối đa là 1 công
+      return workingUnit.clamp(0.0, 1.0);
+    }
+
+    return null;
+  }
+
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
 
     final model = AttendanceModel(
       id: widget.attendance?.id ?? '',
-      userId: userIdCtrl.text.trim(),
+      userId: selectedPersonalId ?? '',
       userName: userNameCtrl.text.trim(),
       date: date,
       checkInTime: checkInTime,
       checkOutTime: checkOutTime,
       workLocation: workLocationCtrl.text.trim(),
+      numberOfHours: calculateWorkingUnit(checkInTime, checkOutTime),
       notes: notesCtrl.text.trim(),
       isLate: isLate,
       isAbsent: isAbsent,
@@ -153,8 +175,7 @@ class _AttendanceFormState extends State<AttendanceForm> {
                   children: [
                     const Header(),
                     Container(
-                      color: Colors.grey[200],
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(10),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -174,49 +195,46 @@ class _AttendanceFormState extends State<AttendanceForm> {
                                 key: _formKey,
                                 child: Column(
                                   children: [
-                                    isLoadingPersonnel
-                                        ? const Center(
-                                            child: CircularProgressIndicator())
-                                        : DropdownSearch<String>(
-                                            items: personnelList
-                                                .map((e) => e['code']!)
-                                                .toList(),
-                                            selectedItem:
-                                                userIdCtrl.text.isNotEmpty
-                                                    ? userIdCtrl.text
-                                                    : null,
-                                            dropdownDecoratorProps:
-                                                const DropDownDecoratorProps(
-                                              dropdownSearchDecoration:
-                                                  InputDecoration(
-                                                labelText: 'Mã nhân viên',
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Nhân viên',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
                                               ),
-                                            ),
-                                            popupProps: const PopupProps.menu(
-                                              showSearchBox: true,
-                                              searchFieldProps: TextFieldProps(
-                                                decoration: InputDecoration(
-                                                  labelText:
-                                                      'Tìm mã nhân viên...',
-                                                ),
-                                              ),
-                                            ),
-                                            onChanged: (selectedCode) {
-                                              userIdCtrl.text = selectedCode!;
-                                              final found =
-                                                  personnelList.firstWhere(
-                                                (e) =>
-                                                    e['code'] == selectedCode,
-                                                orElse: () => {},
-                                              );
+                                        ),
+                                        const Gap(TSizes.spaceBtwItems),
+                                        DropdownMenu(
+                                          initialSelection: userIdCtrl.text,
+                                          controller: userIdCtrl,
+                                          width: 200,
+                                          trailingIcon:
+                                              const Icon(Icons.arrow_drop_down),
+                                          dropdownMenuEntries: personnels!
+                                              .map((personal) =>
+                                                  DropdownMenuEntry<String>(
+                                                    label: personal.name!,
+                                                    value: personal.id!,
+                                                  ))
+                                              .toList(),
+                                          onSelected: (value) {
+                                            setState(() {
+                                              selectedPersonalId = value;
+                                              final selected = personnels!
+                                                  .firstWhere(
+                                                      (e) => e.id == value);
                                               userNameCtrl.text =
-                                                  found['name'] ?? '';
-                                            },
-                                            validator: (value) =>
-                                                value == null || value.isEmpty
-                                                    ? 'Không để trống'
-                                                    : null,
-                                          ),
+                                                  selected.name ?? '';
+                                            });
+                                          },
+                                          hintText: 'Chọn nhân viên',
+                                        ),
+                                      ],
+                                    ),
                                     const Gap(8),
                                     TextFormField(
                                       controller: userNameCtrl,

@@ -1,5 +1,7 @@
 import 'package:admin_hrm/constants/sizes.dart';
 import 'package:admin_hrm/data/model/attendance/attendance_model.dart';
+import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/attendance/bloc/attendance_bloc.dart';
 import 'package:admin_hrm/pages/attendance/bloc/attendance_event.dart';
 import 'package:admin_hrm/router/routers_name.dart';
@@ -24,7 +26,9 @@ class AttendanceTableRows extends DataTableSource {
     if (index >= attendances.length) return null;
 
     final attendance = attendances[index];
-
+    final globalStorage = getIt<GlobalStorage>();
+    final personal = globalStorage.personalManagers!
+        .firstWhere((e) => e.id == attendance.userId);
     TextStyle baseStyle = Theme.of(context)
         .textTheme
         .bodyMedium!
@@ -32,10 +36,10 @@ class AttendanceTableRows extends DataTableSource {
 
     return DataRow2(
       cells: [
-        DataCell(Center(child: Text(attendance.userId, style: baseStyle))),
+        DataCell(Center(child: Text(personal.name, style: baseStyle))),
         DataCell(Center(
-            child:
-                Text(dateFormatter.format(attendance.date), style: baseStyle))),
+            child: Text(dateFormatter.format(attendance.date!),
+                style: baseStyle))),
         DataCell(Center(
             child: Text(
           attendance.checkInTime != null
@@ -112,7 +116,7 @@ class AttendanceTableRows extends DataTableSource {
       builder: (ctx) => AlertDialog(
         title: const Text('Xác nhận xoá'),
         content: Text(
-            'Bạn có chắc chắn muốn xoá bản ghi ngày "${DateFormat('dd/MM/yyyy').format(attendance.date)}"?'),
+            'Bạn có chắc chắn muốn xoá bản ghi ngày "${DateFormat('dd/MM/yyyy').format(attendance.date!)}"?'),
         actions: [
           TextButton(
             child: const Text('Huỷ'),

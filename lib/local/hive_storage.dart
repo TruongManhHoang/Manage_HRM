@@ -1,3 +1,4 @@
+import 'package:admin_hrm/data/model/attendance/attendance_model.dart';
 import 'package:admin_hrm/data/model/department/department_model.dart';
 import 'package:admin_hrm/data/model/personnel_management.dart';
 import 'package:admin_hrm/data/model/position/position_model.dart';
@@ -19,6 +20,7 @@ class GlobalStorageKey {
   static const positions = "positions";
   static const departments = "departments";
   static const personalManagers = "personalManagers";
+  static const attendances = "attendances";
 }
 
 abstract class GlobalStorage {
@@ -43,6 +45,9 @@ abstract class GlobalStorage {
   Future<void> updatePersonalManager(PersionalManagement manager);
   Future<void> removeFromPersonalManagerById(String id);
   Future<void> removeAllPersonalManagers();
+
+  List<AttendanceModel>? get attendances;
+  Future<void> fetchAllAttendance(List<AttendanceModel> attendances);
 
   // New authentication methods
   String? get accessToken;
@@ -372,6 +377,28 @@ class GlobalStorageImpl implements GlobalStorage {
         GlobalStorageKey.personalManagers, managerList.map((e) => e.toMap()));
     debugPrint(
       "Personal manager list is ${_box.get(GlobalStorageKey.personalManagers)}",
+    );
+  }
+
+  @override
+  // TODO: implement attendances
+  List<AttendanceModel>? get attendances {
+    final jsonList = _box.get(GlobalStorageKey.attendances, defaultValue: []);
+    if (jsonList is List) {
+      return jsonList
+          .map((e) => AttendanceModel.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
+    }
+  }
+
+  @override
+  Future<void> fetchAllAttendance(List<AttendanceModel> attendances) async {
+    await _box.put(
+      GlobalStorageKey.attendances,
+      attendances.map((e) => e.toJson()).toList(),
+    );
+    debugPrint(
+      "Attendance list is ${_box.get(GlobalStorageKey.attendances)}",
     );
   }
 }
