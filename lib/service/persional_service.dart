@@ -50,9 +50,19 @@ class PersionalService {
       QuerySnapshot querySnapshot =
           await _firestore.collection('personnel').get();
       print('Get personnel successfully!');
+
       return querySnapshot.docs
-          .map((doc) =>
-              PersionalManagement.fromMap(doc.data() as Map<String, dynamic>))
+          .map((doc) {
+            try {
+              final data = doc.data() as Map<String, dynamic>;
+              print('Document data: $data');
+              return PersionalManagement.fromMap(data);
+            } catch (e) {
+              print('Lỗi parse document ${doc.id}: $e');
+              return null;
+            }
+          })
+          .whereType<PersionalManagement>()
           .toList();
     } catch (e) {
       print('Fail to read: $e');

@@ -24,7 +24,6 @@ class AddDepartmentPage extends StatelessWidget {
     final descriptionController = TextEditingController();
     final managerController = TextEditingController();
     final statusController = TextEditingController();
-    final employeeCountController = TextEditingController();
     final codeController = TextEditingController();
     final emailController = TextEditingController();
     final phoneController = TextEditingController();
@@ -102,14 +101,6 @@ class AddDepartmentPage extends StatelessWidget {
                                         controller: managerController,
                                       ),
                                       const Gap(TSizes.spaceBtwItems),
-                                      TTextFormField(
-                                        textAlign: true,
-                                        text: 'Số nhân viên',
-                                        hint: 'Nhập số nhân viên',
-                                        controller: employeeCountController,
-                                        keyboardType: TextInputType.number,
-                                      ),
-                                      const Gap(TSizes.spaceBtwItems),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -164,8 +155,6 @@ class AddDepartmentPage extends StatelessWidget {
                                               managerName:
                                                   managerController.text,
                                               status: statusController.text,
-                                              employeeCount: int.parse(
-                                                  employeeCountController.text),
                                               code: codeController.text,
                                               email: emailController.text,
                                               phoneNumber: phoneController.text,
