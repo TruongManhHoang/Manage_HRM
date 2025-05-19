@@ -33,9 +33,6 @@ class EditDepartmentPage extends StatelessWidget {
     final statusController = TextEditingController(
       text: department.status,
     );
-    final employeeCountController = TextEditingController(
-      text: department.employeeCount.toString(),
-    );
     final codeController = TextEditingController(
       text: department.code,
     );
@@ -117,14 +114,6 @@ class EditDepartmentPage extends StatelessWidget {
                                         text: 'Quản lý phòng ban',
                                         hint: 'Nhập tên quản lý phòng ban',
                                         controller: managerController,
-                                      ),
-                                      const Gap(TSizes.spaceBtwItems),
-                                      TTextFormField(
-                                        textAlign: true,
-                                        text: 'Số nhân viên',
-                                        hint: 'Nhập số nhân viên',
-                                        controller: employeeCountController,
-                                        keyboardType: TextInputType.number,
                                       ),
                                       const Gap(TSizes.spaceBtwItems),
                                       Row(
@@ -213,9 +202,6 @@ class EditDepartmentPage extends StatelessWidget {
                                                   managerName:
                                                       managerController.text,
                                                   status: statusController.text,
-                                                  employeeCount: int.parse(
-                                                      employeeCountController
-                                                          .text),
                                                   code: codeController.text,
                                                   email: emailController.text,
                                                   phoneNumber:

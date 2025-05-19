@@ -27,10 +27,11 @@ class PersionalCreateEvent extends PersionalEvent {
 
 class PersionalUpdateEvent extends PersionalEvent {
   final PersionalManagement personnelManagement;
-  // final XFile? image;
+  final String? oldDepartmentId;
 
   const PersionalUpdateEvent(
     this.personnelManagement,
+    this.oldDepartmentId,
   );
   @override
   List<Object?> get props => [personnelManagement];
@@ -38,8 +39,12 @@ class PersionalUpdateEvent extends PersionalEvent {
 
 class PersionalDeleteEvent extends PersionalEvent {
   final String id;
+  final String? departmentId;
 
-  const PersionalDeleteEvent(this.id);
+  const PersionalDeleteEvent(
+    this.id,
+    this.departmentId,
+  );
   @override
   List<Object?> get props => [id];
 }
