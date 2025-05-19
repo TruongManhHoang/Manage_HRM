@@ -81,10 +81,10 @@ class Sidebar extends StatelessWidget {
                         title: 'Lương',
                         router: RouterName.salaryPage),
                     const MenuItem(
-                        icon: Iconsax.add,
+                        icon: Iconsax.user,
                         title: 'Tài khoản',
                         router: RouterName.accountPage),
-
+                    const Gap(TSizes.spaceBtwSections),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: Row(
