@@ -134,7 +134,6 @@ class AddDepartmentPage extends StatelessWidget {
                                         hint: 'Nhập số điện thoại',
                                         controller: phoneController,
                                       ),
-                                      const Gap(TSizes.spaceBtwItems),
                                       const Gap(TSizes.spaceBtwSections),
                                       TextButton(
                                         style: TextButton.styleFrom(
