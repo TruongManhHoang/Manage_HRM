@@ -16,36 +16,36 @@ class AttendancePageTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        color: Colors.grey[200],
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const TBreadcrumsWithHeading(
-                heading: 'Chấm Công',
-                breadcrumbItems: [],
-              ),
-              const Row(
-                children: [
-                  Text(
-                    'Chấm công',
-                    style: TextStyle(fontSize: 25, color: Colors.black),
-                  ),
-                ],
-              ),
-              Gap(TSizes.spaceBtwItems),
-              Container(
-                padding: const EdgeInsets.all(10),
-                color: Colors.white,
-                child: Column(
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          color: Colors.grey[200],
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                const TBreadcrumsWithHeading(
+                  heading: 'Chấm Công',
+                  breadcrumbItems: [],
+                ),
+                const Row(
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        TextButton(
+                    Text(
+                      'Chấm công',
+                      style: TextStyle(fontSize: 25, color: Colors.black),
+                    ),
+                  ],
+                ),
+                const Gap(TSizes.spaceBtwItems),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          TextButton(
                             style: TextButton.styleFrom(
                               backgroundColor: Colors.blue,
                             ),
@@ -58,66 +58,71 @@ class AttendancePageTable extends StatelessWidget {
                                   .textTheme
                                   .bodyMedium!
                                   .copyWith(color: Colors.white),
-                            )),
-                        const Gap(10),
-                        BlocBuilder<AttendanceBloc, AttendanceState>(
+                            ),
+                          ),
+                          const Gap(10),
+                          BlocBuilder<AttendanceBloc, AttendanceState>(
                             builder: (context, state) {
-                          if (state is AttendanceLoaded) {
-                            return TextButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                ),
-                                onPressed: () {
-                                  exportDynamicExcel(
-                                    headers: [
-                                      'Mã chấm công',
-                                      'Mã nhân viên',
-                                      'Ngày',
-                                      'Giờ vào',
-                                      'Giờ ra',
-                                      'Địa điểm làm việc',
-                                      'Ghi chú',
-                                      'Đi muộn',
-                                      'Vắng mặt',
-                                    ],
-                                    dataRows: state.attendances
-                                        .map((att) => [
-                                              att.id,
-                                              att.userId,
-                                              att.date.toString(),
-                                              att.checkInTime?.toString() ?? '',
-                                              att.checkOutTime?.toString() ??
-                                                  '',
-                                              att.workLocation ?? '',
-                                              att.notes ?? '',
-                                              att.isLate ? 'Có' : 'Không',
-                                              att.isAbsent ? 'Có' : 'Không',
-                                            ])
-                                        .toList(),
-                                  );
-                                },
-                                child: Text(
-                                  'Xuất danh sách chấm công',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(color: Colors.white),
-                                ));
-                          } else {
-                            return const SizedBox();
-                          }
-                        }),
-                      ],
-                    ),
-                    Gap(TSizes.spaceBtwItems),
-                    const DataTableAttendance()
-                  ],
+                              if (state is AttendanceLoaded) {
+                                return TextButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.blue,
+                                  ),
+                                  onPressed: () {
+                                    exportDynamicExcel(
+                                      headers: [
+                                        'Mã chấm công',
+                                        'Mã nhân viên',
+                                        'Ngày',
+                                        'Giờ vào',
+                                        'Giờ ra',
+                                        'Địa điểm làm việc',
+                                        'Ghi chú',
+                                        'Đi muộn',
+                                        'Vắng mặt',
+                                      ],
+                                      dataRows: state.attendances
+                                          .map((att) => [
+                                                att.id,
+                                                att.userId,
+                                                att.date.toString(),
+                                                att.checkInTime?.toString() ??
+                                                    '',
+                                                att.checkOutTime?.toString() ??
+                                                    '',
+                                                att.workLocation ?? '',
+                                                att.notes ?? '',
+                                                att.isLate ? 'Có' : 'Không',
+                                                att.isAbsent ? 'Có' : 'Không',
+                                              ])
+                                          .toList(),
+                                    );
+                                  },
+                                  child: Text(
+                                    'Xuất danh sách chấm công',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                      const Gap(TSizes.spaceBtwItems),
+                      const DataTableAttendance()
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    ));
+    );
   }
 }
