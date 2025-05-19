@@ -36,7 +36,7 @@ class AttendancePageMobile extends StatelessWidget {
                     ),
                   ],
                 ),
-                Gap(TSizes.spaceBtwItems),
+                const Gap(TSizes.spaceBtwItems),
                 Container(
                   padding: const EdgeInsets.all(10),
                   color: Colors.white,
@@ -113,7 +113,7 @@ class AttendancePageMobile extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Gap(TSizes.spaceBtwItems),
+                      const Gap(TSizes.spaceBtwItems),
                       const DataTableAttendance()
                     ],
                   ),

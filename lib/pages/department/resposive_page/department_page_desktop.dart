@@ -37,7 +37,7 @@ class DepartmentPageDesktop extends StatelessWidget {
                   ),
                 ],
               ),
-              Gap(TSizes.spaceBtwItems),
+              const Gap(TSizes.spaceBtwItems),
               Container(
                 padding: EdgeInsets.all(10),
                 color: Colors.white,
