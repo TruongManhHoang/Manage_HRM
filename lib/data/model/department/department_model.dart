@@ -19,7 +19,7 @@ class DepartmentModel {
   @HiveField(6)
   final String status;
   @HiveField(7)
-  final int employeeCount;
+  final int? employeeCount;
   @HiveField(8)
   final String? code;
   @HiveField(9)
@@ -35,7 +35,7 @@ class DepartmentModel {
     this.createdAt,
     this.updatedAt,
     required this.status,
-    required this.employeeCount,
+    this.employeeCount,
     this.code,
     this.email,
     this.phoneNumber,
@@ -68,7 +68,7 @@ class DepartmentModel {
       updatedAt:
           map['updatedAt'] != null ? DateTime.parse(map['updatedAt']) : null,
       status: map['status'],
-      employeeCount: map['employeeCount'],
+      employeeCount: map['employeeCount'] ?? 0,
       code: map['code'],
       email: map['email'],
       phoneNumber: map['phoneNumber'],

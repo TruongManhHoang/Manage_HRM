@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
-import 'package:admin_hrm/utils/popups/dialogs.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +12,6 @@ import '../../../constants/sizes.dart';
 import '../../../data/model/personnel_management.dart';
 import '../../../router/routers_name.dart';
 import '../bloc/persional_bloc.dart';
-import '../widgets/other_functions.dart';
 
 class TableEmployeeRows extends DataTableSource {
   final BuildContext context;
@@ -120,7 +118,7 @@ class TableEmployeeRows extends DataTableSource {
         )),
         DataCell(Center(
           child: Text(
-            department.name!,
+            department.name,
             style: Theme.of(context)
                 .textTheme
                 .bodyLarge!
@@ -200,9 +198,8 @@ class TableEmployeeRows extends DataTableSource {
             child: const Text('Xoá', style: TextStyle(color: Colors.red)),
             onPressed: () {
               Navigator.of(ctx).pop();
-              context
-                  .read<PersionalBloc>()
-                  .add(PersionalDeleteEvent(personnelManagement.id!));
+              context.read<PersionalBloc>().add(PersionalDeleteEvent(
+                  personnelManagement.id!, personnelManagement.departmentId));
             },
           ),
         ],
