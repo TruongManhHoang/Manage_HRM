@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:admin_hrm/data/repository/department_repository.dart';
 import 'package:admin_hrm/data/repository/persional_repository.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:equatable/equatable.dart';
@@ -16,9 +17,12 @@ part 'persional_state.dart';
 
 class PersionalBloc extends Bloc<PersionalEvent, PersionalState> {
   final PersionalRepository personnelRepository;
+  final DepartmentRepository departmentRepository;
   final GlobalStorage globalStorage;
   PersionalBloc(
-      {required this.personnelRepository, required this.globalStorage})
+      {required this.personnelRepository,
+      required this.globalStorage,
+      required this.departmentRepository})
       : super(const PersionalState()) {
     on<PersionalCreateEvent>(_onCreateEvent);
     on<PersionalLoadEvent>(_onLoadEvent);
@@ -31,6 +35,10 @@ class PersionalBloc extends Bloc<PersionalEvent, PersionalState> {
     emit(state.copyWith(isLoading: true, isSuccess: false));
     try {
       await personnelRepository.createPersonnel(event.personnelManagement);
+      final departmentId = event.personnelManagement.departmentId;
+      if (departmentId != null && departmentId.isNotEmpty) {
+        await departmentRepository.increaseEmployeeCount(departmentId);
+      }
       add(const PersionalLoadEvent());
       emit(state.copyWith(isLoading: false, isSuccess: true));
     } catch (e) {
@@ -59,6 +67,18 @@ class PersionalBloc extends Bloc<PersionalEvent, PersionalState> {
     emit(state.copyWith(isLoading: true, isSuccess: false));
     try {
       await personnelRepository.updatePersional(event.personnelManagement);
+      final newDeptId = event.personnelManagement.departmentId;
+      final oldDeptId = event.oldDepartmentId;
+
+      if (oldDeptId != null && oldDeptId != newDeptId) {
+        // Giảm số lượng nhân viên phòng cũ
+        await departmentRepository.decreaseEmployeeCount(oldDeptId);
+
+        // Tăng số lượng nhân viên phòng mới
+        if (newDeptId != null && newDeptId.isNotEmpty) {
+          await departmentRepository.increaseEmployeeCount(newDeptId);
+        }
+      }
       add(const PersionalLoadEvent());
       emit(state.copyWith(isLoading: false, isSuccess: true));
     } catch (e) {
@@ -72,6 +92,11 @@ class PersionalBloc extends Bloc<PersionalEvent, PersionalState> {
     emit(state.copyWith(isLoading: true, isSuccess: false));
     try {
       await personnelRepository.deletePersonnel(event.id);
+      final departmentId = event.departmentId;
+      if (departmentId != null && departmentId.isNotEmpty) {
+        await departmentRepository.decreaseEmployeeCount(departmentId);
+      }
+
       add(const PersionalLoadEvent());
       emit(state.copyWith(isLoading: false, isSuccess: true));
     } catch (e) {

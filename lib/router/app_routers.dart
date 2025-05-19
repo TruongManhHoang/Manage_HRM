@@ -126,6 +126,7 @@ class AppRouter {
               return BlocProvider(
                 create: (context) => PersionalBloc(
                   personnelRepository: getIt<PersionalRepository>(),
+                  departmentRepository: getIt<DepartmentRepository>(),
                   globalStorage: getIt<GlobalStorage>(),
                 )..add(const PersionalLoadEvent()),
                 child: Scaffold(
