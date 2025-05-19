@@ -1,4 +1,5 @@
 import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
+import 'package:admin_hrm/common/widgets/layouts/headers/headers.dart';
 import 'package:admin_hrm/common/widgets/layouts/sidebars/sidebar.dart';
 import 'package:admin_hrm/constants/sizes.dart';
 import 'package:admin_hrm/router/routers_name.dart';
@@ -150,124 +151,144 @@ class _AttendanceFormState extends State<AttendanceForm> {
                 flex: 5,
                 child: Column(
                   children: [
-                    const TBreadcrumsWithHeading(
-                      heading: 'Chấm công',
-                      breadcrumbItems: [RouterName.addAttendance],
-                    ),
+                    const Header(),
                     Container(
-                      width: 600,
-                      padding: const EdgeInsets.all(TSizes.defaultSpace),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: Form(
-                        key: _formKey,
+                      color: Colors.grey[200],
+                      padding: const EdgeInsets.all(16.0),
+                      child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            isLoadingPersonnel
-                                ? const Center(
-                                    child: CircularProgressIndicator())
-                                : DropdownSearch<String>(
-                                    items: personnelList
-                                        .map((e) => e['code']!)
-                                        .toList(),
-                                    selectedItem: userIdCtrl.text.isNotEmpty
-                                        ? userIdCtrl.text
-                                        : null,
-                                    dropdownDecoratorProps:
-                                        const DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelText: 'Mã nhân viên',
-                                      ),
+                            const TBreadcrumsWithHeading(
+                              heading: 'Chấm công',
+                              breadcrumbItems: [RouterName.addAttendance],
+                            ),
+                            Container(
+                              width: 600,
+                              padding:
+                                  const EdgeInsets.all(TSizes.defaultSpace),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    isLoadingPersonnel
+                                        ? const Center(
+                                            child: CircularProgressIndicator())
+                                        : DropdownSearch<String>(
+                                            items: personnelList
+                                                .map((e) => e['code']!)
+                                                .toList(),
+                                            selectedItem:
+                                                userIdCtrl.text.isNotEmpty
+                                                    ? userIdCtrl.text
+                                                    : null,
+                                            dropdownDecoratorProps:
+                                                const DropDownDecoratorProps(
+                                              dropdownSearchDecoration:
+                                                  InputDecoration(
+                                                labelText: 'Mã nhân viên',
+                                              ),
+                                            ),
+                                            popupProps: const PopupProps.menu(
+                                              showSearchBox: true,
+                                              searchFieldProps: TextFieldProps(
+                                                decoration: InputDecoration(
+                                                  labelText:
+                                                      'Tìm mã nhân viên...',
+                                                ),
+                                              ),
+                                            ),
+                                            onChanged: (selectedCode) {
+                                              userIdCtrl.text = selectedCode!;
+                                              final found =
+                                                  personnelList.firstWhere(
+                                                (e) =>
+                                                    e['code'] == selectedCode,
+                                                orElse: () => {},
+                                              );
+                                              userNameCtrl.text =
+                                                  found['name'] ?? '';
+                                            },
+                                            validator: (value) =>
+                                                value == null || value.isEmpty
+                                                    ? 'Không để trống'
+                                                    : null,
+                                          ),
+                                    const Gap(8),
+                                    TextFormField(
+                                      controller: userNameCtrl,
+                                      readOnly: true,
+                                      decoration: const InputDecoration(
+                                          labelText:
+                                              'Tên nhân viên (tự động điền)'),
                                     ),
-                                    popupProps: const PopupProps.menu(
-                                      showSearchBox: true,
-                                      searchFieldProps: TextFieldProps(
-                                        decoration: InputDecoration(
-                                          labelText: 'Tìm mã nhân viên...',
-                                        ),
-                                      ),
+                                    const Gap(8),
+                                    ListTile(
+                                      title: Text(
+                                          'Ngày: ${date.toLocal().toString().split(' ')[0]}'),
+                                      trailing:
+                                          const Icon(Icons.calendar_today),
+                                      onTap: _pickDate,
                                     ),
-                                    onChanged: (selectedCode) {
-                                      userIdCtrl.text = selectedCode!;
-                                      final found = personnelList.firstWhere(
-                                        (e) => e['code'] == selectedCode,
-                                        orElse: () => {},
-                                      );
-                                      userNameCtrl.text = found['name'] ?? '';
-                                    },
-                                    validator: (value) =>
-                                        value == null || value.isEmpty
-                                            ? 'Không để trống'
-                                            : null,
-                                  ),
-                            const Gap(8),
-                            TextFormField(
-                              controller: userNameCtrl,
-                              readOnly: true,
-                              decoration: const InputDecoration(
-                                  labelText: 'Tên nhân viên (tự động điền)'),
-                            ),
-                            const Gap(8),
-                            ListTile(
-                              title: Text(
-                                  'Ngày: ${date.toLocal().toString().split(' ')[0]}'),
-                              trailing: const Icon(Icons.calendar_today),
-                              onTap: _pickDate,
-                            ),
-                            ListTile(
-                              title: Text(checkInTime != null
-                                  ? 'Giờ vào: ${TimeOfDay.fromDateTime(checkInTime!).format(context)}'
-                                  : 'Chọn giờ vào'),
-                              trailing: const Icon(Icons.access_time),
-                              onTap: () => _pickTime(isCheckIn: true),
-                            ),
-                            ListTile(
-                              title: Text(checkOutTime != null
-                                  ? 'Giờ ra: ${TimeOfDay.fromDateTime(checkOutTime!).format(context)}'
-                                  : 'Chọn giờ ra'),
-                              trailing: const Icon(Icons.access_time),
-                              onTap: () => _pickTime(isCheckIn: false),
-                            ),
-                            TextFormField(
-                              controller: workLocationCtrl,
-                              decoration: const InputDecoration(
-                                  labelText: 'Địa điểm làm việc'),
-                            ),
-                            const Gap(8),
-                            TextFormField(
-                              controller: notesCtrl,
-                              decoration:
-                                  const InputDecoration(labelText: 'Ghi chú'),
-                              maxLines: 2,
-                            ),
-                            const Gap(8),
-                            Row(
-                              children: [
-                                Checkbox(
-                                    value: isLate,
-                                    onChanged: (v) =>
-                                        setState(() => isLate = v ?? false)),
-                                const Text('Đi trễ'),
-                                const Gap(20),
-                                Checkbox(
-                                    value: isAbsent,
-                                    onChanged: (v) =>
-                                        setState(() => isAbsent = v ?? false)),
-                                const Text('Vắng mặt'),
-                              ],
-                            ),
-                            const Gap(16),
-                            ElevatedButton(
-                                onPressed: _submit,
-                                child: widget.attendance != null
-                                    ? const Text('Sửa chấm công')
-                                    : const Text('Thêm chấm công')),
+                                    ListTile(
+                                      title: Text(checkInTime != null
+                                          ? 'Giờ vào: ${TimeOfDay.fromDateTime(checkInTime!).format(context)}'
+                                          : 'Chọn giờ vào'),
+                                      trailing: const Icon(Icons.access_time),
+                                      onTap: () => _pickTime(isCheckIn: true),
+                                    ),
+                                    ListTile(
+                                      title: Text(checkOutTime != null
+                                          ? 'Giờ ra: ${TimeOfDay.fromDateTime(checkOutTime!).format(context)}'
+                                          : 'Chọn giờ ra'),
+                                      trailing: const Icon(Icons.access_time),
+                                      onTap: () => _pickTime(isCheckIn: false),
+                                    ),
+                                    TextFormField(
+                                      controller: workLocationCtrl,
+                                      decoration: const InputDecoration(
+                                          labelText: 'Địa điểm làm việc'),
+                                    ),
+                                    const Gap(8),
+                                    TextFormField(
+                                      controller: notesCtrl,
+                                      decoration: const InputDecoration(
+                                          labelText: 'Ghi chú'),
+                                      maxLines: 2,
+                                    ),
+                                    const Gap(8),
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                            value: isLate,
+                                            onChanged: (v) => setState(
+                                                () => isLate = v ?? false)),
+                                        const Text('Đi trễ'),
+                                        const Gap(20),
+                                        Checkbox(
+                                            value: isAbsent,
+                                            onChanged: (v) => setState(
+                                                () => isAbsent = v ?? false)),
+                                        const Text('Vắng mặt'),
+                                      ],
+                                    ),
+                                    const Gap(16),
+                                    ElevatedButton(
+                                        onPressed: _submit,
+                                        child: widget.attendance != null
+                                            ? const Text('Sửa chấm công')
+                                            : const Text('Thêm chấm công')),
+                                  ],
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               )

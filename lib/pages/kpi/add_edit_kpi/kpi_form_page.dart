@@ -1,4 +1,5 @@
 import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
+import 'package:admin_hrm/common/widgets/layouts/headers/headers.dart';
 import 'package:admin_hrm/common/widgets/layouts/sidebars/sidebar.dart';
 import 'package:admin_hrm/constants/sizes.dart';
 import 'package:admin_hrm/data/model/kpi/kpi_metric/kpi_metric.dart';
@@ -131,168 +132,233 @@ class _KPIFormPageState extends State<KPIFormPage> {
                 flex: 5,
                 child: Column(
                   children: [
-                    const TBreadcrumsWithHeading(
-                      heading: 'KPI',
-                      breadcrumbItems: [RouterName.addKpi],
-                    ),
-                    Container(
-                      width: 600,
-                      padding: const EdgeInsets.all(TSizes.defaultSpace),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            _isLoadingUsers
-                                ? const CircularProgressIndicator()
-                                : DropdownButtonFormField<String>(
-                                    value: _selectedUserId,
-                                    decoration: const InputDecoration(
-                                        labelText: 'Chọn nhân sự'),
-                                    items: _users.map((user) {
-                                      return DropdownMenuItem<String>(
-                                        value: user.id,
-                                        child:
-                                            Text('${user.name} (${user.code})'),
-                                      );
-                                    }).toList(),
-                                    onChanged: (userId) {
-                                      final selected = _users
-                                          .firstWhere((u) => u.id == userId);
-                                      setState(() {
-                                        _selectedUserId = selected.id;
-                                        _departmentIdController.text =
-                                            selected.departmentId;
-                                      });
-                                    },
-                                    validator: (value) => value == null
-                                        ? 'Vui lòng chọn nhân sự'
-                                        : null,
-                                  ),
-                            const Gap(8),
-                            TextFormField(
-                              controller: _departmentIdController,
-                              decoration:
-                                  const InputDecoration(labelText: 'Phòng ban'),
-                              enabled: false,
-                            ),
-                            const Gap(8),
-                            TextFormField(
-                              controller: _periodController,
-                              decoration: const InputDecoration(
-                                  labelText: 'Thời gian (VD: 05/2024)'),
-                              validator: (value) =>
-                                  value!.isEmpty ? 'Bắt buộc' : null,
-                            ),
-                            const Gap(8),
-                            const Divider(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text('Chỉ số KPI',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                TextButton.icon(
-                                  onPressed: _addMetricField,
-                                  icon: const Icon(Icons.add),
-                                  label: const Text('Thêm chỉ số'),
-                                )
-                              ],
-                            ),
-                            ..._metrics.asMap().entries.map((entry) {
-                              final index = entry.key;
-                              final metric = entry.value;
-                              return Card(
-                                margin: const EdgeInsets.symmetric(vertical: 8),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8),
+                    const Header(),
+                    Expanded(
+                      child: Container(
+                        color: Colors.grey[200],
+                        padding: const EdgeInsets.all(16.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              const TBreadcrumsWithHeading(
+                                heading: 'KPI',
+                                breadcrumbItems: [RouterName.addKpi],
+                              ),
+                              Container(
+                                width: 600,
+                                padding:
+                                    const EdgeInsets.all(TSizes.defaultSpace),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Form(
+                                  key: _formKey,
                                   child: Column(
                                     children: [
+                                      _isLoadingUsers
+                                          ? const CircularProgressIndicator()
+                                          : DropdownButtonFormField<String>(
+                                              value: _selectedUserId,
+                                              decoration: const InputDecoration(
+                                                  labelText: 'Chọn nhân sự'),
+                                              items: _users.map((user) {
+                                                return DropdownMenuItem<String>(
+                                                  value: user.id,
+                                                  child: Text(
+                                                      '${user.name} (${user.code})'),
+                                                );
+                                              }).toList(),
+                                              onChanged: (userId) {
+                                                final selected =
+                                                    _users.firstWhere(
+                                                        (u) => u.id == userId);
+                                                setState(() {
+                                                  _selectedUserId = selected.id;
+                                                  _departmentIdController.text =
+                                                      selected.departmentId;
+                                                });
+                                              },
+                                              validator: (value) =>
+                                                  value == null
+                                                      ? 'Vui lòng chọn nhân sự'
+                                                      : null,
+                                            ),
+                                      const Gap(8),
                                       TextFormField(
-                                        initialValue: metric.name,
+                                        controller: _departmentIdController,
                                         decoration: const InputDecoration(
-                                            labelText: 'Tên chỉ số'),
-                                        onChanged: (val) => _metrics[index] =
-                                            _metrics[index].copyWith(name: val),
+                                            labelText: 'Phòng ban'),
+                                        enabled: false,
+                                      ),
+                                      const Gap(8),
+                                      TextFormField(
+                                        controller: _periodController,
+                                        decoration: const InputDecoration(
+                                            labelText:
+                                                'Thời gian (VD: 05/2024)'),
                                         validator: (value) =>
                                             value!.isEmpty ? 'Bắt buộc' : null,
                                       ),
                                       const Gap(8),
+                                      const Divider(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text('Chỉ số KPI',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          TextButton.icon(
+                                            onPressed: _addMetricField,
+                                            icon: const Icon(Icons.add),
+                                            label: const Text('Thêm chỉ số'),
+                                          )
+                                        ],
+                                      ),
+                                      ..._metrics.asMap().entries.map((entry) {
+                                        final index = entry.key;
+                                        final metric = entry.value;
+                                        return Card(
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8),
+                                            child: Column(
+                                              children: [
+                                                TextFormField(
+                                                  initialValue: metric.name,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          labelText:
+                                                              'Tên chỉ số'),
+                                                  onChanged: (val) =>
+                                                      _metrics[index] =
+                                                          _metrics[index]
+                                                              .copyWith(
+                                                                  name: val),
+                                                  validator: (value) =>
+                                                      value!.isEmpty
+                                                          ? 'Bắt buộc'
+                                                          : null,
+                                                ),
+                                                const Gap(8),
+                                                TextFormField(
+                                                  initialValue:
+                                                      metric.description,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          labelText: 'Mô tả'),
+                                                  onChanged: (val) =>
+                                                      _metrics[index] =
+                                                          _metrics[index]
+                                                              .copyWith(
+                                                                  description:
+                                                                      val),
+                                                ),
+                                                const Gap(8),
+                                                TextFormField(
+                                                  initialValue:
+                                                      metric.weight.toString(),
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          labelText:
+                                                              'Trọng số'),
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  onChanged: (val) => _metrics[
+                                                          index] =
+                                                      _metrics[index].copyWith(
+                                                          weight:
+                                                              double.tryParse(
+                                                                      val) ??
+                                                                  0),
+                                                  validator: (value) =>
+                                                      value!.isEmpty
+                                                          ? 'Bắt buộc'
+                                                          : null,
+                                                ),
+                                                const Gap(8),
+                                                TextFormField(
+                                                  initialValue:
+                                                      metric.score.toString(),
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          labelText: 'Điểm số'),
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  onChanged: (val) => _metrics[
+                                                          index] =
+                                                      _metrics[index].copyWith(
+                                                          score:
+                                                              double.tryParse(
+                                                                      val) ??
+                                                                  0),
+                                                  validator: (value) =>
+                                                      value!.isEmpty
+                                                          ? 'Bắt buộc'
+                                                          : null,
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: IconButton(
+                                                    icon: const Icon(
+                                                        Icons.delete_forever,
+                                                        color: Colors.red),
+                                                    onPressed: () =>
+                                                        _removeMetricField(
+                                                            index),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      const Gap(16),
                                       TextFormField(
-                                        initialValue: metric.description,
+                                        controller: _evaluatorIdController,
                                         decoration: const InputDecoration(
-                                            labelText: 'Mô tả'),
-                                        onChanged: (val) => _metrics[index] =
-                                            _metrics[index]
-                                                .copyWith(description: val),
+                                            labelText: 'Người đánh giá'),
                                       ),
                                       const Gap(8),
                                       TextFormField(
-                                        initialValue: metric.weight.toString(),
+                                        controller: _notesController,
                                         decoration: const InputDecoration(
-                                            labelText: 'Trọng số'),
-                                        keyboardType: TextInputType.number,
-                                        onChanged: (val) => _metrics[index] =
-                                            _metrics[index].copyWith(
-                                                weight:
-                                                    double.tryParse(val) ?? 0),
-                                        validator: (value) =>
-                                            value!.isEmpty ? 'Bắt buộc' : null,
+                                            labelText: 'Ghi chú'),
+                                        maxLines: 3,
                                       ),
                                       const Gap(8),
-                                      TextFormField(
-                                        initialValue: metric.score.toString(),
-                                        decoration: const InputDecoration(
-                                            labelText: 'Điểm số'),
-                                        keyboardType: TextInputType.number,
-                                        onChanged: (val) => _metrics[index] =
-                                            _metrics[index].copyWith(
-                                                score:
-                                                    double.tryParse(val) ?? 0),
-                                        validator: (value) =>
-                                            value!.isEmpty ? 'Bắt buộc' : null,
+                                      Row(
+                                        children: [
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.blue,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal:
+                                                    TSizes.defaultSpace * 2,
+                                                vertical: 16,
+                                              ),
+                                            ),
+                                            onPressed: _submitForm,
+                                            child: Text(
+                                                widget.initialKPI != null
+                                                    ? 'Sửa KPI'
+                                                    : 'Thêm KPI'),
+                                          ),
+                                        ],
                                       ),
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: IconButton(
-                                          icon: const Icon(Icons.delete_forever,
-                                              color: Colors.red),
-                                          onPressed: () =>
-                                              _removeMetricField(index),
-                                        ),
-                                      )
                                     ],
                                   ),
                                 ),
-                              );
-                            }).toList(),
-                            const Gap(16),
-                            TextFormField(
-                              controller: _evaluatorIdController,
-                              decoration: const InputDecoration(
-                                  labelText: 'Người đánh giá'),
-                            ),
-                            const Gap(8),
-                            TextFormField(
-                              controller: _notesController,
-                              decoration:
-                                  const InputDecoration(labelText: 'Ghi chú'),
-                              maxLines: 3,
-                            ),
-                            const Gap(8),
-                            ElevatedButton(
-                              onPressed: _submitForm,
-                              child: Text(widget.initialKPI != null
-                                  ? 'Sửa KPI'
-                                  : 'Thêm KPI'),
-                            ),
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               )
