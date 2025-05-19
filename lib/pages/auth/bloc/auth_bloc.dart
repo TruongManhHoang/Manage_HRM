@@ -1,6 +1,7 @@
 import 'package:admin_hrm/data/repository/user_repository.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../local/storage.dart';
 import '../../../service/auth_service.dart';
@@ -13,7 +14,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserRepository userRepository;
   final GlobalStorage globalStorage;
 
-  AuthBloc(this.authService, this.userRepository, this.globalStorage)
+  AuthBloc(
+      {required this.authService,
+      required this.userRepository,
+      required this.globalStorage})
       : super(AuthInitial()) {
     on<LoginRequested>((event, emit) async {
       emit(AuthLoading());
@@ -41,14 +45,33 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    on<ChangePasswordRequested>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        await authService.changePassword(event.newPassword);
+        // emit(AuthSuccess());
+      } catch (e) {
+        emit(AuthFailure(e.toString()));
+      }
+    });
+
+    on<DeleteAccountRequested>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        await authService.deleteUserByUid(event.accountId);
+        // emit(AuthSuccess());
+      } catch (e) {
+        emit(AuthFailure(e.toString()));
+      }
+    });
+
     on<RegisterRequested>((event, emit) async {
       emit(AuthLoading());
       try {
         final credential = await authService.signUp(
-          email: event.email,
-          password: event.password,
-          displayName: event.displayName,
+          accountModel: event.accountModel,
         );
+        debugPrint('User registered successfully: ${credential.user}');
         final appUser = await userRepository.fetchUserProfile();
         // await StorageLocal.saveUser(appUser);
         emit(AuthSuccess(appUser));

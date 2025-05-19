@@ -1,3 +1,4 @@
+import 'package:admin_hrm/data/model/account/account_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AuthEvent extends Equatable {
@@ -18,10 +19,18 @@ class ForgotPasswordRequested extends AuthEvent {
 }
 
 class RegisterRequested extends AuthEvent {
-  final String email;
-  final String password;
-  final String displayName;
-  RegisterRequested(this.email, this.password, this.displayName);
+  AccountModel accountModel;
+  RegisterRequested(this.accountModel);
+}
+
+class ChangePasswordRequested extends AuthEvent {
+  final String newPassword;
+  ChangePasswordRequested(this.newPassword);
+}
+
+class DeleteAccountRequested extends AuthEvent {
+  final String accountId;
+  DeleteAccountRequested(this.accountId);
 }
 
 class LogoutRequested extends AuthEvent {}

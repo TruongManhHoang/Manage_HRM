@@ -16,42 +16,72 @@ class TablePositionRows extends DataTableSource {
   List<PositionModel> positions;
   @override
   DataRow? getRow(int index) {
+    TextStyle baseStyle = Theme.of(context).textTheme.bodyLarge!.copyWith(
+          color: TColors.dark,
+          fontWeight: FontWeight.w500,
+        );
     final position = positions[index];
     return DataRow2(cells: [
-      DataCell(Center(
-        child: Text(
-          position.code!,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(color: TColors.primary),
+      DataCell(Padding(
+        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        child: Center(
+          child: Text(
+            '${index + 1}',
+            style: baseStyle,
+          ),
+        ),
+      )),
+      DataCell(Padding(
+        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        child: Center(
+          child: Text(position.code!, style: baseStyle),
         ),
       )),
       DataCell(
-        Center(child: Text(position.positionType!)),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(child: Text(position.positionType!, style: baseStyle)),
+        ),
       ),
       DataCell(
-        Center(child: Text(position.name!)),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(child: Text(position.name!, style: baseStyle)),
+        ),
       ),
       DataCell(
-        Center(child: Text('${position.positionSalary}')),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+              child: Text('${position.positionSalary}', style: baseStyle)),
+        ),
       ),
       DataCell(
-        Center(child: Text('${position.description}')),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child:
+              Center(child: Text('${position.description}', style: baseStyle)),
+        ),
       ),
       DataCell(
-        Center(
-          child: Text(
-            THelperFunctions.getFormattedDate(position.createdAt!),
-            style: Theme.of(context).textTheme.bodyMedium,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(
+              THelperFunctions.getFormattedDate(position.createdAt!),
+              style: baseStyle,
+            ),
           ),
         ),
       ),
       DataCell(
-        Center(
-          child: Text(
-            THelperFunctions.getFormattedDate(position.updatedAt!),
-            style: Theme.of(context).textTheme.bodyMedium,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+          child: Center(
+            child: Text(
+              THelperFunctions.getFormattedDate(position.updatedAt!),
+              style: baseStyle,
+            ),
           ),
         ),
       ),

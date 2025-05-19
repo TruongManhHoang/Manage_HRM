@@ -35,8 +35,6 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
   final addressController = TextEditingController();
-  final experienceController = TextEditingController();
-  final educationLevelController = TextEditingController();
   final birthDateController = TextEditingController();
   final codeController = TextEditingController();
   final statusController = TextEditingController();
@@ -52,8 +50,6 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
     phoneController.text = widget.employee.phone;
     emailController.text = widget.employee.email;
     addressController.text = widget.employee.address;
-    experienceController.text = widget.employee.experience;
-    educationLevelController.text = widget.employee.experience.toString();
     birthDateController.text = widget.employee.dateOfBirth;
     statusController.text = widget.employee.status.toString();
     super.initState();
@@ -302,19 +298,7 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                         controller: emailController,
                                       ),
                                       const Gap(TSizes.spaceBtwItems),
-                                      TTextFormField(
-                                        textAlign: true,
-                                        text: 'Kinh nghiệm',
-                                        hint: 'Nhập kinh nghiệm',
-                                        controller: experienceController,
-                                      ),
-                                      const Gap(TSizes.spaceBtwItems),
-                                      TDropDownMenu(
-                                        menus: educationLevels,
-                                        controller: educationLevelController,
-                                        text: 'Trình độ',
-                                      ),
-                                      const Gap(TSizes.spaceBtwItems),
+
                                       TDropDownMenu(
                                         menus: const [
                                           'Đang làm việc',
@@ -386,9 +370,6 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                                           phoneController.text,
                                                       email:
                                                           emailController.text,
-                                                      experience:
-                                                          experienceController
-                                                              .text,
                                                       status:
                                                           statusController.text,
                                                       date:

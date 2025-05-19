@@ -31,10 +31,10 @@ class RewardTableRows extends DataTableSource {
       (element) => element.id == reward.employeeId,
     );
 
-    TextStyle baseStyle = Theme.of(context)
-        .textTheme
-        .bodyMedium!
-        .copyWith(color: TColors.dark, fontSize: 12);
+    TextStyle baseStyle = Theme.of(context).textTheme.bodyLarge!.copyWith(
+          color: TColors.dark,
+          fontWeight: FontWeight.w500,
+        );
 
     TextStyle highlightStyle = baseStyle.copyWith(
       color: TColors.primary,
@@ -56,11 +56,15 @@ class RewardTableRows extends DataTableSource {
       )),
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
-        child: Center(child: Text('${reward.reason}', style: baseStyle)),
+        child: Center(child: Text(reward.reason, style: baseStyle)),
       )),
       DataCell(Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
         child: Center(child: Text('${reward.rewardValue}', style: baseStyle)),
+      )),
+      DataCell(Padding(
+        padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+        child: Center(child: Text('${reward.approvedBy}', style: baseStyle)),
       )),
       DataCell(
         Align(

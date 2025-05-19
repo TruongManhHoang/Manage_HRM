@@ -13,6 +13,9 @@ class DataTableEmployee extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle baseStyle = Theme.of(context).textTheme.titleMedium!.copyWith(
+          color: TColors.dark,
+        );
     return BlocConsumer<PersionalBloc, PersionalState>(
       listener: (context, state) {
         if (state.isFailure) {
@@ -46,17 +49,21 @@ class DataTableEmployee extends StatelessWidget {
             dataRowHeight: TSizes.xl * 1.2,
             columns: [
               DataColumn2(
+                label: Center(
+                  child: Text(
+                    'STT',
+                    style: baseStyle,
+                  ),
+                ),
+                fixedWidth: 60, // Cố định chiều rộng nếu muốn
+              ),
+              DataColumn2(
                   label: Center(
-                      child: Text(
-                'Mã nhân viên',
-                maxLines: 2,
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: TColors.textPrimary),
-              ))),
+                      child: Text('Mã nhân viên',
+                          maxLines: 2,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          style: baseStyle))),
               DataColumn2(
                   label: Center(
                       child: Text(
@@ -64,10 +71,7 @@ class DataTableEmployee extends StatelessWidget {
                 maxLines: 2,
                 softWrap: true,
                 textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: TColors.textPrimary),
+                style: baseStyle,
               ))),
               DataColumn2(
                   label: Center(
@@ -76,10 +80,7 @@ class DataTableEmployee extends StatelessWidget {
                   maxLines: 2,
                   softWrap: true,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(color: TColors.textPrimary),
+                  style: baseStyle,
                 ),
               )),
               DataColumn2(
@@ -89,10 +90,7 @@ class DataTableEmployee extends StatelessWidget {
                 maxLines: 2,
                 softWrap: true,
                 textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: TColors.textPrimary),
+                style: baseStyle,
               ))),
               DataColumn2(
                   label: Center(
@@ -101,107 +99,57 @@ class DataTableEmployee extends StatelessWidget {
                 maxLines: 2,
                 softWrap: true,
                 textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: TColors.textPrimary),
+                style: baseStyle,
               ))),
               DataColumn2(
                   label: Center(
-                      child: Text(
-                'Email',
-                maxLines: 2,
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: TColors.textPrimary),
-              ))),
+                      child: Text('Email',
+                          maxLines: 2,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          style: baseStyle))),
               DataColumn2(
                   label: Center(
-                      child: Text(
-                'Địa chỉ',
-                maxLines: 2,
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: TColors.textPrimary),
-              ))),
+                      child: Text('Địa chỉ',
+                          maxLines: 2,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          style: baseStyle))),
               DataColumn2(
                   label: Center(
-                      child: Text(
-                'Kinh nghiệm',
-                maxLines: 2,
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: TColors.textPrimary),
-              ))),
+                      child: Text('Chức vụ',
+                          maxLines: 2,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          style: baseStyle))),
               DataColumn2(
                   label: Center(
-                      child: Text(
-                'Chức vụ',
-                maxLines: 2,
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: TColors.textPrimary),
-              ))),
+                      child: Text('Phòng ban',
+                          maxLines: 2,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          style: baseStyle))),
               DataColumn2(
                   label: Center(
-                      child: Text(
-                'Phòng ban',
-                maxLines: 2,
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: TColors.textPrimary),
-              ))),
+                      child: Text('Ngày bắt đầu',
+                          maxLines: 2,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          style: baseStyle))),
               DataColumn2(
                   label: Center(
-                      child: Text(
-                'Ngày bắt đầu',
-                maxLines: 2,
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: TColors.textPrimary),
-              ))),
+                      child: Text('Trạng thái',
+                          maxLines: 2,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          style: baseStyle))),
               DataColumn2(
                   label: Center(
-                      child: Text(
-                'Trạng thái',
-                maxLines: 2,
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: TColors.textPrimary),
-              ))),
-              DataColumn2(
-                  label: Center(
-                      child: Text(
-                'Chức năng khác',
-                maxLines: 2,
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: TColors.textPrimary),
-              ))),
+                      child: Text('Chức năng khác',
+                          maxLines: 2,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          style: baseStyle))),
             ],
             source: TableEmployeeRows(context, employees),
           );

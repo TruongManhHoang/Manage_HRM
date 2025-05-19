@@ -12,7 +12,6 @@ class PersionalManagement {
   String address;
   String phone;
   String email;
-  String experience;
   String date;
   String? status;
   // String? avatar;
@@ -29,7 +28,6 @@ class PersionalManagement {
     required this.address,
     required this.phone,
     required this.email,
-    required this.experience,
     required this.date,
     this.status,
     // this.avatar,
@@ -47,7 +45,6 @@ class PersionalManagement {
     String? address,
     String? phone,
     String? email,
-    String? experience,
     String? date,
     String? status,
     DateTime? createdAt,
@@ -64,7 +61,6 @@ class PersionalManagement {
       address: address ?? this.address,
       phone: phone ?? this.phone,
       email: email ?? this.email,
-      experience: experience ?? this.experience,
       date: date ?? this.date,
       status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
@@ -84,7 +80,6 @@ class PersionalManagement {
       'address': address,
       'phone': phone,
       'email': email,
-      'experience': experience,
       'date': date,
       'status': status,
       // 'avatar': avatar,
@@ -105,7 +100,6 @@ class PersionalManagement {
       address: map['address'] ?? '',
       phone: map['phone'] ?? '',
       email: map['email'] ?? '',
-      experience: map['experience'] ?? '',
       date: map['date'] ?? '',
       status: map['status'],
       createdAt:

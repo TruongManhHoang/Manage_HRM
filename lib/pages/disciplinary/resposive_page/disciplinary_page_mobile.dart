@@ -76,11 +76,13 @@ class DisciplinaryPageMobile extends StatelessWidget {
                                 ),
                                 onPressed: () {
                                   exportDynamicExcel(
+                                    fileName: 'Danh sách kỷ luật',
                                     headers: [
                                       'Mã kỷ luật',
                                       'Mã nhân viên',
                                       'Lý do',
                                       'Loại kỷ luật',
+                                      'Giá trị kỷ luật',
                                       'Mức độ kỷ luật',
                                       'Trạng thái',
                                       'Ngày khen thưởng',
@@ -91,6 +93,7 @@ class DisciplinaryPageMobile extends StatelessWidget {
                                               disciplinary.employeeId,
                                               disciplinary.reason,
                                               disciplinary.disciplinaryType,
+                                              disciplinary.disciplinaryValue,
                                               disciplinary.severity,
                                               disciplinary.status,
                                               disciplinary.disciplinaryDate,

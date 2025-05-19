@@ -1,13 +1,25 @@
 import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
+import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/dash_board/hello.dart';
+import 'package:admin_hrm/pages/department/department_page.dart';
+import 'package:admin_hrm/pages/personnel_management/personnel_page.dart';
+import 'package:admin_hrm/pages/position/position_page.dart';
+import 'package:admin_hrm/router/app_routers.dart';
+import 'package:admin_hrm/router/routers_name.dart';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DashBoardDesktopPage extends StatelessWidget {
   const DashBoardDesktopPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final globalStorage = getIt<GlobalStorage>();
+    final personal = globalStorage.personalManagers;
+    final department = globalStorage.departments;
+    final position = globalStorage.positions;
     return Scaffold(
         body: SingleChildScrollView(
       child: Container(
@@ -22,17 +34,29 @@ class DashBoardDesktopPage extends StatelessWidget {
               ),
               Row(
                 children: [
-                  _buildDashboardCard('0', 'Nhân viên', Colors.blue, context,
-                      Icons.person, Hello(), 'Xem danh sách nhân viên'),
-                  _buildDashboardCard('0', 'Phòng ban', Colors.orange, context,
-                      Icons.apartment, Hello(), 'Xem danh sách phòng ban'),
                   _buildDashboardCard(
-                      '0',
-                      'Tài khoản người dùng',
+                      '${personal!.length}',
+                      'Nhân viên',
+                      Colors.blue,
+                      context,
+                      Icons.person,
+                      RouterName.employeePage,
+                      'Xem danh sách nhân viên'),
+                  _buildDashboardCard(
+                      '${department!.length}',
+                      'Phòng ban',
+                      Colors.orange,
+                      context,
+                      Icons.apartment,
+                      RouterName.departmentPage,
+                      'Xem danh sách phòng ban'),
+                  _buildDashboardCard(
+                      '${position!.length}',
+                      'Danh sách chức vụ',
                       const Color.fromARGB(255, 170, 158, 46),
                       context,
                       Icons.account_circle,
-                      Hello(),
+                      RouterName.positionPage,
                       'Xem danh sách tài khoản'),
                   _buildDashboardCard(
                       '0',
@@ -40,38 +64,25 @@ class DashBoardDesktopPage extends StatelessWidget {
                       Colors.red,
                       context,
                       Icons.exit_to_app,
-                      Hello(),
+                      // Hello(),
                       'Xem nhân viên nghỉ việc'),
                 ],
               ),
               Row(
                 children: [
                   _buildDashboardCard('0', 'Nhóm nhân viên', Colors.blue,
-                      context, Icons.group, Hello(), 'Xem danh sách nhóm'),
+                      context, Icons.group, 'Xem danh sách nhóm'),
                   _buildDashboardCard(
                       'EXCEL',
                       'Xuất báo cáo',
                       Colors.green,
                       context,
                       Icons.file_copy_outlined,
-                      Hello(),
                       'Xem danh sách nhân viên'),
-                  _buildDashboardCard(
-                      'EXCEL',
-                      'Xuất báo cáo',
-                      Colors.green,
-                      context,
-                      Icons.file_copy_outlined,
-                      Hello(),
-                      'Xem lương nhân viên'),
-                  _buildDashboardCard(
-                      'EXCEL',
-                      'Xuất báo cáo',
-                      Colors.green,
-                      context,
-                      Icons.file_copy_outlined,
-                      Hello(),
-                      'Xem chấm công'),
+                  _buildDashboardCard('EXCEL', 'Xuất báo cáo', Colors.green,
+                      context, Icons.file_copy_outlined, 'Xem lương nhân viên'),
+                  _buildDashboardCard('EXCEL', 'Xuất báo cáo', Colors.green,
+                      context, Icons.file_copy_outlined, 'Xem chấm công'),
                 ],
               ),
               Row(
@@ -82,14 +93,13 @@ class DashBoardDesktopPage extends StatelessWidget {
                       Colors.green,
                       context,
                       Icons.file_copy_outlined,
-                      Hello(),
                       'Xem khen thưởng kỷ luật'),
                   _buildDashboardCard('', '', Colors.grey[200]!, context),
                   _buildDashboardCard('', '', Colors.grey[200]!, context),
                   _buildDashboardCard('', '', Colors.grey[200]!, context),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Row(
@@ -102,14 +112,14 @@ class DashBoardDesktopPage extends StatelessWidget {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(9),
                       ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Danh sách phòng ban',
+                          const Text('Danh sách phòng ban',
                               style: TextStyle(fontSize: 20)),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Container(
@@ -263,15 +273,12 @@ class DashBoardDesktopPage extends StatelessWidget {
 
 Widget _buildDashboardCard(
     String count, String title, Color color, BuildContext context,
-    [IconData? icon, Widget? targetPage, String? name]) {
+    [IconData? icon, String? router, String? name]) {
   return Expanded(
     child: InkWell(
       onTap: () {
-        if (targetPage != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => targetPage),
-          );
+        if (router != null) {
+          context.go(router);
         }
       },
       child: Container(
