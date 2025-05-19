@@ -33,7 +33,6 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
     final phoneController = TextEditingController();
     final emailController = TextEditingController();
     final addressController = TextEditingController();
-    final experienceController = TextEditingController();
     final educationLevelController = TextEditingController();
     final birthDateController = TextEditingController();
 
@@ -242,12 +241,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                                         controller: emailController,
                                       ),
                                       const Gap(TSizes.spaceBtwItems),
-                                      TTextFormField(
-                                        textAlign: true,
-                                        text: 'Kinh nghiệm',
-                                        hint: 'Nhập kinh nghiệm',
-                                        controller: experienceController,
-                                      ),
+
                                       const Gap(TSizes.spaceBtwItems),
                                       TDropDownMenu(
                                         menus: educationLevels,
@@ -316,9 +310,6 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                                                             .text,
                                                         email: emailController
                                                             .text,
-                                                        experience:
-                                                            experienceController
-                                                                .text,
                                                         date:
                                                             "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
                                                       );

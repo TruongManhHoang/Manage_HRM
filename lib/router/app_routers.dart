@@ -1,3 +1,4 @@
+import 'package:admin_hrm/data/model/account/account_model.dart';
 import 'package:admin_hrm/data/model/attendance/attendance_model.dart';
 import 'package:admin_hrm/data/model/contract/contract_model.dart';
 import 'package:admin_hrm/data/model/department/department_model.dart';
@@ -5,6 +6,7 @@ import 'package:admin_hrm/data/model/department/department_model.dart';
 import 'package:admin_hrm/data/model/disciplinary/disciplinary_model.dart';
 import 'package:admin_hrm/data/model/kpi/kpi_model.dart';
 import 'package:admin_hrm/data/model/reward/reward_model.dart';
+import 'package:admin_hrm/data/repository/account_repository.dart';
 import 'package:admin_hrm/data/repository/department_repository.dart';
 import 'package:admin_hrm/data/repository/disciplinary_repository.dart';
 import 'package:admin_hrm/data/repository/reward_repository.dart';
@@ -13,8 +15,14 @@ import 'package:admin_hrm/data/model/position/position_model.dart';
 import 'package:admin_hrm/data/repository/contract_repository.dart';
 import 'package:admin_hrm/data/repository/persional_repository.dart';
 import 'package:admin_hrm/data/repository/positiion_repository.dart';
+import 'package:admin_hrm/data/repository/user_repository.dart';
 import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
+import 'package:admin_hrm/pages/account/account_page.dart';
+import 'package:admin_hrm/pages/account/add_account/add_account_page.dart';
+import 'package:admin_hrm/pages/account/bloc/account_bloc.dart';
+import 'package:admin_hrm/pages/account/edit_account/edit_account_page.dart';
+import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/pages/attendance/add_edit_attendance/attendance_form.dart';
 import 'package:admin_hrm/pages/attendance/attendance_page.dart';
 import 'package:admin_hrm/pages/attendance/bloc/attendance_bloc.dart';
@@ -63,6 +71,7 @@ import 'package:admin_hrm/pages/salary/add_deparment/add_salary_page.dart';
 import 'package:admin_hrm/pages/salary/salary_page.dart';
 import 'package:admin_hrm/pages/splash_screen/splash_screen.dart';
 import 'package:admin_hrm/router/router_observer.dart';
+import 'package:admin_hrm/service/auth_service.dart';
 import 'package:admin_hrm/service/attendance_service.dart';
 import 'package:admin_hrm/service/kpi_service.dart';
 import 'package:flutter/material.dart';
@@ -104,13 +113,13 @@ class AppRouter {
             return const ForgetPasswordPage();
           },
         ),
-        GoRoute(
-          path: RouterName.register,
-          name: RouterName.register,
-          builder: (context, state) {
-            return const RegisterPage();
-          },
-        ),
+        // GoRoute(
+        //   path: RouterName.register,
+        //   name: RouterName.register,
+        //   builder: (context, state) {
+        //     return const RegisterPage();
+        //   },
+        // ),
         GoRoute(
           path: RouterName.dashboard,
           name: RouterName.dashboard,
@@ -230,6 +239,51 @@ class AppRouter {
                   final position = state.extra as PositionModel;
                   return EditPosition(
                     positionModel: position,
+                  );
+                },
+              ),
+            ]),
+        ShellRoute(
+            builder: (context, state, child) {
+              return MultiBlocProvider(
+                  providers: [
+                    BlocProvider<AccountBloc>(
+                        create: (context) => AccountBloc(
+                              repository: getIt<AccountRepository>(),
+                            )..add(LoadAccounts())),
+                    BlocProvider<AuthBloc>(
+                        create: (context) => AuthBloc(
+                              authService: getIt<AuthService>(),
+                              userRepository: getIt<UserRepository>(),
+                              globalStorage: getIt<GlobalStorage>(),
+                            )),
+                  ],
+                  child: Scaffold(
+                    body: child,
+                  ));
+            },
+            routes: [
+              GoRoute(
+                path: RouterName.accountPage,
+                name: RouterName.accountPage,
+                builder: (context, state) {
+                  return const AccountPage();
+                },
+              ),
+              GoRoute(
+                path: RouterName.addAccount,
+                name: RouterName.addAccount,
+                builder: (context, state) {
+                  return const AddAccountPage();
+                },
+              ),
+              GoRoute(
+                path: RouterName.editAccount,
+                name: RouterName.editAccount,
+                builder: (context, state) {
+                  final account = state.extra as AccountModel;
+                  return EditAccountPage(
+                    accountModel: account,
                   );
                 },
               ),

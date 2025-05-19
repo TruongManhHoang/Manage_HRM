@@ -12,6 +12,7 @@ class RouterName {
   static const contractPage = '/contract-page';
   static const addContract = '/add-contract';
   static const addAccount = '/add-account';
+  static const editAccount = '/edit-account';
   static const addPosition = '/add-position';
   static const addSalary = '/add-salary';
   static const accountPage = '/account-page';

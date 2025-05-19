@@ -1,3 +1,4 @@
+import 'package:admin_hrm/constants/colors.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_bloc.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_state.dart';
 import 'package:admin_hrm/pages/disciplinary/table/table_source_disciplinary.dart';
@@ -18,6 +19,9 @@ class DataTableDisciplinary extends StatefulWidget {
 class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
   @override
   Widget build(BuildContext context) {
+    TextStyle baseStyle = Theme.of(context).textTheme.titleMedium!.copyWith(
+          color: TColors.dark,
+        );
     return BlocBuilder<DisciplinaryBloc, DisciplinaryState>(
       builder: (context, state) {
         if (state is DisciplinaryLoading) {
@@ -27,117 +31,86 @@ class _DataTableDisciplinaryState extends State<DataTableDisciplinary> {
             minWidth: 700,
             tableHeight: 500,
             dataRowHeight: TSizes.xl * 1.45,
-            columns: const [
+            columns: [
               DataColumn2(
                 label: Center(
                   child: Text(
-                    'Mã kỷ luật',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    'STT',
+                    style: baseStyle,
                   ),
+                ),
+                fixedWidth: 60, // Cố định chiều rộng nếu muốn
+              ),
+              DataColumn2(
+                label: Center(
+                  child: Text('Mã kỷ luật',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Nhân viên',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Nhân viên',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Loại kỷ luật',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Loại kỷ luật',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Lý do',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Lý do',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Giá trị kỷ luật',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Giá trị kỷ luật',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Mức độ kỷ luật',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Mức độ kỷ luật',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Trạng thái',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Trạng thái',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
               DataColumn2(
                 label: Center(
-                  child: Text(
-                    'Hành động',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text('Hành động',
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: baseStyle),
                 ),
               ),
             ],
