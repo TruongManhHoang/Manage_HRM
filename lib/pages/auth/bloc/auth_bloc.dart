@@ -55,6 +55,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    on<DeleteAccountRequested>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        await authService.deleteUserByUid(event.accountId);
+        // emit(AuthSuccess());
+      } catch (e) {
+        emit(AuthFailure(e.toString()));
+      }
+    });
+
     on<RegisterRequested>((event, emit) async {
       emit(AuthLoading());
       try {

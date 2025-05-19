@@ -28,6 +28,11 @@ class ChangePasswordRequested extends AuthEvent {
   ChangePasswordRequested(this.newPassword);
 }
 
+class DeleteAccountRequested extends AuthEvent {
+  final String accountId;
+  DeleteAccountRequested(this.accountId);
+}
+
 class LogoutRequested extends AuthEvent {}
 
 class AuthStarted extends AuthEvent {}
