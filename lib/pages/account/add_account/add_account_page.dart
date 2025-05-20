@@ -10,6 +10,7 @@ import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/account/bloc/account_bloc.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_event.dart';
+import 'package:admin_hrm/pages/auth/bloc/auth_state.dart';
 
 import 'package:admin_hrm/router/routers_name.dart';
 
@@ -54,14 +55,15 @@ class _AddAccountPageState extends State<AddAccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AccountBloc, AccountState>(
+    return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AccountSuccess) {
+        if (state is AuthSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Thêm tài khoản thành công')),
           );
+          context.read<AccountBloc>().add(LoadAccounts());
           context.go(RouterName.accountPage);
-        } else if (state is AccountError) {
+        } else if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Lỗi: ${state.message}')),
           );
@@ -247,20 +249,19 @@ class _AddAccountPageState extends State<AddAccountPage> {
                                                         RegisterRequested(
                                                             account),
                                                       );
-                                                  context
-                                                      .read<AccountBloc>()
-                                                      .add(LoadAccounts());
                                                 }
                                               },
-                                              child: Text(
-                                                'Thêm tài khoản',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium!
-                                                    .copyWith(
-                                                      color: Colors.white,
+                                              child: state is AccountLoading
+                                                  ? const CircularProgressIndicator()
+                                                  : Text(
+                                                      'Thêm tài khoản',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyMedium!
+                                                          .copyWith(
+                                                            color: Colors.white,
+                                                          ),
                                                     ),
-                                              ),
                                             ),
                                           ),
                                         ],

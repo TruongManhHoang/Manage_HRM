@@ -1,4 +1,5 @@
 import 'package:admin_hrm/data/repository/disciplinary_repository.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_event.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_state.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DisciplinaryBloc extends Bloc<DisciplinaryEvent, DisciplinaryState> {
   final DisciplinaryRepository repository;
+  final GlobalStorage globalStorage;
 
-  DisciplinaryBloc(this.repository) : super(DisciplinaryInitial()) {
+  DisciplinaryBloc(this.repository, this.globalStorage)
+      : super(DisciplinaryInitial()) {
     on<LoadDisciplinary>(_onLoadDisciplinary);
     on<AddDisciplinary>(_onAddDisciplinary);
     on<UpdateDisciplinary>(_onUpdateDisciplinary);
@@ -20,6 +23,7 @@ class DisciplinaryBloc extends Bloc<DisciplinaryEvent, DisciplinaryState> {
     try {
       final disciplinary = await repository.getAllDisciplinarys();
       emit(DisciplinaryLoaded(disciplinary));
+      globalStorage.fetchAllDisciplinaryActions(disciplinary);
     } catch (e) {
       emit(DisciplinaryError('Không thể tải danh sách kỷ luật'));
     }

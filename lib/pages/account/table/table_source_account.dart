@@ -1,14 +1,8 @@
 import 'package:admin_hrm/constants/sizes.dart';
 import 'package:admin_hrm/data/model/account/account_model.dart';
-import 'package:admin_hrm/data/model/reward/reward_model.dart';
 import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/account/bloc/account_bloc.dart';
-import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
-import 'package:admin_hrm/pages/auth/bloc/auth_event.dart';
-
-import 'package:admin_hrm/pages/reward/bloc/reward_bloc.dart';
-import 'package:admin_hrm/pages/reward/bloc/reward_event.dart';
 
 import 'package:admin_hrm/router/routers_name.dart';
 

@@ -6,6 +6,7 @@ import 'package:admin_hrm/data/model/department/department_model.dart';
 import 'package:admin_hrm/data/model/disciplinary/disciplinary_model.dart';
 import 'package:admin_hrm/data/model/kpi/kpi_model.dart';
 import 'package:admin_hrm/data/model/reward/reward_model.dart';
+import 'package:admin_hrm/data/model/salary/salary_model.dart';
 import 'package:admin_hrm/data/repository/account_repository.dart';
 import 'package:admin_hrm/data/repository/department_repository.dart';
 import 'package:admin_hrm/data/repository/disciplinary_repository.dart';
@@ -15,6 +16,7 @@ import 'package:admin_hrm/data/model/position/position_model.dart';
 import 'package:admin_hrm/data/repository/contract_repository.dart';
 import 'package:admin_hrm/data/repository/persional_repository.dart';
 import 'package:admin_hrm/data/repository/positiion_repository.dart';
+import 'package:admin_hrm/data/repository/salary_repository.dart';
 import 'package:admin_hrm/data/repository/user_repository.dart';
 import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
@@ -67,7 +69,8 @@ import 'package:admin_hrm/pages/reward/bloc/reward_event.dart';
 import 'package:admin_hrm/pages/reward/edit_reward/edit_reward_page.dart';
 import 'package:admin_hrm/pages/reward/reward_page.dart';
 
-import 'package:admin_hrm/pages/salary/add_deparment/add_salary_page.dart';
+import 'package:admin_hrm/pages/salary/add_salary/add_salary_page.dart';
+import 'package:admin_hrm/pages/salary/bloc/salary_bloc.dart';
 import 'package:admin_hrm/pages/salary/salary_page.dart';
 import 'package:admin_hrm/pages/splash_screen/splash_screen.dart';
 import 'package:admin_hrm/router/router_observer.dart';
@@ -291,9 +294,10 @@ class AppRouter {
         ShellRoute(
             builder: (context, state, child) {
               return BlocProvider<ContractBloc>(
-                create: (context) =>
-                    ContractBloc(repository: getIt<ContractRepository>())
-                      ..add(GetListContract()),
+                create: (context) => ContractBloc(
+                    repository: getIt<ContractRepository>(),
+                    globalStorage: getIt<GlobalStorage>())
+                  ..add(GetListContract()),
                 child: Scaffold(
                   body: child,
                 ),
@@ -330,6 +334,7 @@ class AppRouter {
             return BlocProvider<RewardBloc>(
               create: (context) => RewardBloc(
                 getIt<RewardRepository>(),
+                getIt<GlobalStorage>(),
               )..add(LoadRewards()),
               child: Scaffold(
                 body: child,
@@ -368,6 +373,7 @@ class AppRouter {
               return BlocProvider<DisciplinaryBloc>(
                 create: (context) => DisciplinaryBloc(
                   getIt<DisciplinaryRepository>(),
+                  getIt<GlobalStorage>(),
                 )..add(LoadDisciplinary()),
                 child: Scaffold(
                   body: child,
@@ -400,20 +406,48 @@ class AppRouter {
                 },
               ),
             ]),
-        GoRoute(
-          path: RouterName.salaryPage,
-          name: RouterName.salaryPage,
-          builder: (context, state) {
-            return const SalaryPage();
-          },
-        ),
-        GoRoute(
-          path: RouterName.addSalary,
-          name: RouterName.addSalary,
-          builder: (context, state) {
-            return const AddSalaryPage();
-          },
-        ),
+
+        ShellRoute(
+            builder: (context, state, child) {
+              return BlocProvider(
+                create: (context) => SalaryBloc(
+                  salaryRepository: getIt<SalaryRepository>(),
+                )..add(GetListSalary()),
+                child: Scaffold(
+                  body: child,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: RouterName.salaryPage,
+                name: RouterName.salaryPage,
+                builder: (context, state) {
+                  return const SalaryPage();
+                },
+              ),
+              GoRoute(
+                path: RouterName.addSalary,
+                name: RouterName.addSalary,
+                builder: (context, state) {
+                  return AddSalaryPage();
+                },
+              ),
+              // routes: [
+
+              //   GoRoute(
+              //     path: RouterName.editSalary,
+              //     name: RouterName.editSalary,
+              //     builder: (context, state) {
+              //       final salary = state.extra as SalaryModel;
+              //       return AddEditSalaryPage(
+              //         salaryModel: salary,
+              //       );
+              //     },
+              //   ),
+              // ]),
+            ]),
+
         ShellRoute(
             builder: (context, state, child) {
               return BlocProvider(
@@ -458,6 +492,7 @@ class AppRouter {
               return BlocProvider(
                 create: (context) => KPIBloc(
                   getIt<KPIService>(),
+                  getIt<GlobalStorage>(),
                 )..add(LoadKPIs()),
                 child: Scaffold(
                   body: child,

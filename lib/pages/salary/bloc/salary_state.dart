@@ -1,47 +1,35 @@
-import 'package:admin_hrm/data/model/department/department_model.dart';
-import 'package:equatable/equatable.dart';
+part of 'salary_bloc.dart';
 
 abstract class SalaryState extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-// class SalaryInitial extends SalaryState {}
+class SalaryInitial extends SalaryState {}
 
-// class SalaryLoading extends SalaryState {}
+class SalaryLoading extends SalaryState {}
 
-// class SalarySuccess extends SalaryState {
-//   final List<SalaryModel> salaries;
+class SalarySuccess extends SalaryState {
+  SalarySuccess();
 
-//   SalarySuccess(this.salaries);
+  @override
+  List<Object?> get props => [];
+}
 
-//   @override
-//   List<Object?> get props => [salaries];
-// }
+class SalaryLoaded extends SalaryState {
+  final List<SalaryModel> salaries;
 
-// class SalaryLoaded extends SalaryState {
-//   final List<SalaryModel> salaries;
+  SalaryLoaded(this.salaries);
 
-//   SalaryLoaded(this.salaries);
+  @override
+  List<Object?> get props => [salaries];
+}
 
-//   @override
-//   List<Object?> get props => [salaries];
-// }
+class SalaryFailure extends SalaryState {
+  final String error;
 
-// class SalaryLoaded extends SalaryState {
-//   final List<SalaryModel> salaries;
+  SalaryFailure(this.error);
 
-//   SalaryLoaded(this.salaries);
-
-//   @override
-//   List<Object?> get props => [salaries];
-// }
-
-// class SalaryFailure extends SalaryState {
-//   final String error;
-
-//   SalaryFailure(this.error);
-
-//   @override
-//   List<Object?> get props => [error];
-// }
+  @override
+  List<Object?> get props => [error];
+}

@@ -14,11 +14,10 @@ class RouterName {
   static const addAccount = '/add-account';
   static const editAccount = '/edit-account';
   static const addPosition = '/add-position';
-  static const addSalary = '/add-salary';
+
   static const accountPage = '/account-page';
   static const positionPage = '/position-page';
   static const updateEmployee = '/update-employee';
-  static const salaryPage = '/salary-page';
   static const editDepartment = '/edit-department';
 
   static const rewardPage = '/reward-page';
@@ -38,6 +37,10 @@ class RouterName {
   static const kpiPage = '/kpi-page';
   static const addKpi = 'add-kpi';
   static const editKpi = 'edit-kpi';
+
+  static const salaryPage = '/salary-page';
+  static const addSalary = '/add-salary';
+  static const editSalary = '/edit-salary';
 
   static const sidebarMenuItem = [
     dashboard,

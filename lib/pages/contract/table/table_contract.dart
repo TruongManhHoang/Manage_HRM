@@ -26,7 +26,7 @@ class TableContractRows extends DataTableSource {
 
     final contract = contracts[index];
     final personalManagers = globalStorage.personalManagers!;
-
+    final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
     // 🔍 Tìm user theo employeeId
     final personal = personalManagers.firstWhere(
       (p) => p.id == contract.employeeId,
@@ -69,7 +69,7 @@ class TableContractRows extends DataTableSource {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
           child: Center(
-              child: Text(NumberFormat('#,###').format(contract.salary),
+              child: Text(currencyFormat.format(contract.salary),
                   style: baseStyle)),
         ),
       ),

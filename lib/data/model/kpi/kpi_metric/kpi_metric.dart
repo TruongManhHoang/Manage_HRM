@@ -29,6 +29,15 @@ class KPIMetric {
     };
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'description': description,
+      'weight': weight,
+      'score': score,
+    };
+  }
+
   KPIMetric copyWith({
     String? name,
     String? description,

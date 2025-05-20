@@ -8,6 +8,7 @@ import 'package:admin_hrm/data/repository/disciplinary_repository.dart';
 import 'package:admin_hrm/data/repository/reward_repository.dart';
 
 import 'package:admin_hrm/data/repository/positiion_repository.dart';
+import 'package:admin_hrm/data/repository/salary_repository.dart';
 
 import 'package:admin_hrm/data/repository/user_repository.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
@@ -24,6 +25,7 @@ import 'package:admin_hrm/service/disciplinary_service.dart';
 import 'package:admin_hrm/service/reward_service.dart';
 
 import 'package:admin_hrm/service/positon_service.dart';
+import 'package:admin_hrm/service/salary_service.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt getIt = GetIt.instance;
@@ -55,6 +57,7 @@ class ServiceLocator {
     getIt.registerSingleton<ContractService>(ContractService());
     getIt.registerSingleton<PersionalService>(PersionalService());
     getIt.registerSingleton<AccountService>(AccountService());
+    getIt.registerSingleton<SalaryService>(SalaryService());
     getIt.registerSingleton<DepartmentRepository>(
         DepartmentRepository(getIt<DepartmentService>()));
 
@@ -70,6 +73,9 @@ class ServiceLocator {
         PositiionRepository(getIt<PositionService>()));
     getIt.registerSingleton<ContractRepository>(
         ContractRepository(getIt<ContractService>()));
+    getIt.registerSingleton<SalaryRepository>(
+        SalaryRepository(getIt<SalaryService>()));
+
     getIt.registerSingleton<PersionalRepository>(
         PersionalRepository(persionalService: getIt<PersionalService>()));
 

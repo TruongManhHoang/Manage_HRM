@@ -1,41 +1,40 @@
-import 'package:admin_hrm/data/model/department/department_model.dart';
-import 'package:equatable/equatable.dart';
+part of 'salary_bloc.dart';
 
 abstract class SalaryEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-// class CreateSalary extends SalaryEvent {
-//   final SalaryModel salary;
+class CreateSalary extends SalaryEvent {
+  final SalaryModel salary;
 
-//   CreateSalary(this.salary);
+  CreateSalary(this.salary);
 
-//   @override
-//   List<Object?> get props => [salary];
-// }
+  @override
+  List<Object?> get props => [salary];
+}
 
-// class GetListSalary extends SalaryEvent {
-//   GetListSalary();
+class GetListSalary extends SalaryEvent {
+  GetListSalary();
 
-//   @override
-//   List<Object?> get props => [];
-// }
+  @override
+  List<Object?> get props => [];
+}
 
-// class UpdateSalary extends SalaryEvent {
-//   final SalaryModel salary;
+class UpdateSalary extends SalaryEvent {
+  final SalaryModel salary;
 
-//   UpdateSalary(this.salary);
+  UpdateSalary(this.salary);
 
-//   @override
-//   List<Object?> get props => [salary];
-// }
+  @override
+  List<Object?> get props => [salary];
+}
 
-// class DeleteSalary extends SalaryEvent {
-//   final String id;
+class DeleteSalary extends SalaryEvent {
+  final String id;
 
-//   DeleteSalary(this.id);
+  DeleteSalary(this.id);
 
-//   @override
-//   List<Object?> get props => [id];
-// }
+  @override
+  List<Object?> get props => [id];
+}

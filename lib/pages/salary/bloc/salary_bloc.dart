@@ -1,71 +1,75 @@
-import 'package:admin_hrm/data/repository/department_repository.dart';
-import 'package:admin_hrm/pages/department/bloc/department_event.dart';
-import 'package:admin_hrm/pages/department/bloc/department_state.dart';
+import 'package:admin_hrm/data/model/salary/salary_model.dart';
+import 'package:admin_hrm/data/repository/salary_repository.dart';
+
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SalaryBloc extends Bloc<DepartmentEvent, DepartmentState> {
-  final DepartmentRepository repository;
+part 'salary_event.dart';
+part 'salary_state.dart';
 
-  SalaryBloc({required this.repository}) : super(DepartmentInitial()) {
-    on<CreateDepartment>(_onCreateDepartment);
-    on<GetListDepartment>(_onGetListDepartment);
-    on<UpdateDepartment>(_onUpdateDepartment);
-    on<DeleteDepartment>(_onDeleteDepartment);
+class SalaryBloc extends Bloc<SalaryEvent, SalaryState> {
+  final SalaryRepository salaryRepository;
+
+  SalaryBloc({required this.salaryRepository}) : super(SalaryInitial()) {
+    on<CreateSalary>(_onCreateSalary);
+    on<GetListSalary>(_onGetListSalary);
+    on<UpdateSalary>(_onUpdateSalary);
+    on<DeleteSalary>(_onDeleteSalary);
   }
 
-  Future<void> _onCreateDepartment(
-    CreateDepartment event,
-    Emitter<DepartmentState> emit,
+  Future<void> _onCreateSalary(
+    CreateSalary event,
+    Emitter<SalaryState> emit,
   ) async {
-    emit(DepartmentLoading());
+    emit(SalaryLoading());
     try {
-      await repository.createDepartment(event.department);
-      emit(DepartmentSuccess());
-      add(GetListDepartment());
+      await salaryRepository.createSalary(event.salary);
+      emit(SalarySuccess());
+      add(GetListSalary());
     } catch (e) {
-      emit(DepartmentFailure(e.toString()));
+      emit(SalaryFailure(e.toString()));
     }
   }
 
-  Future<void> _onGetListDepartment(
-    GetListDepartment event,
-    Emitter<DepartmentState> emit,
+  Future<void> _onGetListSalary(
+    GetListSalary event,
+    Emitter<SalaryState> emit,
   ) async {
-    emit(DepartmentLoading());
+    emit(SalaryLoading());
     try {
-      final departments = await repository.getDepartments();
-      debugPrint('getDepartments : ${departments.length}');
-      emit(DepartmentLoaded(departments));
+      final salaries = await salaryRepository.getSalaries();
+      debugPrint('getSalaries : ${salaries.length}');
+      emit(SalaryLoaded(salaries));
     } catch (e) {
-      emit(DepartmentFailure(e.toString()));
+      emit(SalaryFailure(e.toString()));
     }
   }
 
-  Future<void> _onUpdateDepartment(
-    UpdateDepartment event,
-    Emitter<DepartmentState> emit,
+  Future<void> _onUpdateSalary(
+    UpdateSalary event,
+    Emitter<SalaryState> emit,
   ) async {
-    emit(DepartmentLoading());
+    emit(SalaryLoading());
     try {
-      await repository.updateDepartment(event.department);
-      emit(DepartmentSuccess());
+      await salaryRepository.updateSalary(event.salary);
+      emit(SalarySuccess());
     } catch (e) {
-      emit(DepartmentFailure(e.toString()));
+      emit(SalaryFailure(e.toString()));
     }
   }
 
-  Future<void> _onDeleteDepartment(
-    DeleteDepartment event,
-    Emitter<DepartmentState> emit,
+  Future<void> _onDeleteSalary(
+    DeleteSalary event,
+    Emitter<SalaryState> emit,
   ) async {
-    emit(DepartmentLoading());
+    emit(SalaryLoading());
     try {
-      await repository.deleteDepartment(event.id);
-      emit(DepartmentSuccess());
-      add(GetListDepartment());
+      await salaryRepository.deleteSalary(event.id);
+      emit(SalarySuccess());
+      add(GetListSalary());
     } catch (e) {
-      emit(DepartmentFailure(e.toString()));
+      emit(SalaryFailure(e.toString()));
     }
   }
 }

@@ -1,7 +1,11 @@
 import 'package:admin_hrm/data/model/attendance/attendance_model.dart';
+import 'package:admin_hrm/data/model/contract/contract_model.dart';
 import 'package:admin_hrm/data/model/department/department_model.dart';
+import 'package:admin_hrm/data/model/disciplinary/disciplinary_model.dart';
+import 'package:admin_hrm/data/model/kpi/kpi_model.dart';
 import 'package:admin_hrm/data/model/personnel_management.dart';
 import 'package:admin_hrm/data/model/position/position_model.dart';
+import 'package:admin_hrm/data/model/reward/reward_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -21,6 +25,10 @@ class GlobalStorageKey {
   static const departments = "departments";
   static const personalManagers = "personalManagers";
   static const attendances = "attendances";
+  static const contracts = "contracts";
+  static const rewards = "rewards";
+  static const disciplinarys = "disciplinaryActions";
+  static const kpis = "kpis";
 }
 
 abstract class GlobalStorage {
@@ -48,6 +56,18 @@ abstract class GlobalStorage {
 
   List<AttendanceModel>? get attendances;
   Future<void> fetchAllAttendance(List<AttendanceModel> attendances);
+
+  List<ContractModel>? get contracts;
+  Future<void> fetchAllContracts(List<ContractModel> contracts);
+
+  List<RewardModel>? get rewards;
+  Future<void> fetchAllRewards(List<RewardModel> rewards);
+
+  List<DisciplinaryModel>? get disciplinaryActions;
+  Future<void> fetchAllDisciplinaryActions(List<DisciplinaryModel> actions);
+
+  List<KPIModel>? get kpis;
+  Future<void> fetchAllKpis(List<KPIModel> kpis);
 
   // New authentication methods
   String? get accessToken;
@@ -400,5 +420,94 @@ class GlobalStorageImpl implements GlobalStorage {
     debugPrint(
       "Attendance list is ${_box.get(GlobalStorageKey.attendances)}",
     );
+  }
+
+  @override
+  // TODO: implement contracts
+  List<ContractModel>? get contracts {
+    final jsonList = _box.get(GlobalStorageKey.contracts, defaultValue: []);
+    if (jsonList is List) {
+      return jsonList
+          .map((e) => ContractModel.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
+    }
+  }
+
+  @override
+  List<DisciplinaryModel>? get disciplinaryActions {
+    final jsonList = _box.get(GlobalStorageKey.disciplinarys, defaultValue: []);
+    if (jsonList is List) {
+      return jsonList
+          .map((e) =>
+              DisciplinaryModel.fromFirestore(Map<String, dynamic>.from(e)))
+          .toList();
+    }
+  }
+
+  @override
+  Future<void> fetchAllContracts(List<ContractModel> contracts) async {
+    await _box.put(
+      GlobalStorageKey.contracts,
+      contracts.map((e) => e.toMap()).toList(),
+    );
+    debugPrint(
+      "Contract list is ${_box.get(GlobalStorageKey.contracts)}",
+    );
+  }
+
+  @override
+  Future<void> fetchAllDisciplinaryActions(
+      List<DisciplinaryModel> actions) async {
+    await _box.put(
+      GlobalStorageKey.disciplinarys,
+      actions.map((e) => e.toMap()).toList(),
+    );
+    debugPrint(
+      "Disciplinary list is ${_box.get(GlobalStorageKey.disciplinarys)}",
+    );
+  }
+
+  @override
+  Future<void> fetchAllKpis(List<KPIModel> kpis) async {
+    await _box.put(
+      GlobalStorageKey.kpis,
+      kpis.map((e) => e.toMap()).toList(),
+    );
+    debugPrint(
+      "KPI list is ${_box.get(GlobalStorageKey.kpis)}",
+    );
+  }
+
+  @override
+  Future<void> fetchAllRewards(List<RewardModel> rewards) async {
+    debugPrint("Rewards to save: ${rewards.length}");
+
+    await _box.put(
+      GlobalStorageKey.rewards,
+      rewards.map((e) => e.toMap()).toList(),
+    );
+    debugPrint(
+      "Reward list is ${_box.get(GlobalStorageKey.rewards)}",
+    );
+  }
+
+  @override
+  List<KPIModel>? get kpis {
+    final jsonList = _box.get(GlobalStorageKey.kpis, defaultValue: []);
+    if (jsonList is List) {
+      return jsonList
+          .map((e) => KPIModel.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
+    }
+  }
+
+  @override
+  List<RewardModel>? get rewards {
+    final jsonList = _box.get(GlobalStorageKey.rewards, defaultValue: []);
+    if (jsonList is List) {
+      return jsonList
+          .map((e) => RewardModel.fromMap(Map<String, dynamic>.from(e)))
+          .toList();
+    }
   }
 }
