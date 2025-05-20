@@ -1,5 +1,6 @@
 import 'package:admin_hrm/data/model/contract/contract_model.dart';
 import 'package:admin_hrm/data/repository/contract_repository.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -9,7 +10,9 @@ part 'contrac_event.dart';
 
 class ContractBloc extends Bloc<ContractEvent, ContractState> {
   final ContractRepository repository;
-  ContractBloc({required this.repository}) : super(const ContractState()) {
+  final GlobalStorage globalStorage;
+  ContractBloc({required this.repository, required this.globalStorage})
+      : super(const ContractState()) {
     on<CreateContract>(_createContract);
     on<GetListContract>(_getListContract);
     on<UpdateContract>(_updateContract);
@@ -39,6 +42,7 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
     emit(state.copyWith(isLoading: true, isSuccess: false));
     try {
       final contracts = await repository.getContracts();
+      globalStorage.fetchAllContracts(contracts);
       debugPrint('GetListContract: ${contracts}');
       emit(state.copyWith(
           isLoading: false, contracts: contracts, isSuccess: true));

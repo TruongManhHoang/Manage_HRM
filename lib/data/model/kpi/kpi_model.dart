@@ -32,14 +32,14 @@ class KPIModel {
       userId: json['userId'],
       departmentId: json['departmentId'],
       period: json['period'],
-      metrics: (json['metrics'] as List)
+      metrics: (json['metrics'] as List<dynamic>)
           .map((item) => KPIMetric.fromJson(item))
           .toList(),
       totalScore: (json['totalScore'] as num).toDouble(),
       evaluatorId: json['evaluatorId'],
       notes: json['notes'],
-      createdAt: (json['createdAt'] as Timestamp).toDate(),
-      updatedAt: (json['updatedAt'] as Timestamp).toDate(),
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 
@@ -53,8 +53,23 @@ class KPIModel {
       'totalScore': totalScore,
       'evaluatorId': evaluatorId,
       'notes': notes,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'updatedAt': Timestamp.fromDate(updatedAt),
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'userId': userId,
+      'departmentId': departmentId,
+      'period': period,
+      'metrics': metrics.map((e) => e.toMap()).toList(),
+      'totalScore': totalScore,
+      'evaluatorId': evaluatorId,
+      'notes': notes,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 

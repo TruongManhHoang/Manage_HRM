@@ -1,3 +1,4 @@
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/service/kpi_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'kpi_event.dart';
@@ -5,8 +6,9 @@ import 'kpi_state.dart';
 
 class KPIBloc extends Bloc<KPIEvent, KPIState> {
   final KPIService service;
+  final GlobalStorage globalStorage;
 
-  KPIBloc(this.service) : super(KPIInitial()) {
+  KPIBloc(this.service, this.globalStorage) : super(KPIInitial()) {
     on<LoadKPIs>(_onLoad);
     on<AddKPI>(_onAdd);
     on<UpdateKPI>(_onUpdate);
@@ -17,6 +19,7 @@ class KPIBloc extends Bloc<KPIEvent, KPIState> {
     emit(KPILoading());
     try {
       final list = await service.getListKPI();
+      globalStorage.fetchAllKpis(list);
       emit(KPILoaded(list));
     } catch (e) {
       emit(KPIError(e.toString()));

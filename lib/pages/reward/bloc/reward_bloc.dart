@@ -1,4 +1,5 @@
 import 'package:admin_hrm/data/repository/reward_repository.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'reward_event.dart';
@@ -6,8 +7,9 @@ import 'reward_state.dart';
 
 class RewardBloc extends Bloc<RewardEvent, RewardState> {
   final RewardRepository repository;
+  final GlobalStorage globalStorage;
 
-  RewardBloc(this.repository) : super(RewardInitial()) {
+  RewardBloc(this.repository, this.globalStorage) : super(RewardInitial()) {
     on<LoadRewards>(_onLoadRewards);
     on<AddReward>(_onAddReward);
     on<UpdateReward>(_onUpdateReward);
@@ -20,8 +22,8 @@ class RewardBloc extends Bloc<RewardEvent, RewardState> {
     try {
       debugPrint('Loading rewards...');
       final rewards = await repository.getAllRewards();
-
       emit(RewardLoaded(rewards));
+      globalStorage.fetchAllRewards(rewards);
     } catch (e) {
       emit(RewardError('Không thể tải danh sách khen thưởng'));
     }

@@ -25,18 +25,18 @@ class DisciplinaryModel {
 
   factory DisciplinaryModel.fromFirestore(Map<String, dynamic> map) {
     return DisciplinaryModel(
-      id: map['id'],
-      employeeId: map['employeeId'],
-      code: map['code'],
-      disciplinaryType: map['disciplinaryType'],
-      disciplinaryValue: map['disciplinaryValue'],
+      id: map['id'] ?? '',
+      employeeId: map['employeeId'] ?? '',
+      code: map['code'] ?? '',
+      disciplinaryType: map['disciplinaryType'] ?? '',
+      disciplinaryValue: map['disciplinaryValue'] ?? 0,
       disciplinaryDate: map['disciplinaryDate'] != null
           ? DateTime.parse(map['disciplinaryDate'])
           : null,
-      reason: map['reason'],
-      severity: map['severity'],
-      status: map['status'],
-      document: map['document'],
+      reason: map['reason'] ?? '',
+      severity: map['severity'] ?? '',
+      status: map['status'] ?? '',
+      document: map['document'] ?? '',
     );
   }
 

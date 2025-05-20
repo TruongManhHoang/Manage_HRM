@@ -1,9 +1,8 @@
 import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
 import 'package:admin_hrm/common/widgets/method/method.dart';
 import 'package:admin_hrm/constants/sizes.dart';
-import 'package:admin_hrm/pages/department/bloc/department_bloc.dart';
-import 'package:admin_hrm/pages/department/bloc/department_state.dart';
-import 'package:admin_hrm/pages/department/table/data_table_department.dart';
+import 'package:admin_hrm/pages/salary/bloc/salary_bloc.dart';
+import 'package:admin_hrm/pages/salary/table/data_table_salary.dart';
 import 'package:admin_hrm/router/routers_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,13 +23,13 @@ class SalaryPageMobile extends StatelessWidget {
           child: Column(
             children: [
               const TBreadcrumsWithHeading(
-                heading: 'Phòng Ban',
+                heading: 'Lương',
                 breadcrumbItems: [],
               ),
               const Row(
                 children: [
                   Text(
-                    'Phòng ban',
+                    'Lương',
                     style: TextStyle(fontSize: 25, color: Colors.black),
                   ),
                 ],
@@ -49,19 +48,19 @@ class SalaryPageMobile extends StatelessWidget {
                               backgroundColor: Colors.blue,
                             ),
                             onPressed: () {
-                              context.push(RouterName.addDepartment);
+                              context.go(RouterName.addSalary);
                             },
                             child: Text(
-                              'Thêm Phòng Ban',
+                              'Thêm Lương',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
                                   .copyWith(color: Colors.white),
                             )),
                         const Gap(10),
-                        BlocBuilder<DepartmentBloc, DepartmentState>(
+                        BlocBuilder<SalaryBloc, SalaryState>(
                             builder: (context, state) {
-                          if (state is DepartmentLoaded) {
+                          if (state is SalaryLoaded) {
                             return TextButton(
                                 style: TextButton.styleFrom(
                                   backgroundColor: Colors.blue,
@@ -78,22 +77,20 @@ class SalaryPageMobile extends StatelessWidget {
                                       'Email',
                                       'Số điện thoại',
                                     ],
-                                    dataRows: state.departments
-                                        .map((dept) => [
-                                              dept.id ?? '',
-                                              dept.name ?? '',
-                                              dept.managerName ?? '',
-                                              dept.description ?? '',
-                                              dept.status ?? '',
-                                              dept.employeeCount ?? '',
-                                              dept.email ?? '',
-                                              dept.phoneNumber ?? '',
+                                    dataRows: state.salaries
+                                        .map((salary) => [
+                                              salary.id ?? '',
+                                              salary.employeeId ?? '',
+                                              salary.attendanceBonus ?? '',
+                                              salary.approvedBy ?? '',
+                                              salary.disciplinaryDeduction ??
+                                                  '',
                                             ])
                                         .toList(),
                                   );
                                 },
                                 child: Text(
-                                  'Xuất danh sách phòng ban',
+                                  'Xuất danh sách lương',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium!
@@ -106,7 +103,7 @@ class SalaryPageMobile extends StatelessWidget {
                       ],
                     ),
                     Gap(TSizes.spaceBtwItems),
-                    const DataTableDepartment()
+                    const DataTableSalary()
                   ],
                 ),
               ),
