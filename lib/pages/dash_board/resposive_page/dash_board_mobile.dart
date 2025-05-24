@@ -2,6 +2,7 @@ import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.da
 import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/router/routers_name.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -96,166 +97,104 @@ class DashBoardMobilePage extends StatelessWidget {
               const SizedBox(
                 height: 50,
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(right: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(9),
+              Container(
+                height: 300,
+                child: BarChart(
+                  BarChartData(
+                    minY: 0,
+                    maxY: 10,
+                    barGroups: [
+                      BarChartGroupData(x: 0, barRods: [
+                        BarChartRodData(toY: 5, color: Colors.blue)
+                      ]),
+                      BarChartGroupData(x: 1, barRods: [
+                        BarChartRodData(toY: 6, color: Colors.orange)
+                      ]),
+                      BarChartGroupData(x: 2, barRods: [
+                        BarChartRodData(toY: 7, color: Colors.green)
+                      ]),
+                      BarChartGroupData(x: 3, barRods: [
+                        BarChartRodData(toY: 3, color: Colors.red)
+                      ]),
+                      BarChartGroupData(x: 4, barRods: [
+                        BarChartRodData(toY: 4, color: Colors.purple)
+                      ]),
+                    ],
+                    titlesData: FlTitlesData(
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          interval: 1,
+                          getTitlesWidget: (value, meta) => Text(
+                            value.toInt().toString(),
+                            style: const TextStyle(fontSize: 10),
+                          ),
+                          reservedSize: 30,
+                        ),
                       ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Danh sách phòng ban',
-                              style: TextStyle(fontSize: 20)),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            width: 200,
-                            height: 40,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Search',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                ),
-                              ),
-                              style:
-                                  TextStyle(fontSize: 14.0), // Kích thước chữ
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.grey, width: 2),
-                                borderRadius: BorderRadius.circular(9)),
-                            child: SingleChildScrollView(
-                              scrollDirection:
-                                  Axis.horizontal, // Cho phép cuộn ngang
-                              child: DataTable(
-                                columns: const [
-                                  DataColumn(label: Text('STT')),
-                                  DataColumn(label: Text('Mã Phòng')),
-                                  DataColumn(label: Text('Tên Phòng')),
-                                  DataColumn(label: Text('Vị trí')),
-                                  DataColumn(label: Text('Ngày Tạo')),
-                                  DataColumn(label: Text('Người tạo')),
-                                  DataColumn(label: Text('Sửa')),
-                                  DataColumn(label: Text('Xóa')),
-                                  DataColumn(label: Text('Xóa')),
-                                ],
-                                // rows: []
-                                rows: const [
-                                  DataRow(cells: [
-                                    DataCell(Text('1')),
-                                    DataCell(Text('001')),
-                                    DataCell(Text('Phòng A')),
-                                    DataCell(Text('Phòng A')),
-                                    DataCell(Text('01/01/2024')),
-                                    DataCell(Text('Admin')),
-                                    DataCell(Text('Sửa')),
-                                    DataCell(Text('Xóa')),
-                                    DataCell(Text('Xóa')),
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('2')),
-                                    DataCell(Text('002')),
-                                    DataCell(Text('Phòng B')),
-                                    DataCell(Text('Phòng A')),
-                                    DataCell(Text('02/01/2024')),
-                                    DataCell(Text('Admin')),
-                                    DataCell(Text('Sửa')),
-                                    DataCell(Text('Xóa')),
-                                    DataCell(Text('Xóa')),
-                                  ]),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+                            if (value.toInt() < 0 ||
+                                value.toInt() >= days.length) {
+                              return const SizedBox.shrink();
+                            }
+                            return Text(days[value.toInt()]);
+                          },
+                          reservedSize: 30,
+                        ),
                       ),
+                      topTitles:
+                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      rightTitles:
+                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     ),
+                    gridData: FlGridData(show: true),
+                    borderData: FlBorderData(show: false),
                   ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(right: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(9),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Danh sách chức vụ',
-                              style: TextStyle(fontSize: 20)),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            width: 200,
-                            height: 40,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Search',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                ),
-                              ),
-                              style:
-                                  TextStyle(fontSize: 14.0), // Kích thước chữ
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.grey, width: 2),
-                                  borderRadius: BorderRadius.circular(9)),
-                              child: SingleChildScrollView(
-                                scrollDirection:
-                                    Axis.horizontal, // Cho phép cuộn ngang
-                                child: DataTable(
-                                    columns: const [
-                                      DataColumn(label: Text('STT')),
-                                      DataColumn(label: Text('Mã Chức Vụ')),
-                                      DataColumn(label: Text('Tên Chức Vụ')),
-                                      DataColumn(label: Text('Ngày Tạo')),
-                                    ],
-                                    // rows: [],
-                                    rows: const [
-                                      DataRow(cells: [
-                                        DataCell(Text('1')),
-                                        DataCell(Text('001')),
-                                        DataCell(Text('Chức Vụ A')),
-                                        DataCell(Text('01/01/2024')),
-                                      ]),
-                                      DataRow(cells: [
-                                        DataCell(Text('2')),
-                                        DataCell(Text('002')),
-                                        DataCell(Text('Chức Vụ B')),
-                                        DataCell(Text('02/01/2024')),
-                                      ]),
-                                      // Bạn có thể thêm nhiều DataRow ở đây nếu cần
-                                    ]),
-                              ))
-                        ],
-                      ),
+                ),
+              ),
+              PieChart(
+                PieChartData(
+                  sections: [
+                    PieChartSectionData(
+                      value: 40,
+                      color: Colors.blue,
+                      title: '40%',
+                      radius: 60,
+                      titleStyle:
+                          const TextStyle(color: Colors.white, fontSize: 14),
                     ),
-                  ),
-                ],
+                    PieChartSectionData(
+                      value: 30,
+                      color: Colors.orange,
+                      title: '30%',
+                      radius: 60,
+                      titleStyle:
+                          const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    PieChartSectionData(
+                      value: 15,
+                      color: Colors.green,
+                      title: '15%',
+                      radius: 60,
+                      titleStyle:
+                          const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    PieChartSectionData(
+                      value: 15,
+                      color: Colors.red,
+                      title: '15%',
+                      radius: 60,
+                      titleStyle:
+                          const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                  ],
+                  sectionsSpace: 4, // khoảng cách giữa các phần
+                  centerSpaceRadius: 40, // khoảng trống ở giữa
+                ),
               ),
             ],
           ),

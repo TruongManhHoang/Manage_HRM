@@ -46,6 +46,8 @@ import 'package:admin_hrm/pages/kpi/kpi_page.dart';
 
 import 'package:admin_hrm/pages/disciplinary/add_disciplinary_page/add_disciplinary_page.dart';
 import 'package:admin_hrm/pages/disciplinary/edit_disciplinary_page/edit_disciplinary_page.dart';
+import 'package:admin_hrm/pages/personnel_management/person_detail/person_detail_page.dart';
+import 'package:admin_hrm/pages/personnel_management/person_detail/person_detail_page_user.dart';
 
 import 'package:admin_hrm/pages/personnel_management/personnel_page.dart';
 import 'package:admin_hrm/pages/personnel_management/widgets/add_personnel.dart';
@@ -364,6 +366,24 @@ class AppRouter {
               name: RouterName.rewardPage,
               builder: (context, state) {
                 return RewardPage();
+              },
+            ),
+            GoRoute(
+              path: RouterName.employeeDetailPage,
+              name: RouterName.employeeDetailPage,
+              builder: (context, state) {
+                final employee = state.extra as PersionalManagement;
+                return PersonDetailPage(persionalManagement: employee);
+              },
+            ),
+            GoRoute(
+              path: RouterName.employeeDetailUserPage,
+              name: RouterName.employeeDetailUserPage,
+              builder: (context, state) {
+                final employee = state.extra as PersionalManagement;
+                return PersonDetailPageUser(
+                  persionalManagement: employee,
+                );
               },
             ),
           ],

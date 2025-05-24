@@ -2,6 +2,7 @@ import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.da
 import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/router/routers_name.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,245 +21,141 @@ class DashBoardTable extends StatelessWidget {
         color: Colors.grey[200], // Đặt màu nền thành xám nhạt
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const TBreadcrumsWithHeading(
-                heading: 'Tổng quan',
-                breadcrumbItems: [],
-              ),
-              Row(
-                children: [
-                  _buildDashboardCard(
-                      '${personal!.length}',
-                      'Nhân viên',
-                      Colors.blue,
-                      context,
-                      Icons.person,
-                      RouterName.employeePage,
-                      'Xem danh sách nhân viên'),
-                  _buildDashboardCard(
-                      '${department!.length}',
-                      'Phòng ban',
-                      Colors.orange,
-                      context,
-                      Icons.apartment,
-                      RouterName.departmentPage,
-                      'Xem danh sách phòng ban'),
-                  _buildDashboardCard(
-                      '${position!.length}',
-                      'Danh sách chức vụ',
-                      const Color.fromARGB(255, 170, 158, 46),
-                      context,
-                      Icons.account_circle,
-                      RouterName.positionPage,
-                      'Xem danh sách tài khoản'),
-                  _buildDashboardCard(
-                      '0',
-                      'Nhân viên nghỉ việc',
-                      Colors.red,
-                      context,
-                      Icons.exit_to_app,
-                      // Hello(),
-                      'Xem nhân viên nghỉ việc'),
-                ],
-              ),
-              Row(
-                children: [
-                  _buildDashboardCard('0', 'Nhóm nhân viên', Colors.blue,
-                      context, Icons.group, 'Xem danh sách nhóm'),
-                  _buildDashboardCard(
-                      'EXCEL',
-                      'Xuất báo cáo',
-                      Colors.green,
-                      context,
-                      Icons.file_copy_outlined,
-                      'Xem danh sách nhân viên'),
-                  _buildDashboardCard('EXCEL', 'Xuất báo cáo', Colors.green,
-                      context, Icons.file_copy_outlined, 'Xem lương nhân viên'),
-                  _buildDashboardCard('EXCEL', 'Xuất báo cáo', Colors.green,
-                      context, Icons.file_copy_outlined, 'Xem chấm công'),
-                ],
-              ),
-              Row(
-                children: [
-                  _buildDashboardCard(
-                      'EXCEL',
-                      'Xuất báo cáo',
-                      Colors.green,
-                      context,
-                      Icons.file_copy_outlined,
-                      'Xem khen thưởng kỷ luật'),
-                  _buildDashboardCard('', '', Colors.grey[200]!, context),
-                  _buildDashboardCard('', '', Colors.grey[200]!, context),
-                  _buildDashboardCard('', '', Colors.grey[200]!, context),
-                ],
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(right: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(9),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Danh sách phòng ban',
-                              style: TextStyle(fontSize: 20)),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            width: 200,
-                            height: 40,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Search',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                ),
-                              ),
-                              style:
-                                  TextStyle(fontSize: 14.0), // Kích thước chữ
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.grey, width: 2),
-                                borderRadius: BorderRadius.circular(9)),
-                            child: SingleChildScrollView(
-                              scrollDirection:
-                                  Axis.horizontal, // Cho phép cuộn ngang
-                              child: DataTable(
-                                columns: const [
-                                  DataColumn(label: Text('STT')),
-                                  DataColumn(label: Text('Mã Phòng')),
-                                  DataColumn(label: Text('Tên Phòng')),
-                                  DataColumn(label: Text('Vị trí')),
-                                  DataColumn(label: Text('Ngày Tạo')),
-                                  DataColumn(label: Text('Người tạo')),
-                                  DataColumn(label: Text('Sửa')),
-                                  DataColumn(label: Text('Xóa')),
-                                  DataColumn(label: Text('Xóa')),
-                                ],
-                                // rows: []
-                                rows: const [
-                                  DataRow(cells: [
-                                    DataCell(Text('1')),
-                                    DataCell(Text('001')),
-                                    DataCell(Text('Phòng A')),
-                                    DataCell(Text('Phòng A')),
-                                    DataCell(Text('01/01/2024')),
-                                    DataCell(Text('Admin')),
-                                    DataCell(Text('Sửa')),
-                                    DataCell(Text('Xóa')),
-                                    DataCell(Text('Xóa')),
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('2')),
-                                    DataCell(Text('002')),
-                                    DataCell(Text('Phòng B')),
-                                    DataCell(Text('Phòng A')),
-                                    DataCell(Text('02/01/2024')),
-                                    DataCell(Text('Admin')),
-                                    DataCell(Text('Sửa')),
-                                    DataCell(Text('Xóa')),
-                                    DataCell(Text('Xóa')),
-                                  ]),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
+          child: Column(children: [
+            const TBreadcrumsWithHeading(
+              heading: 'Tổng quan',
+              breadcrumbItems: [],
+            ),
+            Row(
+              children: [
+                _buildDashboardCard(
+                    '${personal!.length}',
+                    'Nhân viên',
+                    Colors.blue,
+                    context,
+                    Icons.person,
+                    RouterName.employeePage,
+                    'Xem danh sách nhân viên'),
+                _buildDashboardCard(
+                    '${department!.length}',
+                    'Phòng ban',
+                    Colors.orange,
+                    context,
+                    Icons.apartment,
+                    RouterName.departmentPage,
+                    'Xem danh sách phòng ban'),
+                _buildDashboardCard(
+                    '${position!.length}',
+                    'Danh sách chức vụ',
+                    const Color.fromARGB(255, 170, 158, 46),
+                    context,
+                    Icons.account_circle,
+                    RouterName.positionPage,
+                    'Xem danh sách tài khoản'),
+                _buildDashboardCard(
+                    '0',
+                    'Nhân viên nghỉ việc',
+                    Colors.red,
+                    context,
+                    Icons.exit_to_app,
+                    // Hello(),
+                    'Xem nhân viên nghỉ việc'),
+              ],
+            ),
+            Row(
+              children: [
+                _buildDashboardCard('0', 'Nhóm nhân viên', Colors.blue, context,
+                    Icons.group, 'Xem danh sách nhóm'),
+                _buildDashboardCard(
+                    'EXCEL',
+                    'Xuất báo cáo',
+                    Colors.green,
+                    context,
+                    Icons.file_copy_outlined,
+                    'Xem danh sách nhân viên'),
+                _buildDashboardCard('EXCEL', 'Xuất báo cáo', Colors.green,
+                    context, Icons.file_copy_outlined, 'Xem lương nhân viên'),
+                _buildDashboardCard('EXCEL', 'Xuất báo cáo', Colors.green,
+                    context, Icons.file_copy_outlined, 'Xem chấm công'),
+              ],
+            ),
+            Row(
+              children: [
+                _buildDashboardCard(
+                    'EXCEL',
+                    'Xuất báo cáo',
+                    Colors.green,
+                    context,
+                    Icons.file_copy_outlined,
+                    'Xem khen thưởng kỷ luật'),
+                _buildDashboardCard('', '', Colors.grey[200]!, context),
+                _buildDashboardCard('', '', Colors.grey[200]!, context),
+                _buildDashboardCard('', '', Colors.grey[200]!, context),
+              ],
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            Container(
+              height: 300,
+              child: BarChart(
+                BarChartData(
+                  minY: 0,
+                  maxY: 10,
+                  barGroups: [
+                    BarChartGroupData(
+                        x: 0,
+                        barRods: [BarChartRodData(toY: 5, color: Colors.blue)]),
+                    BarChartGroupData(x: 1, barRods: [
+                      BarChartRodData(toY: 6, color: Colors.orange)
+                    ]),
+                    BarChartGroupData(x: 2, barRods: [
+                      BarChartRodData(toY: 7, color: Colors.green)
+                    ]),
+                    BarChartGroupData(
+                        x: 3,
+                        barRods: [BarChartRodData(toY: 3, color: Colors.red)]),
+                    BarChartGroupData(x: 4, barRods: [
+                      BarChartRodData(toY: 4, color: Colors.purple)
+                    ]),
+                  ],
+                  titlesData: FlTitlesData(
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        interval: 1,
+                        getTitlesWidget: (value, meta) => Text(
+                          value.toInt().toString(),
+                          style: const TextStyle(fontSize: 10),
+                        ),
+                        reservedSize: 30,
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(right: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(9),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Danh sách chức vụ',
-                              style: TextStyle(fontSize: 20)),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            width: 200,
-                            height: 40,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Search',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                ),
-                              ),
-                              style:
-                                  TextStyle(fontSize: 14.0), // Kích thước chữ
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.grey, width: 2),
-                                  borderRadius: BorderRadius.circular(9)),
-                              child: SingleChildScrollView(
-                                scrollDirection:
-                                    Axis.horizontal, // Cho phép cuộn ngang
-                                child: DataTable(
-                                    columns: const [
-                                      DataColumn(label: Text('STT')),
-                                      DataColumn(label: Text('Mã Chức Vụ')),
-                                      DataColumn(label: Text('Tên Chức Vụ')),
-                                      DataColumn(label: Text('Ngày Tạo')),
-                                    ],
-                                    // rows: [],
-                                    rows: const [
-                                      DataRow(cells: [
-                                        DataCell(Text('1')),
-                                        DataCell(Text('001')),
-                                        DataCell(Text('Chức Vụ A')),
-                                        DataCell(Text('01/01/2024')),
-                                      ]),
-                                      DataRow(cells: [
-                                        DataCell(Text('2')),
-                                        DataCell(Text('002')),
-                                        DataCell(Text('Chức Vụ B')),
-                                        DataCell(Text('02/01/2024')),
-                                      ]),
-                                      // Bạn có thể thêm nhiều DataRow ở đây nếu cần
-                                    ]),
-                              ))
-                        ],
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+                          if (value.toInt() < 0 ||
+                              value.toInt() >= days.length) {
+                            return const SizedBox.shrink();
+                          }
+                          return Text(days[value.toInt()]);
+                        },
+                        reservedSize: 30,
                       ),
                     ),
+                    topTitles:
+                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles:
+                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   ),
-                ],
+                  gridData: FlGridData(show: true),
+                  borderData: FlBorderData(show: false),
+                ),
               ),
-            ],
-          ),
+            ),
+          ]),
         ),
       ),
     ));

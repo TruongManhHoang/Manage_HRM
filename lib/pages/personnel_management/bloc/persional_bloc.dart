@@ -28,7 +28,10 @@ class PersionalBloc extends Bloc<PersionalEvent, PersionalState> {
     on<PersionalLoadEvent>(_onLoadEvent);
     on<PersionalUpdateEvent>(_onUpdateEvent);
     on<PersionalDeleteEvent>(_onDeleteEvent);
+    // on<PersonalFetchEvent>(_onPersonalFetchEvent);
   }
+
+  // void _onPersonalFetchEvent()
 
   void _onCreateEvent(
       PersionalCreateEvent event, Emitter<PersionalState> emit) async {

@@ -1,3 +1,4 @@
+import 'package:admin_hrm/data/model/account/account_model.dart';
 import 'package:admin_hrm/data/model/attendance/attendance_model.dart';
 import 'package:admin_hrm/data/model/contract/contract_model.dart';
 import 'package:admin_hrm/data/model/department/department_model.dart';
@@ -29,10 +30,15 @@ class GlobalStorageKey {
   static const rewards = "rewards";
   static const disciplinarys = "disciplinaryActions";
   static const kpis = "kpis";
+  static const personalModel = "personalModel";
 }
 
 abstract class GlobalStorage {
   Future<void> init();
+
+  PersionalManagement? get personalModel;
+  Future<void> addPersonalModel(PersionalManagement personalModel);
+
   List<PositionModel>? get positions;
   Future<void> addToPosition(PositionModel position);
   Future<void> fetchAllPosition(List<PositionModel> positions);
@@ -163,11 +169,10 @@ class GlobalStorageImpl implements GlobalStorage {
     await Future.wait([
       // _box.put(GlobalStorageKey.accessToken, token),
       _box.put(GlobalStorageKey.displayName, displayName),
-      // _box.put(GlobalStorageKey.isLoggedIn, true),
+      // _box.put(GlobalStorageKey.accountModel, accountModel),
       _box.put(GlobalStorageKey.role, role),
     ]);
-    debugPrint(
-        "UpdateAuthentication: ${_box.get(GlobalStorageKey.displayName)} ${_box.get(GlobalStorageKey.role)}");
+    debugPrint("UpdateAuthentication: ${_box.get(GlobalStorageKey.role)} ");
   }
 
   @override
@@ -176,6 +181,7 @@ class GlobalStorageImpl implements GlobalStorage {
       // _box.delete(GlobalStorageKey.accessToken),
       // _box.delete(GlobalStorageKey.userId),
       // _box.delete(GlobalStorageKey.isLoggedIn),
+      _box.delete(GlobalStorageKey.personalModel),
       _box.delete(GlobalStorageKey.role),
       _box.delete(GlobalStorageKey.displayName)
       // _box.delete(GlobalStorageKey.userData),
@@ -509,5 +515,25 @@ class GlobalStorageImpl implements GlobalStorage {
           .map((e) => RewardModel.fromMap(Map<String, dynamic>.from(e)))
           .toList();
     }
+  }
+
+  @override
+  Future<void> addPersonalModel(PersionalManagement accountModel) async {
+    await _box.put(GlobalStorageKey.personalModel, accountModel.toMap());
+  }
+
+  @override
+  // TODO: implement personalModel
+  PersionalManagement? get personalModel {
+    final data = _box.get(GlobalStorageKey.personalModel);
+    if (data != null) {
+      if (data is Map<String, dynamic>) {
+        return PersionalManagement.fromJson(data);
+      } else if (data is Map) {
+        // Defensive: convert to Map<String, dynamic> if needed
+        return PersionalManagement.fromJson(Map<String, dynamic>.from(data));
+      }
+    }
+    return null;
   }
 }
