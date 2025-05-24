@@ -6,7 +6,9 @@ import 'package:admin_hrm/utils/popups/dialogs.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import '../../../common/widgets/containers/rounded_container.dart';
 import '../../../constants/colors.dart';
@@ -37,7 +39,7 @@ class TableEmployeeRows extends DataTableSource {
     final dateFormat = DateFormat('dd/MM/yyyy');
     if (index >= personnel.length) return null;
     final employee = personnel[index];
-
+    debugPrint("employee avatar: ${employee.avatar}");
     return DataRow2(
       specificRowHeight: 100,
       cells: [
@@ -55,6 +57,17 @@ class TableEmployeeRows extends DataTableSource {
             padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
             child: Text(employee.code!, style: baseStyle),
           ),
+        )),
+        DataCell(Center(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
+              child: Image.network(
+                employee.avatar ?? '',
+                width: 100,
+                height: 100,
+                errorBuilder: (context, error, stackTrace) =>
+                    Icon(Icons.person, size: 100),
+              )),
         )),
         DataCell(Padding(
           padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
@@ -136,6 +149,15 @@ class TableEmployeeRows extends DataTableSource {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              IconButton(
+                onPressed: () {
+                  context.pushNamed(RouterName.employeeDetailPage,
+                      extra: employee);
+                },
+                icon: const Icon(Iconsax.eye),
+                color: TColors.primary,
+              ),
+              const Gap(TSizes.xs),
               IconButton(
                 onPressed: () {
                   context.go(RouterName.updateEmployee, extra: employee);

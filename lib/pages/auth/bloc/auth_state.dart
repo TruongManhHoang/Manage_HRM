@@ -1,3 +1,4 @@
+import 'package:admin_hrm/data/model/account/account_model.dart';
 import 'package:admin_hrm/data/model/user_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,11 +12,11 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
-  final AppUser user;
-  AuthSuccess(this.user);
+  final AccountModel accountModel;
+  AuthSuccess(this.accountModel);
 
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [accountModel];
 }
 
 class AuthFailure extends AuthState {

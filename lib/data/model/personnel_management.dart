@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class PersionalManagement {
   String? id;
   String? code;
@@ -14,7 +11,7 @@ class PersionalManagement {
   String email;
   String date;
   String? status;
-  // String? avatar;
+  String? avatar;
   DateTime? createdAt;
   DateTime? updatedAt;
   PersionalManagement({
@@ -30,7 +27,7 @@ class PersionalManagement {
     required this.email,
     required this.date,
     this.status,
-    // this.avatar,
+    this.avatar,
     this.createdAt,
     this.updatedAt,
   });
@@ -47,6 +44,7 @@ class PersionalManagement {
     String? email,
     String? date,
     String? status,
+    String? avatar,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -63,6 +61,7 @@ class PersionalManagement {
       email: email ?? this.email,
       date: date ?? this.date,
       status: status ?? this.status,
+      avatar: avatar ?? this.avatar,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -82,7 +81,7 @@ class PersionalManagement {
       'email': email,
       'date': date,
       'status': status,
-      // 'avatar': avatar,
+      'avatar': avatar,
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
     };
@@ -101,7 +100,8 @@ class PersionalManagement {
       phone: map['phone'] ?? '',
       email: map['email'] ?? '',
       date: map['date'] ?? '',
-      status: map['status'],
+      avatar: map['avatar'] ?? '',
+      status: map['status'] ?? '',
       createdAt:
           map['createdAt'] != null ? DateTime.tryParse(map['createdAt']) : null,
       updatedAt:

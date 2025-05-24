@@ -6,6 +6,8 @@ class RouterName {
   static const login = '/login';
   static const departmentPage = '/departmentPage';
   static const customSidebar = '/customSidebar';
+  static const employeeDetailPage = '/employeeDetailPage';
+  static const employeeDetailUserPage = "/employeeDetailUserPage";
   static const employeePage = '/employee-page';
   static const addEmployee = '/add-employee';
   static const addDepartment = '/add-department';

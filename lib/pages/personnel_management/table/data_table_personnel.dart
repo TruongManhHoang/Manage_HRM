@@ -44,7 +44,6 @@ class DataTableEmployee extends StatelessWidget {
           }
 
           return TPaginatedDataTable(
-            minWidth: 700,
             tableHeight: 500,
             dataRowHeight: TSizes.xl * 1.2,
             columns: [
@@ -60,6 +59,13 @@ class DataTableEmployee extends StatelessWidget {
               DataColumn2(
                   label: Center(
                       child: Text('Mã nhân viên',
+                          maxLines: 2,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          style: baseStyle))),
+              DataColumn2(
+                  label: Center(
+                      child: Text('avatar',
                           maxLines: 2,
                           softWrap: true,
                           textAlign: TextAlign.center,
@@ -152,6 +158,7 @@ class DataTableEmployee extends StatelessWidget {
                           style: baseStyle))),
             ],
             source: TableEmployeeRows(context, employees),
+            rowsPerPage: 10,
           );
         }
 

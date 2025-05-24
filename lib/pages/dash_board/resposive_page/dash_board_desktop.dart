@@ -1,14 +1,11 @@
 import 'package:admin_hrm/common/widgets/breadcrumb/t_breadcrums_with_heading.dart';
 import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
-import 'package:admin_hrm/pages/dash_board/hello.dart';
-import 'package:admin_hrm/pages/department/department_page.dart';
-import 'package:admin_hrm/pages/personnel_management/personnel_page.dart';
-import 'package:admin_hrm/pages/position/position_page.dart';
-import 'package:admin_hrm/router/app_routers.dart';
 import 'package:admin_hrm/router/routers_name.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class DashBoardDesktopPage extends StatelessWidget {
@@ -20,10 +17,14 @@ class DashBoardDesktopPage extends StatelessWidget {
     final personal = globalStorage.personalManagers;
     final department = globalStorage.departments;
     final position = globalStorage.positions;
+    final personalList = personal ?? [];
+    final positionList = position ?? [];
+    final departmentList = department ?? [];
+
     return Scaffold(
         body: SingleChildScrollView(
       child: Container(
-        color: Colors.grey[200], // Đặt màu nền thành xám nhạt
+        color: Colors.grey[200],
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -35,7 +36,7 @@ class DashBoardDesktopPage extends StatelessWidget {
               Row(
                 children: [
                   _buildDashboardCard(
-                      '${personal!.length}',
+                      '${personalList.length}',
                       'Nhân viên',
                       Colors.blue,
                       context,
@@ -43,7 +44,7 @@ class DashBoardDesktopPage extends StatelessWidget {
                       RouterName.employeePage,
                       'Xem danh sách nhân viên'),
                   _buildDashboardCard(
-                      '${department!.length}',
+                      '${department?.length ?? 0}',
                       'Phòng ban',
                       Colors.orange,
                       context,
@@ -51,7 +52,7 @@ class DashBoardDesktopPage extends StatelessWidget {
                       RouterName.departmentPage,
                       'Xem danh sách phòng ban'),
                   _buildDashboardCard(
-                      '${position!.length}',
+                      '${positionList.length}',
                       'Danh sách chức vụ',
                       const Color.fromARGB(255, 170, 158, 46),
                       context,
@@ -85,184 +86,205 @@ class DashBoardDesktopPage extends StatelessWidget {
                       context, Icons.file_copy_outlined, 'Xem chấm công'),
                 ],
               ),
-              Row(
-                children: [
-                  _buildDashboardCard(
-                      'EXCEL',
-                      'Xuất báo cáo',
-                      Colors.green,
-                      context,
-                      Icons.file_copy_outlined,
-                      'Xem khen thưởng kỷ luật'),
-                  _buildDashboardCard('', '', Colors.grey[200]!, context),
-                  _buildDashboardCard('', '', Colors.grey[200]!, context),
-                  _buildDashboardCard('', '', Colors.grey[200]!, context),
-                ],
-              ),
               const SizedBox(
                 height: 50,
               ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(right: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(9),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Danh sách phòng ban',
-                              style: TextStyle(fontSize: 20)),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            width: 200,
-                            height: 40,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Search',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(0),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 400,
+                          width: 550,
+                          child: BarChart(
+                            BarChartData(
+                              alignment: BarChartAlignment.spaceAround,
+                              maxY: personalList.isNotEmpty
+                                  ? personalList
+                                          .map((p) => departmentList.indexWhere(
+                                              (d) => d.id == p.departmentId))
+                                          .fold<double>(0, (prev, idx) {
+                                        final dep = departmentList[idx];
+                                        final count = personalList
+                                            .where(
+                                                (p) => p.departmentId == dep.id)
+                                            .length;
+                                        return count > prev
+                                            ? count.toDouble()
+                                            : prev;
+                                      }) +
+                                      2
+                                  : 5,
+                              barTouchData: BarTouchData(
+                                enabled: true,
+                                touchTooltipData: BarTouchTooltipData(
+                                  getTooltipItem:
+                                      (group, groupIndex, rod, rodIndex) {
+                                    final dep = departmentList[group.x.toInt()];
+                                    return BarTooltipItem(
+                                      '${dep.name}\n',
+                                      const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: 'Số lượng: ${rod.toY.toInt()}',
+                                          style: const TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 12),
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
                               ),
-                              style:
-                                  TextStyle(fontSize: 14.0), // Kích thước chữ
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.grey, width: 2),
-                                borderRadius: BorderRadius.circular(9)),
-                            child: SingleChildScrollView(
-                              scrollDirection:
-                                  Axis.horizontal, // Cho phép cuộn ngang
-                              child: DataTable(
-                                columns: const [
-                                  DataColumn(label: Text('STT')),
-                                  DataColumn(label: Text('Mã Phòng')),
-                                  DataColumn(label: Text('Tên Phòng')),
-                                  DataColumn(label: Text('Vị trí')),
-                                  DataColumn(label: Text('Ngày Tạo')),
-                                  DataColumn(label: Text('Người tạo')),
-                                  DataColumn(label: Text('Sửa')),
-                                  DataColumn(label: Text('Xóa')),
-                                  DataColumn(label: Text('Xóa')),
-                                ],
-                                // rows: []
-                                rows: const [
-                                  DataRow(cells: [
-                                    DataCell(Text('1')),
-                                    DataCell(Text('001')),
-                                    DataCell(Text('Phòng A')),
-                                    DataCell(Text('Phòng A')),
-                                    DataCell(Text('01/01/2024')),
-                                    DataCell(Text('Admin')),
-                                    DataCell(Text('Sửa')),
-                                    DataCell(Text('Xóa')),
-                                    DataCell(Text('Xóa')),
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('2')),
-                                    DataCell(Text('002')),
-                                    DataCell(Text('Phòng B')),
-                                    DataCell(Text('Phòng A')),
-                                    DataCell(Text('02/01/2024')),
-                                    DataCell(Text('Admin')),
-                                    DataCell(Text('Sửa')),
-                                    DataCell(Text('Xóa')),
-                                    DataCell(Text('Xóa')),
-                                  ]),
-                                ],
+                              barGroups: [
+                                ...departmentList
+                                    .where((dep) => personalList
+                                        .any((p) => p.departmentId == dep.id))
+                                    .map((dep) {
+                                  final count = personalList
+                                      .where((p) => p.departmentId == dep.id)
+                                      .length;
+                                  return BarChartGroupData(
+                                    x: departmentList.indexOf(dep),
+                                    barRods: [
+                                      BarChartRodData(
+                                        toY: count.toDouble(),
+                                        color: _getColorForIndex(
+                                            departmentList.indexOf(dep)),
+                                        width: 32,
+                                        borderRadius: BorderRadius.circular(8),
+                                        backDrawRodData:
+                                            BackgroundBarChartRodData(
+                                          show: true,
+                                          toY: personalList.length.toDouble(),
+                                          color: Colors.grey[300],
+                                        ),
+                                      ),
+                                    ],
+                                    showingTooltipIndicators: [0],
+                                  );
+                                }).toList(),
+                              ],
+                              titlesData: FlTitlesData(
+                                leftTitles: AxisTitles(
+                                  sideTitles: SideTitles(
+                                    showTitles: true,
+                                    interval: 1,
+                                    getTitlesWidget: (value, meta) => Text(
+                                        value.toInt().toString(),
+                                        style: const TextStyle(fontSize: 12)),
+                                    reservedSize: 30,
+                                  ),
+                                ),
+                                bottomTitles: AxisTitles(
+                                  sideTitles: SideTitles(
+                                    showTitles: true,
+                                    getTitlesWidget: (value, meta) {
+                                      final idx = value.toInt();
+                                      if (idx < 0 ||
+                                          idx >= departmentList.length)
+                                        return const SizedBox.shrink();
+                                      final dep = departmentList[idx];
+                                      if (personalList.any(
+                                          (p) => p.departmentId == dep.id)) {
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
+                                          child: Text(
+                                            dep.name,
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.blueAccent),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        );
+                                      }
+                                      return const SizedBox.shrink();
+                                    },
+                                    reservedSize: 70,
+                                  ),
+                                ),
+                                topTitles: const AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false)),
+                                rightTitles: const AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false)),
+                              ),
+                              gridData: FlGridData(
+                                show: true,
+                                drawVerticalLine: true,
+                                horizontalInterval: 1,
+                                getDrawingHorizontalLine: (value) => FlLine(
+                                  color: Colors.grey[300],
+                                  strokeWidth: 1,
+                                ),
+                                getDrawingVerticalLine: (value) => FlLine(
+                                  color: Colors.grey[200],
+                                  strokeWidth: 1,
+                                ),
+                              ),
+                              borderData: FlBorderData(
+                                show: true,
+                                border: const Border(
+                                  left: BorderSide(color: Colors.black12),
+                                  bottom: BorderSide(color: Colors.black12),
+                                ),
                               ),
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        ),
+                        const Text('Số lượng chức vụ trong công ty')
+                      ],
                     ),
                   ),
+                  Gap(10),
                   Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(right: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(9),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Danh sách chức vụ',
-                              style: TextStyle(fontSize: 20)),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            width: 200,
-                            height: 40,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Search',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                ),
-                              ),
-                              style:
-                                  TextStyle(fontSize: 14.0), // Kích thước chữ
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 350,
+                          width: 500,
+                          child: PieChart(
+                            PieChartData(
+                              sections: [
+                                ...positionList.map((pos) {
+                                  final count = personalList
+                                      .where((p) => p.positionId == pos.id)
+                                      .length;
+                                  double percent = 0;
+                                  if (personalList.isNotEmpty) {
+                                    percent =
+                                        (count / personalList.length * 100);
+                                  }
+                                  return PieChartSectionData(
+                                    value: count.toDouble(),
+                                    color: _getColorForIndex(
+                                        positionList.indexOf(pos)),
+                                    title:
+                                        '${pos.name} \n (${percent.toStringAsFixed(0)}%)',
+                                    radius: 100,
+                                    titleStyle: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12), // tăng font size
+                                  );
+                                }).toList(),
+                              ],
+                              centerSpaceRadius: 65, // tăng khoảng trống ở giữa
                             ),
                           ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.grey, width: 2),
-                                  borderRadius: BorderRadius.circular(9)),
-                              child: SingleChildScrollView(
-                                scrollDirection:
-                                    Axis.horizontal, // Cho phép cuộn ngang
-                                child: DataTable(
-                                    columns: const [
-                                      DataColumn(label: Text('STT')),
-                                      DataColumn(label: Text('Mã Chức Vụ')),
-                                      DataColumn(label: Text('Tên Chức Vụ')),
-                                      DataColumn(label: Text('Ngày Tạo')),
-                                    ],
-                                    // rows: [],
-                                    rows: const [
-                                      DataRow(cells: [
-                                        DataCell(Text('1')),
-                                        DataCell(Text('001')),
-                                        DataCell(Text('Chức Vụ A')),
-                                        DataCell(Text('01/01/2024')),
-                                      ]),
-                                      DataRow(cells: [
-                                        DataCell(Text('2')),
-                                        DataCell(Text('002')),
-                                        DataCell(Text('Chức Vụ B')),
-                                        DataCell(Text('02/01/2024')),
-                                      ]),
-                                      // Bạn có thể thêm nhiều DataRow ở đây nếu cần
-                                    ]),
-                              ))
-                        ],
-                      ),
+                        ),
+                        Gap(10),
+                        Text('Số lượng chức vụ trong công ty')
+                      ],
                     ),
                   ),
                 ],
               ),
+              const Gap(50)
             ],
           ),
         ),
@@ -331,4 +353,21 @@ Widget _buildDashboardCard(
       ),
     ),
   );
+}
+
+// Hàm tiện ích để lấy màu cho từng phần
+Color _getColorForIndex(int index) {
+  const colors = [
+    Colors.blue,
+    Colors.orange,
+    Colors.green,
+    Colors.red,
+    Colors.purple,
+    Colors.teal,
+    Colors.brown,
+    Colors.cyan,
+    Colors.indigo,
+    Colors.pink,
+  ];
+  return colors[index % colors.length];
 }

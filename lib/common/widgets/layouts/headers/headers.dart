@@ -51,9 +51,10 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
 
           BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
             final displayName =
-                (state is AuthSuccess) ? state.user.displayName : 'TMH';
-            final email =
-                (state is AuthSuccess) ? state.user.email : 'admin@example.com';
+                (state is AuthSuccess) ? state.accountModel.name : 'TMH';
+            final email = (state is AuthSuccess)
+                ? state.accountModel.email
+                : 'admin@example.com';
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
