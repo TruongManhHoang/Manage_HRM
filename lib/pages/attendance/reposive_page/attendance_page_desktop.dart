@@ -46,22 +46,22 @@ class AttendancePageDesktop extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                            ),
-                            onPressed: () {
-                              context.pushNamed(RouterName.addAttendance);
-                            },
-                            child: Text(
-                              'Thêm Chấm Công',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(color: Colors.white),
-                            ),
-                          ),
-                          const Gap(10),
+                          // TextButton(
+                          //   style: TextButton.styleFrom(
+                          //     backgroundColor: Colors.blue,
+                          //   ),
+                          //   onPressed: () {
+                          //     context.pushNamed(RouterName.addAttendance);
+                          //   },
+                          //   child: Text(
+                          //     'Thêm Chấm Công',
+                          //     style: Theme.of(context)
+                          //         .textTheme
+                          //         .bodyMedium!
+                          //         .copyWith(color: Colors.white),
+                          //   ),
+                          // ),
+                          // const Gap(10),
                           BlocBuilder<AttendanceBloc, AttendanceState>(
                             builder: (context, state) {
                               if (state is AttendanceLoaded) {

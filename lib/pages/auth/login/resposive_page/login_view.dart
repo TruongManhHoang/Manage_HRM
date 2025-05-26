@@ -48,7 +48,7 @@ class _LoginViewState extends State<LoginView> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            context.go(RouterName.dashboard);
+            context.go(RouterName.splashScreen);
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.message)));
@@ -123,18 +123,6 @@ class _LoginViewState extends State<LoginView> {
                         : const Text("Đăng nhập"),
                   ),
                   const SizedBox(height: 40),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Bạn chưa có tài khoản?"),
-                      TextButton(
-                        onPressed: () {
-                          context.go(RouterName.register);
-                        },
-                        child: const Text("Đăng ký"),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),

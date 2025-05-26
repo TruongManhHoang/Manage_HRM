@@ -16,6 +16,7 @@ class SalaryBloc extends Bloc<SalaryEvent, SalaryState> {
     on<GetListSalary>(_onGetListSalary);
     on<UpdateSalary>(_onUpdateSalary);
     on<DeleteSalary>(_onDeleteSalary);
+    on<GetListSalaryByEmployeeId>(_onGetListSalaryByEmployeeId);
   }
 
   Future<void> _onCreateSalary(
@@ -39,8 +40,21 @@ class SalaryBloc extends Bloc<SalaryEvent, SalaryState> {
     emit(SalaryLoading());
     try {
       final salaries = await salaryRepository.getSalaries();
-      debugPrint('getSalaries : ${salaries.length}');
       emit(SalaryLoaded(salaries));
+    } catch (e) {
+      emit(SalaryFailure(e.toString()));
+    }
+  }
+
+  Future<void> _onGetListSalaryByEmployeeId(
+    GetListSalaryByEmployeeId event,
+    Emitter<SalaryState> emit,
+  ) async {
+    emit(SalaryLoading());
+    try {
+      final salaries =
+          await salaryRepository.getSalariesByEmployeeId(event.employeeId);
+      emit(SalaryByEmployeeIdLoaded(salaries));
     } catch (e) {
       emit(SalaryFailure(e.toString()));
     }

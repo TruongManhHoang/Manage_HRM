@@ -25,14 +25,14 @@ class AccountModel {
 
   factory AccountModel.fromJson(Map<String, dynamic> json) {
     return AccountModel(
-      id: json['id'] as String?,
-      name: json['name'] as String,
-      code: json['code'] as String,
-      employeeId: json['employeeId'] as String,
-      email: json['email'] as String,
-      password: json['password'] as String,
-      role: json['role'] as String,
-      status: json['status'] as String,
+      id: json['id'] as String? ?? '',
+      name: json['name'] as String? ?? '',
+      code: json['code'] as String? ?? '',
+      employeeId: json['employeeId'] as String? ?? '',
+      email: json['email'] as String? ?? '',
+      password: json['password'] as String? ?? '',
+      role: json['role'] as String? ?? '',
+      status: json['status'] as String? ?? '',
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'])
           : null,

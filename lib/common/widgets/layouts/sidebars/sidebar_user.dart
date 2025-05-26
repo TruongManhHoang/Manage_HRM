@@ -14,8 +14,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
-class Sidebar extends StatelessWidget {
-  const Sidebar({super.key});
+class SidebarUser extends StatelessWidget {
+  const SidebarUser({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,51 +55,15 @@ class Sidebar extends StatelessWidget {
                     ),
 
                     // Menu items
-                    const MenuItem(
-                        icon: Iconsax.element_3,
-                        title: 'Tổng quan',
-                        router: RouterName.dashboard),
-                    const MenuItem(
-                        icon: Iconsax.profile_2user,
-                        title: 'Nhân viên',
-                        router: RouterName.employeePage),
-                    const MenuItem(
-                        icon: Iconsax.building_3,
-                        title: 'Phòng ban',
-                        router: RouterName.departmentPage),
-                    const MenuItem(
-                        icon: Iconsax.document_text,
-                        title: 'Hợp đồng',
-                        router: RouterName.contractPage),
-                    const MenuItem(
-                        icon: Iconsax.medal,
-                        title: 'Chức vụ',
-                        router: RouterName.positionPage),
-                    const MenuItem(
-                        icon: Iconsax.gift1,
-                        title: 'Khen thưởng',
-                        router: RouterName.rewardPage),
-                    const MenuItem(
-                        icon: Iconsax.shield_slash,
-                        title: 'Kỷ luật',
-                        router: RouterName.disciplinaryPage),
-                    const MenuItem(
-                        icon: Iconsax.wallet,
-                        title: 'Lương',
-                        router: RouterName.salaryPage),
-                    const MenuItem(
-                        icon: Iconsax.user,
-                        title: 'Tài khoản',
-                        router: RouterName.accountPage),
-                    const MenuItem(
-                        icon: Iconsax.clock,
-                        title: 'Chấm công',
-                        router: RouterName.attendancePage),
-                    const MenuItem(
-                        icon: Iconsax.chart_2,
-                        title: 'KPI',
-                        router: RouterName.kpiPage),
 
+                    const MenuItem(
+                        icon: Iconsax.profile,
+                        title: 'Thông tin nhân viên',
+                        router: RouterName.employeeDetailUserPage),
+                    const MenuItem(
+                        icon: Iconsax.profile,
+                        title: 'Bảng lương',
+                        router: RouterName.employeeSalaryPage),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: Row(

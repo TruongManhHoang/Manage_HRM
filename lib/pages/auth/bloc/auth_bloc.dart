@@ -31,14 +31,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
 
         final appUser = await userRepository.fetchUserProfile();
-        globalStorage.updateAuthenticationState(
-            displayName: appUser.displayName, role: appUser.role);
-        if (appUser.role != 'admin') {
-          emit(AuthFailure("Bạn không có quyền truy cập admin."));
-          return;
-        }
 
-        // await StorageLocal.saveUser(appUser);
+        final personal =
+            await userRepository.fetchPersonalProfile(appUser.employeeId);
+
+        await globalStorage.updateAuthenticationState(
+          displayName: appUser.name,
+          role: appUser.role,
+          userId: appUser.id,
+          password: appUser.password,
+        );
+
+        await globalStorage.addPersonalModel(personal);
         emit(AuthSuccess(appUser));
       } catch (e) {
         emit(AuthFailure(e.toString()));

@@ -4,7 +4,7 @@ class AttendanceModel {
   final String id;
   final String userId;
   final String? userName;
-  final DateTime? date;
+  final String? date;
   final DateTime? checkInTime;
   final DateTime? checkOutTime;
   final String? workLocation;
@@ -42,13 +42,13 @@ class AttendanceModel {
     return AttendanceModel(
       id: json['id'] ?? '',
       userId: json['userId'] ?? '',
-      userName: json['userName'],
-      date: parseDate(json['date']),
-      checkInTime: parseDate(json['checkInTime']),
-      checkOutTime: parseDate(json['checkOutTime']),
-      workLocation: json['workLocation'],
-      numberOfHours: json['numberOfHours']?.toDouble(),
-      notes: json['notes'],
+      userName: json['userName'] ?? '',
+      date: json['date'] ?? '',
+      checkInTime: parseDate(json['checkInTime']) ?? DateTime.now(),
+      checkOutTime: parseDate(json['checkOutTime']) ?? DateTime.now(),
+      workLocation: json['workLocation'] ?? '',
+      numberOfHours: json['numberOfHours']?.toDouble() ?? 0,
+      notes: json['notes'] ?? '',
       isLate: json['isLate'] ?? false,
       isAbsent: json['isAbsent'] ?? false,
       createdAt: parseDate(json['createdAt']) ?? DateTime.now(),
@@ -61,7 +61,7 @@ class AttendanceModel {
       'id': id,
       'userId': userId,
       'userName': userName,
-      'date': date?.toIso8601String(),
+      'date': date,
       'checkInTime': checkInTime?.toIso8601String(),
       'checkOutTime': checkOutTime?.toIso8601String(),
       'workLocation': workLocation,
@@ -78,7 +78,7 @@ class AttendanceModel {
     String? id,
     String? userId,
     String? userName,
-    DateTime? date,
+    String? date,
     DateTime? checkInTime,
     DateTime? checkOutTime,
     String? workLocation,

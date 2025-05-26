@@ -1,6 +1,6 @@
 {
-    "name": "admin_dai_hoc",
-    "short_name": "admin_dai_hoc",
+    "name": "Manager_HRM",
+    "short_name": "Manager_HRM",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

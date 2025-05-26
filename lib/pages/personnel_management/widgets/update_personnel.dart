@@ -38,6 +38,7 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
   final birthDateController = TextEditingController();
   final codeController = TextEditingController();
   final statusController = TextEditingController();
+  final avatarController = TextEditingController();
 
   final educationLevels = ['Cao đẳng', 'Đại học', 'Sau đại học'];
   @override
@@ -45,6 +46,7 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
     codeController.text = widget.employee.code!;
     fullNameController.text = widget.employee.name;
     genderController.text = widget.employee.gender;
+    addressController.text = widget.employee.avatar!;
     positionController.text = widget.employee.positionId.toString();
     departmentController.text = widget.employee.departmentId.toString();
     phoneController.text = widget.employee.phone;
@@ -129,31 +131,24 @@ class _UpdatePersonnelState extends State<UpdatePersonnel> {
                                   key: _formKey,
                                   child: Column(
                                     children: [
-                                      // GestureDetector(
-                                      //   onTap: () async {
-                                      //     final picked = await pickImage();
-                                      //     if (picked != null) {
-                                      //       setState(() {
-                                      //         avatarFile = picked;
-                                      //       });
-                                      //     }
-                                      //   },
-                                      //   child: Container(
-                                      //     height: 150,
-                                      //     width: 150,
-                                      //     decoration: BoxDecoration(
-                                      //       borderRadius:
-                                      //           BorderRadius.circular(10),
-                                      //       color: Colors.grey[200],
-                                      //     ),
-                                      //     child: avatarFile == null
-                                      //         ? const Icon(Icons.person)
-                                      //         : Image.file(
-                                      //             File(avatarFile!.path),
-                                      //             fit: BoxFit.cover,
-                                      //           ),
-                                      //   ),
-                                      // ),
+                                      Image.network(
+                                        avatarController.text,
+                                        // width: 100,
+                                        // height: 200,
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null)
+                                            return child;
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        },
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Text(
+                                              '❌ Lỗi khi tải ảnh: $error');
+                                        },
+                                      ),
                                       const Gap(TSizes.spaceBtwItems),
                                       TTextFormField(
                                         textAlign: true,

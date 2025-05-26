@@ -1,7 +1,10 @@
+import 'package:admin_hrm/common/widgets/images/t_circular_image.dart';
 import 'package:admin_hrm/common/widgets/images/t_rounded_image.dart';
 import 'package:admin_hrm/constants/colors.dart';
 import 'package:admin_hrm/constants/device_utility.dart';
 import 'package:admin_hrm/constants/sizes.dart';
+import 'package:admin_hrm/di/locator.dart';
+import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_state.dart';
 import 'package:admin_hrm/utils/enum/enum.dart';
@@ -15,6 +18,8 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final storageKey = getIt<GlobalStorage>();
+    final personal = storageKey.personalModel;
     return Container(
       decoration: const BoxDecoration(
           color: Colors.white,
@@ -22,48 +27,46 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
       padding: const EdgeInsets.symmetric(
           horizontal: TSizes.md, vertical: TSizes.sm),
       child: AppBar(
-        leading: !TDeviceUtils.isDesktopScreen(context)
-            ? IconButton(
-                onPressed: () => scaffoldKey?.currentState?.openDrawer(),
-                icon: const Icon(Iconsax.menu))
-            : null,
-        title: TDeviceUtils.isDesktopScreen(context)
-            ? SizedBox(
-                width: 400,
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Iconsax.search_normal),
-                    hintText: 'Search anything...',
+          leading: !TDeviceUtils.isDesktopScreen(context)
+              ? IconButton(
+                  onPressed: () => scaffoldKey?.currentState?.openDrawer(),
+                  icon: const Icon(Iconsax.menu))
+              : null,
+          title: TDeviceUtils.isDesktopScreen(context)
+              ? SizedBox(
+                  width: 400,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Iconsax.search_normal),
+                      hintText: 'Search anything...',
+                    ),
                   ),
-                ),
-              )
-            : null,
-        actions: [
-          //Search bar for mobile and tablet
-          if (!TDeviceUtils.isDesktopScreen(context))
+                )
+              : null,
+          actions: [
+            //Search bar for mobile and tablet
+            if (!TDeviceUtils.isDesktopScreen(context))
+              IconButton(
+                  onPressed: () {}, icon: const Icon(Iconsax.search_normal)),
+            //Notification icon
             IconButton(
-                onPressed: () {}, icon: const Icon(Iconsax.search_normal)),
-          //Notification icon
-          IconButton(onPressed: () {}, icon: const Icon(Iconsax.notification)),
-          const SizedBox(
-            width: TSizes.spaceBtwItems / 2,
-          ),
+                onPressed: () {}, icon: const Icon(Iconsax.notification)),
+            const SizedBox(
+              width: TSizes.spaceBtwItems / 2,
+            ),
 
-          BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-            final displayName =
-                (state is AuthSuccess) ? state.user.displayName : 'TMH';
-            final email =
-                (state is AuthSuccess) ? state.user.email : 'admin@example.com';
-            return Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const TRoundedImage(
-                  width: 40,
-                  height: 40,
-                  padding: 2,
-                  imageType: ImageType.asset,
-                  image: 'assets/images/user.png',
-                ),
+                ClipOval(
+                    child: Image.network(
+                  personal!.avatar ?? '',
+                  width: 45,
+                  height: 45,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) =>
+                      Icon(Icons.person, size: 100),
+                )),
                 const SizedBox(
                   width: TSizes.sm,
                 ),
@@ -73,20 +76,18 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        displayName,
+                        personal.name,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       Text(
-                        email,
+                        personal.email,
                         style: Theme.of(context).textTheme.labelMedium,
                       )
                     ],
                   )
               ],
-            );
-          })
-        ],
-      ),
+            )
+          ]),
     );
   }
 

@@ -32,15 +32,6 @@ class AddSalaryPage extends StatefulWidget {
 }
 
 class _AddSalaryPageState extends State<AddSalaryPage> {
-  final codeController = TextEditingController();
-  final employeeIdController = TextEditingController();
-  final baseSalaryController = TextEditingController();
-  final kpiBonusController = TextEditingController();
-  final rewardBonusController = TextEditingController();
-  final disciplinaryDeductionController = TextEditingController();
-  final attendanceBonusController = TextEditingController();
-  final absenceDeductionController = TextEditingController();
-  final totalSalaryController = TextEditingController();
   late final GlobalStorage globalStorage;
   List<PersionalManagement>? personals;
   List<AttendanceModel>? attendances;
@@ -48,21 +39,36 @@ class _AddSalaryPageState extends State<AddSalaryPage> {
   List<DisciplinaryModel>? disciplinary;
   List<ContractModel>? contracts;
   List<KPIModel>? kpis;
+  PersionalManagement? personal;
 
-  String? _selectedUserId;
-  final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
+  final codeController = TextEditingController();
+  final employeeIdController = TextEditingController();
+  final baseSalaryController = TextEditingController();
+  final kpiBonusController = TextEditingController();
+  final rewardBonusController = TextEditingController();
+  final disciplinaryDeductionController = TextEditingController();
+  final attendanceBonusController = TextEditingController();
+  late final TextEditingController approveByController;
+  final totalSalaryController = TextEditingController();
   @override
   void initState() {
     super.initState();
     globalStorage = getIt<GlobalStorage>();
 
     personals = globalStorage.personalManagers;
+    personal = globalStorage.personalModel;
     attendances = globalStorage.attendances;
     rewards = globalStorage.rewards;
     disciplinary = globalStorage.disciplinaryActions;
     contracts = globalStorage.contracts;
     kpis = globalStorage.kpis;
+    approveByController = TextEditingController(
+      text: personal?.name ?? '',
+    );
   }
+
+  String? _selectedUserId;
+  final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
 
   void _updateUserData(String? userId) {
     if (userId == null) return;
@@ -131,7 +137,7 @@ class _AddSalaryPageState extends State<AddSalaryPage> {
         disciplinaryDeduction:
             double.tryParse(disciplinaryDeductionController.text) ?? 0.0,
         attendanceBonus: double.tryParse(attendanceBonusController.text) ?? 0.0,
-        approvedBy: absenceDeductionController.text,
+        approvedBy: approveByController.text,
         totalSalary: double.tryParse(totalSalaryController.text) ?? 0.0,
         payDate: now,
       );
@@ -156,7 +162,7 @@ class _AddSalaryPageState extends State<AddSalaryPage> {
         } else if (state is SalaryFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Thêm phòng ban thất bại: ${state.error}'),
+              content: Text('Thêm lương thất bại: ${state.error}'),
             ),
           );
         }
@@ -326,34 +332,68 @@ class _AddSalaryPageState extends State<AddSalaryPage> {
                                         textAlign: true,
                                         text: 'Người thực hiện',
                                         hint: 'Nhập người thực hiện',
-                                        controller: absenceDeductionController,
+                                        controller: approveByController,
                                         keyboardType: TextInputType.number,
                                       ),
                                       const Gap(TSizes.spaceBtwSections),
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: Colors.blue,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: TSizes.defaultSpace * 2,
-                                            vertical: 16,
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            _submitForm();
-                                          }
-                                        },
-                                        child: state is SalaryLoading
-                                            ? const CircularProgressIndicator()
-                                            : Text(
-                                                'Thêm lương',
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: TextButton(
+                                              style: TextButton.styleFrom(
+                                                backgroundColor: Colors.blue,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      TSizes.defaultSpace * 2,
+                                                  vertical: 16,
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                context.pop();
+                                              },
+                                              child: Text(
+                                                'Hủy',
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyMedium!
                                                     .copyWith(
                                                         color: Colors.white),
                                               ),
+                                            ),
+                                          ),
+                                          Gap(10),
+                                          Expanded(
+                                            child: TextButton(
+                                              style: TextButton.styleFrom(
+                                                backgroundColor: Colors.blue,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      TSizes.defaultSpace * 2,
+                                                  vertical: 16,
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  _submitForm();
+                                                }
+                                              },
+                                              child: state is SalaryLoading
+                                                  ? const CircularProgressIndicator()
+                                                  : Text(
+                                                      'Thêm lương',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyMedium!
+                                                          .copyWith(
+                                                              color:
+                                                                  Colors.white),
+                                                    ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),

@@ -5,10 +5,8 @@ class AttendanceService {
   final _collection = FirebaseFirestore.instance.collection('attendances');
 
   Future<void> addAttendance(AttendanceModel model) async {
-    final docRef = FirebaseFirestore.instance
-        .collection('attendances')
-        .doc(); // tự sinh ID
-    final newModel = model.copyWith(id: docRef.id); // tạo bản sao có id mới
+    final docRef = FirebaseFirestore.instance.collection('attendances').doc();
+    final newModel = model.copyWith(id: docRef.id);
     await docRef.set(newModel.toJson());
   }
 

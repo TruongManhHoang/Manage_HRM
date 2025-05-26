@@ -7,6 +7,7 @@ import 'package:admin_hrm/data/repository/persional_repository.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -28,6 +29,22 @@ class PersionalBloc extends Bloc<PersionalEvent, PersionalState> {
     on<PersionalLoadEvent>(_onLoadEvent);
     on<PersionalUpdateEvent>(_onUpdateEvent);
     on<PersionalDeleteEvent>(_onDeleteEvent);
+    on<PersonalFetchEvent>(_onPersonalFetchEvent);
+  }
+
+  void _onPersonalFetchEvent(
+      PersonalFetchEvent event, Emitter<PersionalState> emit) {
+    emit(state.copyWith(isLoading: true, isSuccess: false));
+
+    try {
+      final personal = globalStorage.personalModel;
+
+      emit(state.copyWith(
+          isLoading: false, isSuccess: true, persionalManagement: personal));
+    } catch (e) {
+      emit(state.copyWith(
+          isSuccess: false, isFailure: true, errorMessage: e.toString()));
+    }
   }
 
   void _onCreateEvent(

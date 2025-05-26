@@ -7,6 +7,13 @@ class PersionalEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class PersonalFetchEvent extends PersionalEvent {
+  const PersonalFetchEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class PersionalLoadEvent extends PersionalEvent {
   const PersionalLoadEvent();
   @override

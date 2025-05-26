@@ -6,6 +6,8 @@ class RouterName {
   static const login = '/login';
   static const departmentPage = '/departmentPage';
   static const customSidebar = '/customSidebar';
+  static const employeeDetailPage = '/employeeDetailPage';
+  static const employeeDetailUserPage = "/employeeDetailUserPage";
   static const employeePage = '/employee-page';
   static const addEmployee = '/add-employee';
   static const addDepartment = '/add-department';
@@ -41,6 +43,7 @@ class RouterName {
   static const salaryPage = '/salary-page';
   static const addSalary = '/add-salary';
   static const editSalary = '/edit-salary';
+  static const employeeSalaryPage = '/employee-salary-page';
 
   static const sidebarMenuItem = [
     dashboard,

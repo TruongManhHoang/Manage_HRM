@@ -11,12 +11,8 @@ import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_bloc.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_event.dart';
 import 'package:admin_hrm/pages/disciplinary/bloc/disciplinary_state.dart';
-import 'package:admin_hrm/pages/position/bloc/position_bloc.dart';
-import 'package:admin_hrm/pages/reward/bloc/reward_bloc.dart';
-import 'package:admin_hrm/pages/reward/bloc/reward_event.dart';
 import 'package:admin_hrm/pages/reward/bloc/reward_state.dart';
 import 'package:admin_hrm/router/routers_name.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -51,6 +47,9 @@ class EditDisciplinaryPage extends StatelessWidget {
     TextEditingController statusController = TextEditingController(
       text: disciplinaryModel?.status ?? '',
     );
+
+    TextEditingController approveByController =
+        TextEditingController(text: disciplinaryModel!.approvedBy);
 
     final _formKey = GlobalKey<FormState>();
 
@@ -197,6 +196,13 @@ class EditDisciplinaryPage extends StatelessWidget {
                                               text: 'Mức độ kỷ luật',
                                             ),
                                             const Gap(TSizes.spaceBtwItems),
+                                            TTextFormField(
+                                              textAlign: true,
+                                              text: 'Người duyệt',
+                                              hint: 'Nhập người duyệt',
+                                              controller: approveByController,
+                                            ),
+                                            const Gap(TSizes.spaceBtwItems),
                                             TDropDownMenu(
                                               menus: const [
                                                 'Hoạt động',
@@ -272,6 +278,9 @@ class EditDisciplinaryPage extends StatelessWidget {
                                                                       .text,
                                                               status:
                                                                   statusController
+                                                                      .text,
+                                                              approvedBy:
+                                                                  approveByController
                                                                       .text);
 
                                                           context

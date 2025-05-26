@@ -24,6 +24,10 @@ class SalaryRepository {
     await _salaryService.deleteSalary(id);
   }
 
+  Future<List<SalaryModel>> getSalariesByEmployeeId(String employeeId) async {
+    return await _salaryService.getSalariesByEmployeeId(employeeId);
+  }
+
   // Future<void> increaseEmployeeCount(String departmentId) async {
   //   final ref = _firestore.collection('departments').doc(departmentId);
   //   await ref.update({'employeeCount': FieldValue.increment(1)});
