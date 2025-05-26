@@ -8,11 +8,10 @@ class PersionalEvent extends Equatable {
 }
 
 class PersonalFetchEvent extends PersionalEvent {
-  final PersionalManagement personnelManagement;
-  const PersonalFetchEvent(this.personnelManagement);
+  const PersonalFetchEvent();
 
   @override
-  List<Object?> get props => [personnelManagement];
+  List<Object?> get props => [];
 }
 
 class PersionalLoadEvent extends PersionalEvent {

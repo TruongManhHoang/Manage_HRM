@@ -74,12 +74,13 @@ class PersonDetailPage extends StatelessWidget {
                                 ),
                                 const Gap(TSizes.spaceBtwSections),
                                 Center(
-                                  child: Image.network(
-                                    persionalManagement.avatar!,
-                                    width: 100,
-                                    height: 100,
-                                  ),
-                                ),
+                                    child: Image.network(
+                                  persionalManagement.avatar ?? '',
+                                  width: 220,
+                                  height: 270,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Icon(Icons.person, size: 100),
+                                )),
                                 const Gap(TSizes.spaceBtwSections),
                                 buildRow(
                                     label1: 'Mã nhân viên: ',

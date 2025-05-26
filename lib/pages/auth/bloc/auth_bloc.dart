@@ -34,14 +34,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         final personal =
             await userRepository.fetchPersonalProfile(appUser.employeeId);
-        debugPrint('Personal ----------------- $personal');
 
-        globalStorage.updateAuthenticationState(
+        await globalStorage.updateAuthenticationState(
           displayName: appUser.name,
           role: appUser.role,
+          userId: appUser.id,
+          password: appUser.password,
         );
 
-        globalStorage.addPersonalModel(personal);
+        await globalStorage.addPersonalModel(personal);
         emit(AuthSuccess(appUser));
       } catch (e) {
         emit(AuthFailure(e.toString()));

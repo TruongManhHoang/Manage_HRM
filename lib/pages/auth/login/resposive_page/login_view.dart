@@ -48,7 +48,7 @@ class _LoginViewState extends State<LoginView> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            // context.go(RouterName.splashScreen);
+            context.go(RouterName.splashScreen);
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.message)));
@@ -117,7 +117,6 @@ class _LoginViewState extends State<LoginView> {
                               passWordController.text.trim(),
                             ));
                       }
-                      context.go(RouterName.splashScreen);
                     },
                     child: state is AuthLoading
                         ? const CircularProgressIndicator()

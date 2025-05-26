@@ -49,7 +49,7 @@ class SalaryPageDesktop extends StatelessWidget {
                               backgroundColor: Colors.blue,
                             ),
                             onPressed: () {
-                              context.go(RouterName.addSalary);
+                              context.push(RouterName.addSalary);
                             },
                             child: Text(
                               'Thêm Lương',

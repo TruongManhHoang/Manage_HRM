@@ -79,62 +79,62 @@ class DataTableAttendance extends StatelessWidget {
                   ),
                 ),
               ),
-              DataColumn2(
-                label: Center(
-                  child: Text(
-                    'Vị trí',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              DataColumn2(
-                label: Center(
-                  child: Text(
-                    'Ghi chú',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              DataColumn2(
-                label: Center(
-                  child: Text(
-                    'Đi trễ',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              DataColumn2(
-                label: Center(
-                  child: Text(
-                    'Vắng',
-                    maxLines: 2,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
+              // DataColumn2(
+              //   label: Center(
+              //     child: Text(
+              //       'Vị trí',
+              //       maxLines: 2,
+              //       softWrap: true,
+              //       textAlign: TextAlign.center,
+              //       style: TextStyle(
+              //         fontSize: 13,
+              //         fontWeight: FontWeight.w600,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // DataColumn2(
+              //   label: Center(
+              //     child: Text(
+              //       'Ghi chú',
+              //       maxLines: 2,
+              //       softWrap: true,
+              //       textAlign: TextAlign.center,
+              //       style: TextStyle(
+              //         fontSize: 13,
+              //         fontWeight: FontWeight.w600,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // DataColumn2(
+              //   label: Center(
+              //     child: Text(
+              //       'Đi trễ',
+              //       maxLines: 2,
+              //       softWrap: true,
+              //       textAlign: TextAlign.center,
+              //       style: TextStyle(
+              //         fontSize: 13,
+              //         fontWeight: FontWeight.w600,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // DataColumn2(
+              //   label: Center(
+              //     child: Text(
+              //       'Vắng',
+              //       maxLines: 2,
+              //       softWrap: true,
+              //       textAlign: TextAlign.center,
+              //       style: TextStyle(
+              //         fontSize: 13,
+              //         fontWeight: FontWeight.w600,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               DataColumn2(
                 label: Center(
                   child: Text(

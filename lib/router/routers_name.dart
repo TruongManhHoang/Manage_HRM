@@ -43,6 +43,7 @@ class RouterName {
   static const salaryPage = '/salary-page';
   static const addSalary = '/add-salary';
   static const editSalary = '/edit-salary';
+  static const employeeSalaryPage = '/employee-salary-page';
 
   static const sidebarMenuItem = [
     dashboard,

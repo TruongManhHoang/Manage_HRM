@@ -27,8 +27,17 @@ class AttendanceTableRows extends DataTableSource {
 
     final attendance = attendances[index];
     final globalStorage = getIt<GlobalStorage>();
-    final personal = globalStorage.personalManagers!
-        .firstWhere((e) => e.id == attendance.userId);
+    // Safe lookup for personal
+    var personalName = '-';
+    try {
+      final personal = globalStorage.personalManagers
+          ?.firstWhere((e) => e.id == attendance.userId);
+      if (personal != null && personal.name.isNotEmpty) {
+        personalName = personal.name;
+      }
+    } catch (e) {
+      // fallback to '-'
+    }
     TextStyle baseStyle = Theme.of(context)
         .textTheme
         .bodyMedium!
@@ -36,9 +45,9 @@ class AttendanceTableRows extends DataTableSource {
 
     return DataRow2(
       cells: [
-        DataCell(Center(child: Text(personal.name, style: baseStyle))),
+        DataCell(Center(child: Text(personalName, style: baseStyle))),
         DataCell(Center(
-            child: Text(dateFormatter.format(attendance.date!),
+            child: Text(attendance.date != null ? attendance.date! : '-',
                 style: baseStyle))),
         DataCell(Center(
             child: Text(
@@ -54,26 +63,6 @@ class AttendanceTableRows extends DataTableSource {
               : '-',
           style: baseStyle,
         ))),
-        DataCell(Center(
-            child: Text(attendance.workLocation ?? '-', style: baseStyle))),
-        DataCell(
-            Center(child: Text(attendance.notes ?? '-', style: baseStyle))),
-        DataCell(Center(
-          child: Icon(
-            attendance.isLate
-                ? Icons.warning_amber_rounded
-                : Icons.check_circle,
-            color: attendance.isLate ? Colors.orange : Colors.green,
-            size: 18,
-          ),
-        )),
-        DataCell(Center(
-          child: Icon(
-            attendance.isAbsent ? Icons.close_rounded : Icons.check_circle,
-            color: attendance.isAbsent ? Colors.red : Colors.green,
-            size: 18,
-          ),
-        )),
         DataCell(Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -116,7 +105,7 @@ class AttendanceTableRows extends DataTableSource {
       builder: (ctx) => AlertDialog(
         title: const Text('Xác nhận xoá'),
         content: Text(
-            'Bạn có chắc chắn muốn xoá bản ghi ngày "${DateFormat('dd/MM/yyyy').format(attendance.date!)}"?'),
+            'Bạn có chắc chắn muốn xoá bản ghi ngày "${attendance.date!}"?'),
         actions: [
           TextButton(
             child: const Text('Huỷ'),

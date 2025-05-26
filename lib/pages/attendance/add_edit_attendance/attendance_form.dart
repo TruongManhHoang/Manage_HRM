@@ -57,7 +57,7 @@ class _AttendanceFormState extends State<AttendanceForm> {
       userNameCtrl.text = a.userName ?? '';
       workLocationCtrl.text = a.workLocation ?? '';
       notesCtrl.text = a.notes ?? '';
-      date = a.date!;
+      date = DateTime.parse(a.date!);
       checkInTime = a.checkInTime;
       checkOutTime = a.checkOutTime;
       isLate = a.isLate;
@@ -131,7 +131,7 @@ class _AttendanceFormState extends State<AttendanceForm> {
       id: widget.attendance?.id ?? '',
       userId: selectedPersonalId ?? '',
       userName: userNameCtrl.text.trim(),
-      date: date,
+      date: date.toIso8601String().substring(0, 10),
       checkInTime: checkInTime,
       checkOutTime: checkOutTime,
       workLocation: workLocationCtrl.text.trim(),

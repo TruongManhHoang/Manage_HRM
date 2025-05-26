@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -19,6 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+
+import 'package:http/http.dart' as http;
 
 class AddEmployeeForm extends StatefulWidget {
   const AddEmployeeForm({super.key});
@@ -46,62 +49,62 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
     return null;
   }
 
-  Future<String?> uploadImageWeb(Uint8List fileBytes, String fileName) async {
-    try {
-      if (fileBytes.isEmpty) {
-        print('❌ Error: fileBytes is empty');
-        return null;
-      }
+  // Future<String?> uploadImageWeb(Uint8List fileBytes, String fileName) async {
+  //   try {
+  //     if (fileBytes.isEmpty) {
+  //       print('❌ Error: fileBytes is empty');
+  //       return null;
+  //     }
 
-      final ext = fileName.split('.').last.toLowerCase();
-      final contentType = {
-            'png': 'image/png',
-            'jpg': 'image/jpeg',
-            'jpeg': 'image/jpeg',
-            'gif': 'image/gif',
-          }[ext] ??
-          'application/octet-stream';
+  //     final ext = fileName.split('.').last.toLowerCase();
+  //     final contentType = {
+  //           'png': 'image/png',
+  //           'jpg': 'image/jpeg',
+  //           'jpeg': 'image/jpeg',
+  //           'gif': 'image/gif',
+  //         }[ext] ??
+  //         'application/octet-stream';
 
-      final metadata = SettableMetadata(contentType: contentType);
+  //     final metadata = SettableMetadata(contentType: contentType);
 
-      final storageRef =
-          FirebaseStorage.instance.ref().child('images/$fileName');
+  //     final storageRef =
+  //         FirebaseStorage.instance.ref().child('images/$fileName');
 
-      print('⬆️ Uploading file: $fileName');
-      print('📄 Using contentType: $contentType');
+  //     print('⬆️ Uploading file: $fileName');
+  //     print('📄 Using contentType: $contentType');
 
-      final uploadTask = await storageRef.putData(fileBytes, metadata);
+  //     final uploadTask = await storageRef.putData(fileBytes, metadata);
 
-      // Truy xuất metadata sau khi upload để kiểm tra
-      final resultMeta = await uploadTask.ref.getMetadata();
-      print('✅ Uploaded Metadata: ${resultMeta.contentType}');
+  //     // Truy xuất metadata sau khi upload để kiểm tra
+  //     final resultMeta = await uploadTask.ref.getMetadata();
+  //     print('✅ Uploaded Metadata: ${resultMeta.contentType}');
 
-      final url = await storageRef.getDownloadURL();
-      return url;
-    } catch (e) {
-      print('🚨 Upload error: $e');
-      return null;
-    }
-  }
+  //     final url = await storageRef.getDownloadURL();
+  //     return url;
+  //   } catch (e) {
+  //     print('🚨 Upload error: $e');
+  //     return null;
+  //   }
+  // }
 
-  void handleImageUploadWeb() async {
-    final fileData = await pickImageWeb();
+  // void handleImageUploadWeb() async {
+  //   final fileData = await pickImageWeb();
 
-    if (fileData != null) {
-      final url = await uploadImageWeb(
-        fileData['fileBytes'],
-        fileData['fileName'],
-      );
+  //   if (fileData != null) {
+  //     final url = await uploadImageWeb(
+  //       fileData['fileBytes'],
+  //       fileData['fileName'],
+  //     );
 
-      if (url != null) {
-        setState(() {
-          uploadedImageUrl = url;
-        });
-        print('Uploaded image URL: $url');
-      }
-    }
-    print('File data: $uploadedImageUrl');
-  }
+  //     if (url != null) {
+  //       setState(() {
+  //         uploadedImageUrl = url;
+  //       });
+  //       print('Uploaded image URL: $url');
+  //     }
+  //   }
+  //   print('File data: $uploadedImageUrl');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +126,51 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
     final globalStorage = getIt<GlobalStorage>();
     final departments = globalStorage.departments!;
     final positions = globalStorage.positions!;
+    Future<String?> uploadToCloudinary(
+        Uint8List fileBytes, String fileName) async {
+      const cloudName = 'dfxx9hded'; // Thay bằng của bạn
+      const uploadPreset = 'manage_hrm'; // Đã tạo trong Dashboard
+
+      final uri =
+          Uri.parse("https://api.cloudinary.com/v1_1/$cloudName/image/upload");
+
+      final request = http.MultipartRequest('POST', uri)
+        ..fields['upload_preset'] = uploadPreset
+        ..files.add(http.MultipartFile.fromBytes('file', fileBytes,
+            filename: fileName));
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        final res = await http.Response.fromStream(response);
+        final data = jsonDecode(res.body);
+        return data['secure_url']; // ✅ Link ảnh public để lưu vào Firebase
+      } else {
+        print("Upload failed: ${response.statusCode}");
+        return null;
+      }
+    }
+
+    Future<void> pickAndUploadImage() async {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false,
+        withData: true,
+      );
+
+      if (result != null && result.files.single.bytes != null) {
+        final imageUrl = await uploadToCloudinary(
+            result.files.single.bytes!, result.files.single.name);
+        setState(() {
+          uploadedImageUrl = imageUrl;
+        });
+        if (imageUrl != null) {
+          print("✅ Uploaded Image URL: $imageUrl");
+
+          // 🔥 Lưu imageUrl này vào Firestore hoặc Realtime Database tùy bạn
+        }
+      }
+    }
 
     String? selectedDepartmentId;
     String? selectedPositionId;
@@ -179,7 +227,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                                     children: [
                                       uploadedImageUrl == null
                                           ? GestureDetector(
-                                              onTap: handleImageUploadWeb,
+                                              onTap: pickAndUploadImage,
                                               child: Container(
                                                 height: 200,
                                                 width: double.infinity,
@@ -207,20 +255,13 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                                                       BorderRadius.circular(10),
                                                   child: Image.network(
                                                     uploadedImageUrl!,
-                                                    loadingBuilder: (context,
-                                                        child,
-                                                        loadingProgress) {
-                                                      if (loadingProgress ==
-                                                          null) return child;
-                                                      return Center(
-                                                          child:
-                                                              CircularProgressIndicator());
-                                                    },
+                                                    // width: 100,
+                                                    height: 300,
                                                     errorBuilder: (context,
-                                                        error, stackTrace) {
-                                                      return Text(
-                                                          '❌ Lỗi khi tải ảnh: $error');
-                                                    },
+                                                            error,
+                                                            stackTrace) =>
+                                                        Icon(Icons.person,
+                                                            size: 100),
                                                   ),
                                                 ),
                                                 Positioned(
@@ -230,7 +271,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                                                     icon: const Icon(Icons.edit,
                                                         color: Colors.white),
                                                     onPressed:
-                                                        handleImageUploadWeb,
+                                                        pickAndUploadImage,
                                                   ),
                                                 )
                                               ],

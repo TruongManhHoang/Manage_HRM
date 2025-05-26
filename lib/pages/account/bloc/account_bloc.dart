@@ -17,6 +17,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<AddAccount>(_onAddAccount);
     on<UpdateAccount>(_onUpdateAccount);
     on<DeleteAccount>(_onDeleteAccount);
+    on<ChangePasswordAccount>(_onChangePasswordAccount);
   }
 
   Future<void> _onLoadAccounts(
@@ -29,6 +30,20 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       emit(AccountLoaded(accounts));
     } catch (e) {
       emit(AccountError('Không thể tải danh sách tài khoản'));
+    }
+  }
+
+  Future<void> _onChangePasswordAccount(
+      ChangePasswordAccount event, Emitter<AccountState> emit) async {
+    emit(AccountLoading());
+    try {
+      debugPrint('Changing password for account...');
+      debugPrint('User ID: ${event.userId}');
+      debugPrint('New Password: ${event.password}');
+      await repository.changePassword(event.password, event.userId);
+      emit(AccountSuccess());
+    } catch (e) {
+      emit(AccountError('Đổi mật khẩu thất bại'));
     }
   }
 

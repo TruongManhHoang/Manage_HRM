@@ -8,7 +8,7 @@ class DisciplinaryModel {
   final String reason;
   final String severity;
   final String status;
-  final String? document;
+  final String approvedBy;
 
   DisciplinaryModel({
     this.id,
@@ -20,7 +20,7 @@ class DisciplinaryModel {
     required this.reason,
     required this.severity,
     required this.status,
-    this.document,
+    required this.approvedBy,
   });
 
   factory DisciplinaryModel.fromFirestore(Map<String, dynamic> map) {
@@ -36,7 +36,7 @@ class DisciplinaryModel {
       reason: map['reason'] ?? '',
       severity: map['severity'] ?? '',
       status: map['status'] ?? '',
-      document: map['document'] ?? '',
+      approvedBy: map['approveBy'] ?? '',
     );
   }
 
@@ -52,7 +52,7 @@ class DisciplinaryModel {
       'reason': reason,
       'severity': severity,
       'status': status,
-      'document': document,
+      'approveBy': approvedBy,
     };
   }
 
@@ -69,7 +69,7 @@ class DisciplinaryModel {
     String? severity,
     String? approvedBy,
     String? status,
-    String? document,
+    String? approveBy,
   }) {
     return DisciplinaryModel(
       id: id ?? this.id,
@@ -80,7 +80,7 @@ class DisciplinaryModel {
       reason: reason ?? this.reason,
       severity: severity ?? this.severity,
       status: status ?? this.status,
-      document: document ?? this.document,
+      approvedBy: approvedBy ?? this.approvedBy,
       disciplinaryValue: disciplinaryValue ?? this.disciplinaryValue,
     );
   }

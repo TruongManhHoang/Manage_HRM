@@ -29,6 +29,14 @@ class AccountRepository {
     }
   }
 
+  Future<void> changePassword(String password, String userId) async {
+    try {
+      await accountService.changePassword(password, userId);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> deleteAccount(String accountId) async {
     try {
       await accountService.deleteAccount(accountId);

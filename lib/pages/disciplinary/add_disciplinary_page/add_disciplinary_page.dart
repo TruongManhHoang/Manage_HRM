@@ -29,6 +29,7 @@ class AddDisciplinaryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final globalKey = getIt<GlobalStorage>();
     final personals = globalKey.personalManagers!;
+    final personal = globalKey.personalModel;
     String? selectedPersonalId;
     TextEditingController personalIdController = TextEditingController();
     TextEditingController codeController = TextEditingController();
@@ -36,6 +37,8 @@ class AddDisciplinaryPage extends StatelessWidget {
     TextEditingController disciplinaryValueController = TextEditingController();
     TextEditingController reasonController = TextEditingController();
     TextEditingController severityController = TextEditingController();
+    TextEditingController approveByController =
+        TextEditingController(text: personal!.name);
     TextEditingController statusController = TextEditingController();
 
     final _formKey = GlobalKey<FormState>();
@@ -189,6 +192,13 @@ class AddDisciplinaryPage extends StatelessWidget {
                                               text: 'Mức độ kỷ luật',
                                             ),
                                             const Gap(TSizes.spaceBtwItems),
+                                            TTextFormField(
+                                              textAlign: true,
+                                              text: 'Người duyệt',
+                                              hint: 'Nhập người duyệt',
+                                              controller: approveByController,
+                                            ),
+                                            const Gap(TSizes.spaceBtwItems),
                                             TDropDownMenu(
                                               menus: const [
                                                 'Hoạt động',
@@ -262,6 +272,9 @@ class AddDisciplinaryPage extends StatelessWidget {
                                                                       .text,
                                                               status:
                                                                   statusController
+                                                                      .text,
+                                                              approvedBy:
+                                                                  approveByController
                                                                       .text);
 
                                                           context
@@ -277,7 +290,7 @@ class AddDisciplinaryPage extends StatelessWidget {
                                                               color:
                                                                   Colors.white)
                                                           : Text(
-                                                              'Thêm chức vụ',
+                                                              'Thêm kỷ luật',
                                                               style: Theme.of(
                                                                       context)
                                                                   .textTheme

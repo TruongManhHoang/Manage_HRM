@@ -25,13 +25,15 @@ class AddRewardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final globalKey = getIt<GlobalStorage>();
     final personals = globalKey.personalManagers!;
+    final personal = globalKey.personalModel;
     String? selectedPersonalId;
     TextEditingController personalIdController = TextEditingController();
     TextEditingController codeController = TextEditingController();
     TextEditingController rewardTypeController = TextEditingController();
     TextEditingController rewardValueController = TextEditingController();
     TextEditingController reasonController = TextEditingController();
-    TextEditingController approvedByController = TextEditingController();
+    TextEditingController approvedByController =
+        TextEditingController(text: personal!.name);
     TextEditingController statusController = TextEditingController();
 
     final _formKey = GlobalKey<FormState>();
@@ -266,7 +268,7 @@ class AddRewardPage extends StatelessWidget {
                                                               color:
                                                                   Colors.white)
                                                           : Text(
-                                                              'Thêm chức vụ',
+                                                              'Thêm khen thưởng',
                                                               style: Theme.of(
                                                                       context)
                                                                   .textTheme

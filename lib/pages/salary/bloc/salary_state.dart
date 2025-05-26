@@ -25,6 +25,15 @@ class SalaryLoaded extends SalaryState {
   List<Object?> get props => [salaries];
 }
 
+class SalaryByEmployeeIdLoaded extends SalaryState {
+  final List<SalaryModel> salaries;
+
+  SalaryByEmployeeIdLoaded(this.salaries);
+
+  @override
+  List<Object?> get props => [salaries];
+}
+
 class SalaryFailure extends SalaryState {
   final String error;
 

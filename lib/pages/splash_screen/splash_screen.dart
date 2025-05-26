@@ -34,14 +34,11 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () {
       final storageKey = getIt<GlobalStorage>();
       final personal = storageKey.personalModel;
-      print("AccessToken: ${personal!.code}----------");
-
       if (storageKey.role == 'admin') {
         context.go(RouterName.dashboard);
       } else if (storageKey.role == 'user') {
         context.go(
           RouterName.employeeDetailUserPage,
-          extra: personal,
         );
       } else {
         context.go(RouterName.login);

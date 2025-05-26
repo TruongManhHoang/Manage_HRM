@@ -25,6 +25,16 @@ class UpdateAccount extends AccountEvent {
   List<Object?> get props => [account];
 }
 
+class ChangePasswordAccount extends AccountEvent {
+  final String userId;
+  final String password;
+
+  ChangePasswordAccount(this.userId, this.password);
+
+  @override
+  List<Object?> get props => [password];
+}
+
 class DeleteAccount extends AccountEvent {
   final String accountId;
 

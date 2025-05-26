@@ -1,4 +1,5 @@
-import 'package:admin_hrm/data/model/account/account_model.dart';
+import 'dart:ui';
+
 import 'package:admin_hrm/data/model/attendance/attendance_model.dart';
 import 'package:admin_hrm/data/model/contract/contract_model.dart';
 import 'package:admin_hrm/data/model/department/department_model.dart';
@@ -8,7 +9,7 @@ import 'package:admin_hrm/data/model/personnel_management.dart';
 import 'package:admin_hrm/data/model/position/position_model.dart';
 import 'package:admin_hrm/data/model/reward/reward_model.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 
 class GlobalStorageKey {
   const GlobalStorageKey._();
@@ -31,6 +32,7 @@ class GlobalStorageKey {
   static const disciplinarys = "disciplinaryActions";
   static const kpis = "kpis";
   static const personalModel = "personalModel";
+  static const password = "password";
 }
 
 abstract class GlobalStorage {
@@ -80,6 +82,8 @@ abstract class GlobalStorage {
 
   String? get userId;
 
+  String? get password;
+
   String? get displayName;
 
   String? get role;
@@ -96,8 +100,9 @@ abstract class GlobalStorage {
 
   Future<void> updateAuthenticationState({
     required String? displayName,
-    // required String? userId,
+    required String? userId,
     required String? role,
+    required String? password,
   });
 
   Future<void> clearAuthenticationState();
@@ -159,18 +164,19 @@ class GlobalStorageImpl implements GlobalStorage {
   @override
   Future<void> updateAuthenticationState({
     required String? displayName,
-    // required String? userId,
+    required String? userId,
     required String? role,
+    required String? password,
   }) async {
     if (displayName == null) {
       await clearAuthenticationState();
       return;
     }
     await Future.wait([
-      // _box.put(GlobalStorageKey.accessToken, token),
       _box.put(GlobalStorageKey.displayName, displayName),
-      // _box.put(GlobalStorageKey.accountModel, accountModel),
+      _box.put(GlobalStorageKey.userId, userId),
       _box.put(GlobalStorageKey.role, role),
+      _box.put(GlobalStorageKey.password, password),
     ]);
     debugPrint("UpdateAuthentication: ${_box.get(GlobalStorageKey.role)} ");
   }
@@ -178,13 +184,11 @@ class GlobalStorageImpl implements GlobalStorage {
   @override
   Future<void> clearAuthenticationState() async {
     await Future.wait([
-      // _box.delete(GlobalStorageKey.accessToken),
-      // _box.delete(GlobalStorageKey.userId),
-      // _box.delete(GlobalStorageKey.isLoggedIn),
       _box.delete(GlobalStorageKey.personalModel),
       _box.delete(GlobalStorageKey.role),
-      _box.delete(GlobalStorageKey.displayName)
-      // _box.delete(GlobalStorageKey.userData),
+      _box.delete(GlobalStorageKey.displayName),
+      _box.delete(GlobalStorageKey.userId),
+      _box.delete(GlobalStorageKey.password),
     ]);
 
     debugPrint(
@@ -530,10 +534,13 @@ class GlobalStorageImpl implements GlobalStorage {
       if (data is Map<String, dynamic>) {
         return PersionalManagement.fromJson(data);
       } else if (data is Map) {
-        // Defensive: convert to Map<String, dynamic> if needed
         return PersionalManagement.fromJson(Map<String, dynamic>.from(data));
       }
     }
     return null;
   }
+
+  @override
+  // TODO: implement password
+  String? get password => _box.get(GlobalStorageKey.password);
 }

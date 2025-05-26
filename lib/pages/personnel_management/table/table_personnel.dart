@@ -1,8 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:admin_hrm/di/locator.dart';
 import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/utils/helpers/helper_functions.dart';
-import 'package:admin_hrm/utils/popups/dialogs.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,7 +61,7 @@ class TableEmployeeRows extends DataTableSource {
               padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
               child: Image.network(
                 employee.avatar ?? '',
-                width: 100,
+                width: 250,
                 height: 100,
                 errorBuilder: (context, error, stackTrace) =>
                     Icon(Icons.person, size: 100),

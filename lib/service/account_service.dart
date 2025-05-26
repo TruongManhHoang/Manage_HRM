@@ -17,6 +17,14 @@ class AccountService {
     }
   }
 
+  Future<void> changePassword(String password, String userId) async {
+    try {
+      await _collectionReference.doc(userId).update({'password': password});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> addAccount(AccountModel account) async {
     try {
       final docRef = _collectionReference.doc();

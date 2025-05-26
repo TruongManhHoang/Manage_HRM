@@ -268,7 +268,7 @@ class EditRewardPage extends StatelessWidget {
                                                               color:
                                                                   Colors.white)
                                                           : Text(
-                                                              'Sửa chức vụ',
+                                                              'Sửa khen thưởng',
                                                               style: Theme.of(
                                                                       context)
                                                                   .textTheme

@@ -7,6 +7,7 @@ import 'package:admin_hrm/local/hive_storage.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_bloc.dart';
 import 'package:admin_hrm/pages/auth/bloc/auth_event.dart';
 import 'package:admin_hrm/router/routers_name.dart';
+import 'package:admin_hrm/utils/enum/enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -30,13 +31,15 @@ class SidebarUser extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const TCircularImage(
+              const Gap(TSizes.spaceBtwSections),
+              TCircularImage(
                 width: 100,
                 height: 100,
-                image: 'assets/images/user.png',
+                image: personal!.avatar,
+                fit: BoxFit.cover,
                 backgroundColor: Colors.transparent,
+                imageType: ImageType.network,
               ),
-              const Gap(TSizes.spaceBtwSections),
               Padding(
                 padding: const EdgeInsets.all(TSizes.md),
                 child: Column(
@@ -56,7 +59,11 @@ class SidebarUser extends StatelessWidget {
                     const MenuItem(
                         icon: Iconsax.profile,
                         title: 'Thông tin nhân viên',
-                        router: RouterName.employeeDetailPage),
+                        router: RouterName.employeeDetailUserPage),
+                    const MenuItem(
+                        icon: Iconsax.profile,
+                        title: 'Bảng lương',
+                        router: RouterName.employeeSalaryPage),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: Row(
@@ -66,9 +73,7 @@ class SidebarUser extends StatelessWidget {
                           const Gap(TSizes.sm),
                           GestureDetector(
                             onTap: () {
-                              context.read<AuthBloc>().add(LogoutRequested());
-
-                              context.go(RouterName.login);
+                              _confirmDelete(context);
                             },
                             child: const Text(
                               'Đăng xuất',
@@ -90,4 +95,27 @@ class SidebarUser extends StatelessWidget {
       ),
     );
   }
+}
+
+void _confirmDelete(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: const Text('Xác nhận xoá'),
+      content: Text('Bạn có chắc chắn muốn đăng xuất không?'),
+      actions: [
+        TextButton(
+          child: const Text('Không'),
+          onPressed: () => Navigator.of(ctx).pop(),
+        ),
+        TextButton(
+          child: const Text('Có', style: TextStyle(color: Colors.red)),
+          onPressed: () {
+            context.read<AuthBloc>().add(LogoutRequested());
+            context.go(RouterName.login);
+          },
+        ),
+      ],
+    ),
+  );
 }

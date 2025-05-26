@@ -73,6 +73,7 @@ import 'package:admin_hrm/pages/reward/reward_page.dart';
 
 import 'package:admin_hrm/pages/salary/add_salary/add_salary_page.dart';
 import 'package:admin_hrm/pages/salary/bloc/salary_bloc.dart';
+import 'package:admin_hrm/pages/salary/employee_salary_page.dart';
 import 'package:admin_hrm/pages/salary/salary_page.dart';
 import 'package:admin_hrm/pages/splash_screen/splash_screen.dart';
 import 'package:admin_hrm/router/router_observer.dart';
@@ -172,7 +173,44 @@ class AppRouter {
                   );
                 },
               ),
+              GoRoute(
+                path: RouterName.employeeDetailPage,
+                name: RouterName.employeeDetailPage,
+                builder: (context, state) {
+                  final employee = state.extra as PersionalManagement;
+                  return PersonDetailPage(persionalManagement: employee);
+                },
+              ),
             ]),
+        GoRoute(
+          path: RouterName.employeeDetailUserPage,
+          name: RouterName.employeeDetailUserPage,
+          builder: (context, state) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => PersionalBloc(
+                    personnelRepository: getIt<PersionalRepository>(),
+                    departmentRepository: getIt<DepartmentRepository>(),
+                    globalStorage: getIt<GlobalStorage>(),
+                  )..add(const PersonalFetchEvent()),
+                ),
+                BlocProvider(
+                  create: (context) =>
+                      AccountBloc(repository: getIt<AccountRepository>()),
+                ),
+                BlocProvider(
+                  create: (context) => AuthBloc(
+                    authService: getIt<AuthService>(),
+                    userRepository: getIt<UserRepository>(),
+                    globalStorage: getIt<GlobalStorage>(),
+                  ),
+                ),
+              ],
+              child: const PersonDetailPageUser(),
+            );
+          },
+        ),
         ShellRoute(
             builder: (context, state, child) {
               return BlocProvider<DepartmentBloc>(
@@ -368,26 +406,9 @@ class AppRouter {
                 return RewardPage();
               },
             ),
-            GoRoute(
-              path: RouterName.employeeDetailPage,
-              name: RouterName.employeeDetailPage,
-              builder: (context, state) {
-                final employee = state.extra as PersionalManagement;
-                return PersonDetailPage(persionalManagement: employee);
-              },
-            ),
-            GoRoute(
-              path: RouterName.employeeDetailUserPage,
-              name: RouterName.employeeDetailUserPage,
-              builder: (context, state) {
-                final employee = state.extra as PersionalManagement;
-                return PersonDetailPageUser(
-                  persionalManagement: employee,
-                );
-              },
-            ),
           ],
         ),
+
         ShellRoute(
             builder: (context, state, child) {
               return BlocProvider<DisciplinaryBloc>(
@@ -466,6 +487,13 @@ class AppRouter {
               //     },
               //   ),
               // ]),
+              GoRoute(
+                path: RouterName.employeeSalaryPage,
+                name: RouterName.employeeSalaryPage,
+                builder: (context, state) {
+                  return const EmployeeSalaryPage();
+                },
+              ),
             ]),
 
         ShellRoute(

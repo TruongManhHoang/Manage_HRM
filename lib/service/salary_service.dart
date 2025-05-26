@@ -33,6 +33,17 @@ class SalaryService {
     await _firestore.collection('salaries').doc(id).delete();
   }
 
+  Future<List<SalaryModel>> getSalariesByEmployeeId(String employeeId) async {
+    final snapshot = await _firestore
+        .collection('salaries')
+        .where('employeeId', isEqualTo: employeeId)
+        .get();
+
+    return snapshot.docs
+        .map((doc) => SalaryModel.fromJson(doc.data()))
+        .toList();
+  }
+
   // Future<List<Map<String, dynamic>>> getSalaryList() async {
   //   final snapshot =
   //       await FirebaseFirestore.instance.collection('salaries').get();
